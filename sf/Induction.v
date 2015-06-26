@@ -685,8 +685,15 @@ problem using the theorem no matter which way we state it. *)
 Theorem beq_nat_refl : forall n : nat, 
   true = beq_nat n n.
 Proof.
-  (* FILL IN HERE *) Admitted.
-(** [] *)
+  induction n as [| n'].
+  Case "n = 0".
+  simpl.
+  reflexivity.
+  Case "n = S n'".
+  simpl.
+  rewrite -> IHn'.
+  reflexivity.
+Qed.
 
 (** **** Exercise: 2 stars, optional (plus_swap')  *)
 (** The [replace] tactic allows you to specify a particular subterm to
@@ -700,11 +707,54 @@ Proof.
    [plus_swap] but without needing [assert (n + m = m + n)]. 
 *)
 
+Theorem plus_S_1: forall n : nat,
+  n + 1 = S n.
+Proof.
+  intros n.
+  rewrite <- plus_comm.
+  reflexivity.
+Qed.
+  
+
+Theorem plus_s_comm: forall n m : nat,
+  n + S m = S m + n.
+Proof.
+  intros n m.
+  induction n as [| n'].
+  Case "n=0".
+  simpl.
+  rewrite -> plus_r_0.
+  reflexivity.
+  Case "n = S n'".
+  induction m as [| m'].
+  simpl.
+  rewrite -> plus_S_1.
+  reflexivity.
+  rewrite -> plus_comm.
+  reflexivity.
+Qed.
+  
+  
+ 
+
 Theorem plus_swap' : forall n m p : nat, 
   n + (m + p) = m + (n + p).
 Proof.
-  (* FILL IN HERE *) Admitted.
-(** [] *)
+  induction n as [| n'].
+  Case "n = 0".
+  simpl.
+  reflexivity.
+  Case "n = S n'".
+  induction p as [| p'].
+  rewrite -> plus_r_0.
+  rewrite -> plus_r_0.
+  rewrite <- plus_comm.
+  reflexivity.
+  rewrite -> plus_assoc.
+  replace (S n' + m) with (m + S n').
+  rewrite -> plus_assoc.
+  reflexivity.
+  
 
 
 (** **** Exercise: 3 stars (binary_commute)  *)
