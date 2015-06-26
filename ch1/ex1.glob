@@ -1,0 +1,37 @@
+DIGEST 8c50e72d35dbc2588a0d221696fc5c99
+Fex1
+ind 10:13 <> bool
+constr 27:30 <> true
+constr 41:45 <> false
+R34:37 ex1 <> bool ind
+R49:52 ex1 <> bool ind
+def 68:72 <> nandb
+R78:81 ex1 <> bool ind
+R88:91 ex1 <> bool ind
+R96:99 ex1 <> bool ind
+R110:111 ex1 <> b1 var
+R122:125 ex1 <> true constr
+R130:131 ex1 <> b2 var
+R137:141 ex1 <> false constr
+R146:149 ex1 <> true constr
+def 167:177 <> test_nandb2
+R180:180 Coq.Init.Logic <> :type_scope:x_'='_x not
+R198:201 Coq.Init.Logic <> :type_scope:x_'='_x not
+R181:185 ex1 <> nandb def
+R193:197 ex1 <> false constr
+R187:191 ex1 <> false constr
+R202:205 ex1 <> true constr
+def 242:252 <> test_nandb3
+R255:255 Coq.Init.Logic <> :type_scope:x_'='_x not
+R272:275 Coq.Init.Logic <> :type_scope:x_'='_x not
+R256:260 ex1 <> nandb def
+R268:271 ex1 <> true constr
+R262:266 ex1 <> false constr
+R276:279 ex1 <> true constr
+def 316:326 <> test_nandb4
+R329:329 Coq.Init.Logic <> :type_scope:x_'='_x not
+R345:348 Coq.Init.Logic <> :type_scope:x_'='_x not
+R330:334 ex1 <> nandb def
+R341:344 ex1 <> true constr
+R336:339 ex1 <> true constr
+R349:353 ex1 <> false constr
