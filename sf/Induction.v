@@ -581,22 +581,35 @@ Proof.
   simpl.
   reflexivity.
   Case "b = false".
-  
+  simpl.
+  reflexivity.
+Qed.
   
 
 Theorem plus_ble_compat_l : forall n m p : nat, 
   ble_nat n m = true -> ble_nat (p + n) (p + m) = true.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  Admitted.
+  
+  
+  
 
 Theorem S_nbeq_0 : forall n:nat,
   beq_nat (S n) 0 = false.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  reflexivity.
+  Qed.
 
 Theorem mult_1_l : forall n:nat, 1 * n = n.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  induction n as [| n'].
+  simpl.
+  reflexivity.
+  rewrite -> mult_comm.
+  simpl.
+  rewrite -> mult_comm.
+  rewrite IHn'.
+  reflexivity.
 
 Theorem all3_spec : forall b c : bool,
     orb
@@ -605,19 +618,63 @@ Theorem all3_spec : forall b c : bool,
                (negb c))
   = true.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  destruct b.
+  Case "b = true".
+  simpl.
+  destruct c.
+  reflexivity.
+  reflexivity.
+  destruct c.
+  reflexivity.
+  reflexivity.
+Qed.
+  
 
 Theorem mult_plus_distr_r : forall n m p : nat,
   (n + m) * p = (n * p) + (m * p).
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros n m p.
+  induction n as [| n'].
+  simpl.
+  reflexivity.
+  Case "n = S n'".
+  induction p as [| p'].
+  simpl.
+  rewrite -> IHn'.
+  reflexivity.
+  simpl.
+  rewrite -> IHn'.
+  rewrite -> plus_assoc.
+  reflexivity.
+Qed.
+
 
 Theorem mult_assoc : forall n m p : nat,
   n * (m * p) = (n * m) * p.
 Proof.
-  (* FILL IN HERE *) Admitted.
-(** [] *)
-
+  intros n m p.
+  induction n as [| n'].
+  simpl.
+  reflexivity.
+  Case "n = S n'".
+  induction p as [| p'].
+  simpl.
+  rewrite -> IHn'.
+  rewrite -> mult_0_r.
+  rewrite -> mult_0_r.
+  simpl.
+  rewrite -> mult_0_r.
+  reflexivity.
+  simpl.
+  rewrite -> IHn'.
+  rewrite <- mult_plus_distr_r.
+  reflexivity.
+Qed.
+  
+  
+  
+  
+  
 (** **** Exercise: 2 stars, optional (beq_nat_refl)  *)
 (** Prove the following theorem.  Putting [true] on the left-hand side
 of the equality may seem odd, but this is how the theorem is stated in
