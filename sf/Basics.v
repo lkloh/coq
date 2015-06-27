@@ -898,10 +898,34 @@ Proof.
     so on.  Your definition of [bin] should be correspondingly simple;
     it is the functions you will write next that will give it
     mathematical meaning.)
+    *)
 
+Inductive bin : Type :=
+  | O : bin
+  | T : bin -> bin
+  | R : bin -> bin.
+ 
+
+(*
     (b) Next, write an increment function [incr] for binary numbers, 
         and a function [bin_to_nat] to convert binary numbers to unary numbers.
+        *)
 
+Fixpoint incr (b : bin) : bin :=
+  match b with
+    | O => R O
+    | T b' => R b'
+    | R b' => T (incr b')
+  end.
+
+Fixpoint bin_to_nat (b : bin) : nat :=
+  match b with
+    | O => 0
+    | T b' => 2 * (bin_to_nat b')
+    | R b' => 2 * (bin_to_nat b') + 1
+  end. 
+
+(*
     (c) Write five unit tests [test_bin_incr1], [test_bin_incr2], etc.
         for your increment and binary-to-unary functions. Notice that 
         incrementing a binary number and then converting it to unary 
@@ -909,8 +933,22 @@ Proof.
         then incrementing. 
 *)
 
-(* FILL IN HERE *)
-(** [] *)
+Example test_bin_incr1: (incr (T O)) = R O.
+simpl. reflexivity. Qed.
+
+Example test_bin_incr2: bin_to_nat (R O) = 1.
+simpl. reflexivity. Qed.
+
+Example test_bin_incr3 : bin_to_nat (incr (R O)) = 2.
+simpl. reflexivity. Qed.
+
+Example test_bin_incr4: bin_to_nat (incr (T (R O))) = 3.
+simpl. reflexivity. Qed.
+
+Example test_bin_incr5: bin_to_nat (R O) = bin_to_nat (incr O).
+simpl. reflexivity. Qed.
+
+
 
 (* ###################################################################### *)
 (** * More on Notation (Advanced) *)
