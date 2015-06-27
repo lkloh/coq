@@ -332,8 +332,7 @@ Example test_alternate3:        alternate [1;2;3] [4] = [1;4;2;3].
 Proof. simpl. reflexivity. Qed.
   
 Example test_alternate4:        alternate [] [20;30] = [20;30].
- (* FILL IN HERE *) Admitted. 
-(** [] *)
+Proof. simpl. reflexivity. Qed.
 
 (* ###################################################### *)
 (** ** Bags via Lists *)
@@ -350,14 +349,24 @@ Definition bag := natlist.
     [count], [sum], [add], and [member] for bags. *)
 
 Fixpoint count (v:nat) (s:bag) : nat := 
-  (* FILL IN HERE *) admit.
-
+  match v, s with
+    | _, nil => 0
+    | v, b :: s' => match (beq_nat v b) with
+                    | true => S (count v s')
+                    | false => (count v s')
+                  end
+  end.
+  
 (** All these proofs can be done just by [reflexivity]. *)
 
+Example test_count0:              count 1 [] = 0.
+admit.
+
 Example test_count1:              count 1 [1;2;3;1;4;1] = 3.
- (* FILL IN HERE *) Admitted.
+Proof. simpl. reflexivity. Qed.
+  
 Example test_count2:              count 6 [1;2;3;1;4;1] = 0.
- (* FILL IN HERE *) Admitted.
+Proof. simpl. reflexivity. Qed. 
 
 (** Multiset [sum] is similar to set [union]: [sum a b] contains
     all the elements of [a] and of [b].  (Mathematicians usually
@@ -371,25 +380,42 @@ Example test_count2:              count 6 [1;2;3;1;4;1] = 0.
     think about whether [sum] can be implemented in another way --
     perhaps by using functions that have already been defined.  *)
 
+(*   
 Definition sum : bag -> bag -> bag := 
-  (* FILL IN HERE *) admit.
+  admit. *)
+
+Definition sum (b:bag) (c:bag) : bag :=
+  b ++ c.
+  
 
 Example test_sum1:              count 1 (sum [1;2;3] [1;4;1]) = 3.
- (* FILL IN HERE *) Admitted.
+Proof. simpl. reflexivity. Qed.
 
 Definition add (v:nat) (s:bag) : bag := 
-  (* FILL IN HERE *) admit.
+  match s with
+    | nil => [v]
+    | h::s' => v::h::s'
+  end.
+
+Example test_add0: (add 1 [1;4;1]) = [1;1;4;1].
+Proof. simpl. reflexivity. Qed.
 
 Example test_add1:                count 1 (add 1 [1;4;1]) = 3.
- (* FILL IN HERE *) Admitted.
+Proof. simpl. reflexivity. Qed.
 Example test_add2:                count 5 (add 1 [1;4;1]) = 0.
- (* FILL IN HERE *) Admitted.
+Proof. simpl. reflexivity. Qed.
 
+
+
+ 
 Definition member (v:nat) (s:bag) : bool := 
-  (* FILL IN HERE *) admit.
+  match s with
+    | nil 
+  end.
 
 Example test_member1:             member 1 [1;4;1] = true.
- (* FILL IN HERE *) Admitted.
+Proof. 
+
 Example test_member2:             member 2 [1;4;1] = false.
  (* FILL IN HERE *) Admitted.
 (** [] *)
