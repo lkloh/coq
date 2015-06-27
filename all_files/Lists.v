@@ -110,15 +110,13 @@ Proof.
 Theorem snd_fst_is_swap : forall (p : natprod),
   (snd p, fst p) = swap_pair p.
 Proof.
-  (* FILL IN HERE *) Admitted.
-(** [] *)
+  intros p. destruct p as [n m]. simpl. reflexivity. Qed.
 
 (** **** Exercise: 1 star, optional (fst_swap_is_snd)  *)
 Theorem fst_swap_is_snd : forall (p : natprod),
   fst (swap_pair p) = snd p.
 Proof.
-  (* FILL IN HERE *) Admitted.
-(** [] *)
+  intros p. destruct p as [n m]. simpl. reflexivity. Qed.
 
 (* ###################################################### *)
 (** * Lists of Numbers *)
@@ -250,6 +248,8 @@ Example test_hd2:             hd 0 [] = 0.
 Proof. reflexivity.  Qed.
 Example test_tl:              tl [1;2;3] = [2;3].
 Proof. reflexivity.  Qed.
+Example test_t2:              tl [] = nil.
+Proof. reflexivity.  Qed.
 
 (** **** Exercise: 2 stars (list_funs)  *)
 (** Complete the definitions of [nonzeros], [oddmembers] and
@@ -257,28 +257,49 @@ Proof. reflexivity.  Qed.
     what these functions should do. *)
 
 Fixpoint nonzeros (l:natlist) : natlist :=
-  (* FILL IN HERE *) admit.
+  match l with
+    | nil => nil
+    | 0 :: t => nonzeros t
+    | h :: t => h :: (nonzeros t)
+  end.
 
 Example test_nonzeros:            nonzeros [0;1;0;2;3;0;0] = [1;2;3].
- (* FILL IN HERE *) Admitted.
+Proof. reflexivity. Qed.
 
 Fixpoint oddmembers (l:natlist) : natlist :=
-  (* FILL IN HERE *) admit.
+  match l with
+    | nil => nil
+    | 1 :: t => 1 :: (oddmembers t)
+    | 3 :: t => 3 :: (oddmembers t)
+    | 5 :: t => 5 :: (oddmembers t)
+    | 7 :: t => 7 :: (oddmembers t)
+    | 9 :: t => 9 :: (oddmembers t)
+    | n :: t => (oddmembers t)
+  end.
 
 Example test_oddmembers:            oddmembers [0;1;0;2;3;0;0] = [1;3].
- (* FILL IN HERE *) Admitted.
+Proof. reflexivity. Qed.
 
 Fixpoint countoddmembers (l:natlist) : nat :=
-  (* FILL IN HERE *) admit.
+  match l with
+    | nil => 0
+    | 1 :: t => S (countoddmembers t)
+    | 3 :: t => S (countoddmembers t)
+    | 5 :: t => S (countoddmembers t)
+    | 7 :: t => S (countoddmembers t)
+    | 9 :: t => S (countoddmembers t)
+    | n :: t => countoddmembers t
+  end.
 
 Example test_countoddmembers1:    countoddmembers [1;0;3;1;4;5] = 4.
- (* FILL IN HERE *) Admitted.
-Example test_countoddmembers2:    countoddmembers [0;2;4] = 0.
- (* FILL IN HERE *) Admitted.
-Example test_countoddmembers3:    countoddmembers nil = 0.
- (* FILL IN HERE *) Admitted.
-(** [] *)
+Proof. reflexivity. Qed.
 
+Example test_countoddmembers2:    countoddmembers [0;2;4] = 0.
+Proof. reflexivity. Qed.
+
+Example test_countoddmembers3:    countoddmembers nil = 0.
+Proof. reflexivity. Qed.
+  
 (** **** Exercise: 3 stars, advanced (alternate)  *)
 (** Complete the definition of [alternate], which "zips up" two lists
     into one, alternating between elements taken from the first list
@@ -294,15 +315,22 @@ Example test_countoddmembers3:    countoddmembers nil = 0.
 
 
 Fixpoint alternate (l1 l2 : natlist) : natlist :=
-  (* FILL IN HERE *) admit.
+  match l1, l2 with
+    | nil, _ => l2
+    | _, nil => l1
+    | h1 :: t1, h2 :: t2 => h1 :: h2 :: (alternate t1 t2)
+  end.
 
 
 Example test_alternate1:        alternate [1;2;3] [4;5;6] = [1;4;2;5;3;6].
- (* FILL IN HERE *) Admitted.
+Proof. simpl. reflexivity. Qed.
+  
 Example test_alternate2:        alternate [1] [4;5;6] = [1;4;5;6].
- (* FILL IN HERE *) Admitted.
+Proof. simpl. reflexivity. Qed.
+  
 Example test_alternate3:        alternate [1;2;3] [4] = [1;4;2;3].
- (* FILL IN HERE *) Admitted.
+Proof. simpl. reflexivity. Qed.
+  
 Example test_alternate4:        alternate [] [20;30] = [20;30].
  (* FILL IN HERE *) Admitted. 
 (** [] *)
