@@ -771,9 +771,69 @@ Proof.
     wanting to change your original definitions to make the property
     easier to prove, feel free to do so.) *)
 
-(* FILL IN HERE *)
-(** [] *)
+Inductive bin : Type :=
+  | O : bin
+  | T : bin -> bin
+  | R : bin -> bin.
 
+Fixpoint incr (b : bin) : bin :=
+  match b with
+    | O => R O
+    | T b' => R b'
+    | R b' => T (incr b')
+  end.
+
+Fixpoint bin_to_nat (b : bin) : nat :=
+  match b with
+    | O => 0
+    | T b' => 2 * (bin_to_nat b')
+    | R b' => 2 * (bin_to_nat b') + 1
+  end.
+
+Theorem bin_to_nat_pres_incr : forall b : bin,
+  bin_to_nat ( incr b ) = bin_to_nat b + 1.
+Proof.
+  intros b.
+  induction b as [| t | r].
+  Case "b = O".
+  simpl.
+  reflexivity.
+  Case "b = T t".
+  simpl.
+  reflexivity.
+  Case "b = R r".
+  simpl.
+  rewrite -> IHr.
+  assert (H1: bin_to_nat r + 1 + 0 = bin_to_nat r + 1).
+    rewrite -> plus_r_0.
+    reflexivity.
+  rewrite -> H1.
+  assert (H2: bin_to_nat r + 0 = bin_to_nat r).
+    rewrite -> plus_r_0.
+    reflexivity.
+  rewrite -> H2.
+  rewrite <- plus_assoc.
+  replace (1 + (bin_to_nat r + 1)) with  (bin_to_nat r + 1 + 1).
+  rewrite -> plus_assoc.
+  rewrite -> plus_assoc.
+  reflexivity.
+  rewrite -> plus_assoc.
+  assert (H3 : 1 + bin_to_nat r = bin_to_nat r + 1).
+    rewrite -> plus_comm.
+    reflexivity.
+  rewrite -> H3.
+  reflexivity.
+Qed.
+  
+   
+  
+
+  
+  
+  
+  
+  
+  
 
 (** **** Exercise: 5 stars, advanced (binary_inverse)  *)
 (** This exercise is a continuation of the previous exercise about
