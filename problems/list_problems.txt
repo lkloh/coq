@@ -1,0 +1,3 @@
+Theorem distr_rev
+
+rev_involutive.
