@@ -872,9 +872,7 @@ Proof.
 Theorem distr_rev : forall l1 l2 : natlist,
   rev (l1 ++ l2) = (rev l2) ++ (rev l1).
 Proof.
-  intros l1 l2.
-  induction l1 as [| n1 l1'].
-  
+  admit.
 
 (** An exercise about your implementation of [nonzeros]: *)
 
@@ -905,20 +903,55 @@ Proof.
     yields [true] for every list [l]. *)
 
 Fixpoint beq_natlist (l1 l2 : natlist) : bool :=
-  (* FILL IN HERE *) admit.
+  match l1 with
+    | nil => match l2 with
+               | nil => true
+               | n2::l2' => false
+             end
+    | n1::l1' => match l2 with
+                   | nil => false
+                   | n2::l2' => (andb (beq_nat n1 n2) (beq_natlist l1' l2'))
+                 end
+  end.
+
+                              
 
 Example test_beq_natlist1 :   (beq_natlist nil nil = true).
- (* FILL IN HERE *) Admitted.
+Proof. reflexivity. Qed.
+
 Example test_beq_natlist2 :   beq_natlist [1;2;3] [1;2;3] = true.
- (* FILL IN HERE *) Admitted.
+Proof. simpl. reflexivity. Qed.
+  
 Example test_beq_natlist3 :   beq_natlist [1;2;3] [1;2;4] = false.
- (* FILL IN HERE *) Admitted.
+Proof. simpl. reflexivity. Qed.
+
+Theorem beq_nat_same : forall n:nat,
+  true = beq_nat n n.
+Proof.
+  intros n.
+  induction n as [| n'].
+  simpl.
+  reflexivity.
+  simpl.
+  rewrite <- IHn'.
+  reflexivity.
+  Qed.
+  
 
 Theorem beq_natlist_refl : forall l:natlist,
   true = beq_natlist l l.
 Proof.
-  (* FILL IN HERE *) Admitted.
-(** [] *)
+  intros l.
+  induction l as [| n l'].
+  simpl.
+  reflexivity.
+  simpl.
+  rewrite <- IHl'.
+  simpl.
+  rewrite <- beq_nat_same.
+  simpl.
+  reflexivity.
+  Qed.
 
 (* ###################################################### *)
 (** ** List Exercises, Part 2 *)
@@ -939,7 +972,13 @@ Proof.
 Theorem count_member_nonzero : forall (s : bag),
   ble_nat 1 (count 1 (1 :: s)) = true.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros s.
+  induction s as [| n s'].
+  simpl.
+  reflexivity.
+  simpl.
+  reflexivity.
+  Qed.
 
 (** The following lemma about [ble_nat] might help you in the next proof. *)
 
