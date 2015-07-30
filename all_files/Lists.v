@@ -890,12 +890,7 @@ Proof.
 Lemma nonzeros_app : forall l1 l2 : natlist,
   nonzeros (l1 ++ l2) = (nonzeros l1) ++ (nonzeros l2).
 Proof.
-  intros l1 l2.
-  induction l1 as [| n1 l1'].
-  simpl.
-  reflexivity.
-  induction l2 as [| n2 l2'].
-  simpl.
+  admit.
 
 (** **** Exercise: 2 stars (beq_natlist)  *)
 (** Fill in the definition of [beq_natlist], which compares
@@ -994,8 +989,19 @@ Proof.
 Theorem remove_decreases_count: forall (s : bag),
   ble_nat (count 0 (remove_one 0 s)) (count 0 s) = true.
 Proof.
-  (* FILL IN HERE *) Admitted.
-(** [] *)
+  intros s.
+  induction s as [| n s'].
+  simpl.
+  reflexivity.
+  induction n as [| n'].
+  simpl.
+  rewrite -> ble_n_Sn.
+  reflexivity.
+  simpl.
+  rewrite -> IHs'.
+  reflexivity.
+  Qed.
+  
 
 (** **** Exercise: 3 stars, optional (bag_count_sum)  *)  
 (** Write down an interesting theorem [bag_count_sum] about bags 
@@ -1096,26 +1102,29 @@ Definition option_elim (d : nat) (o : natoption) : nat :=
    have to pass a default element for the [nil] case.  *)
 
 Definition hd_opt (l : natlist) : natoption :=
-  (* FILL IN HERE *) admit.
+  match l with
+    | nil => None
+    | h::t => Some h
+  end.
+
 
 Example test_hd_opt1 : hd_opt [] = None.
- (* FILL IN HERE *) Admitted.
+Proof. simpl. reflexivity. Qed.
 
 Example test_hd_opt2 : hd_opt [1] = Some 1.
- (* FILL IN HERE *) Admitted.
+Proof. simpl. reflexivity. Qed.
 
 Example test_hd_opt3 : hd_opt [5;6] = Some 5.
- (* FILL IN HERE *) Admitted.
-(** [] *)
+Proof. simpl. reflexivity. Qed.
 
 (** **** Exercise: 1 star, optional (option_elim_hd)  *)
 (** This exercise relates your new [hd_opt] to the old [hd]. *)
 
+
 Theorem option_elim_hd : forall (l:natlist) (default:nat),
   hd default l = option_elim default (hd_opt l).
 Proof.
-  (* FILL IN HERE *) Admitted.
-(** [] *)
+  admit.
 
 (* ###################################################### *)
 (** * Dictionaries *)
