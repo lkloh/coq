@@ -820,20 +820,32 @@ Proof.
   reflexivity.
   Qed.
 
-
+Theorem rev_snoc : forall (v:nat) (l:natlist),
+  rev (snoc l v) = v::(rev l).
+Proof.
+  intros v l.
+  induction l as [| n l'].
+  simpl.
+  reflexivity.
+  simpl.
+  rewrite -> IHl'.
+  simpl.
+  reflexivity.
+  Qed.
 
 Theorem rev_involutive : forall l : natlist,
   rev (rev l) = l.
 Proof.
-  admit.
+  intros l.
+  induction l as [| n l'].
+  simpl.
+  reflexivity.
+  simpl.
+  rewrite -> rev_snoc.
+  rewrite -> IHl'.
+  reflexivity.
+  Qed.
   
-  
-  
-  
-  
-
-  
-
 (** There is a short solution to the next exercise.  If you find
     yourself getting tangled up, step back and try to look for a
     simpler way. *)
@@ -873,6 +885,7 @@ Theorem distr_rev : forall l1 l2 : natlist,
   rev (l1 ++ l2) = (rev l2) ++ (rev l1).
 Proof.
   admit.
+  
 
 (** An exercise about your implementation of [nonzeros]: *)
 

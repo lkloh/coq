@@ -429,8 +429,14 @@ Theorem snoc_with_append : forall X : Type,
                          forall v : X,
   snoc (l1 ++ l2) v = l1 ++ (snoc l2 v).
 Proof.
-  (* FILL IN HERE *) Admitted.
-(** [] *)
+  intros X l1 l2 v.
+  induction l1 as [| n1 l1'].
+  simpl.
+  reflexivity.
+  simpl.
+  rewrite -> IHl1'.
+  reflexivity.
+  Qed.
 
 (* ###################################################### *)
 (** ** Polymorphic Pairs *)
@@ -510,13 +516,18 @@ Fixpoint combine {X Y : Type} (lx : list X) (ly : list Y)
 Fixpoint split
            {X Y : Type} (l : list (X*Y))
            : (list X) * (list Y) :=
-(* FILL IN HERE *) admit.
+           match l with
+             | nil => (nil, nil)
+             | p::l' => ( (fst p)::(fst (split l')), (snd p)::(snd (split l')) )
+           end. 
+             
 
 Example test_split:
   split [(1,false);(2,false)] = ([1;2],[false;false]).
 Proof.
-(* FILL IN HERE *) Admitted.
-(** [] *)
+simpl.
+reflexivity.
+Qed.
 
 (* ###################################################### *)
 (** ** Polymorphic Options *)
@@ -556,7 +567,10 @@ Proof. reflexivity.  Qed.
     passes the unit tests below. *)
 
 Definition hd_opt {X : Type} (l : list X)  : option X :=
-  (* FILL IN HERE *) admit.
+  match l with
+    | [] => None
+    | a :: l' => Some a
+  end.
 
 (** Once again, to force the implicit arguments to be explicit,
     we can use [@] before the name of the function. *)
@@ -564,10 +578,9 @@ Definition hd_opt {X : Type} (l : list X)  : option X :=
 Check @hd_opt.
 
 Example test_hd_opt1 :  hd_opt [1;2] = Some 1.
- (* FILL IN HERE *) Admitted.
+Proof. simpl. reflexivity. Qed. 
 Example test_hd_opt2 :   hd_opt  [[1];[2]]  = Some [1].
- (* FILL IN HERE *) Admitted.
-(** [] *)
+Proof. simpl. reflexivity. Qed. 
 
 (* ###################################################### *)
 (** * Functions as Data *)
@@ -657,7 +670,7 @@ Definition prod_curry {X Y Z : Type}
 
 Definition prod_uncurry {X Y Z : Type}
   (f : X -> Y -> Z) (p : X * Y) : Z :=
-  (* FILL IN HERE *) admit.
+  (f (fst p)) (snd p).
 
 (** (Thought exercise: before running these commands, can you
     calculate the types of [prod_curry] and [prod_uncurry]?) *)
@@ -668,14 +681,15 @@ Check @prod_uncurry.
 Theorem uncurry_curry : forall (X Y Z : Type) (f : X -> Y -> Z) x y,
   prod_curry (prod_uncurry f) x y = f x y.
 Proof.
-  (* FILL IN HERE *) Admitted.
-
-Theorem curry_uncurry : forall (X Y Z : Type)
-                               (f : (X * Y) -> Z) (p : X * Y),
+  intros X Y Z f x y.
+  reflexivity.
+  Qed.
+ 
+  
+Theorem curry_uncurry : forall (X Y Z : Type) (f : (X * Y) -> Z) (p : X * Y),
   prod_uncurry (prod_curry f) p = f p.
 Proof.
-  (* FILL IN HERE *) Admitted.
-(** [] *)
+  admit.
 
 (* ###################################################### *)
 (** ** Filter *)
@@ -753,7 +767,7 @@ Example test_filter2':
     filter (fun l => beq_nat (length l) 1)
            [ [1; 2]; [3]; [4]; [5;6;7]; []; [8] ]
   = [ [3]; [4]; [8] ].
-Proof. reflexivity.  Qed.
+Proof. simpl. reflexivity.  Qed.
 
 (** **** Exercise: 2 stars (filter_even_gt7)  *)
 
@@ -762,17 +776,22 @@ Proof. reflexivity.  Qed.
     and returns a list of just those that are even and greater than
     7. *)
 
+ Example test_filtering:
+  filter (fun n => ble_nat 7 n) [5;6;7;8] = [7;8].
+Proof. simpl. reflexivity. Qed.
+
+Check [4;5].
+
 Definition filter_even_gt7 (l : list nat) : list nat :=
-  (* FILL IN HERE *) admit.
+   filter ( fun n => (andb (evenb n) (ble_nat 7 n)) ) l.
 
 Example test_filter_even_gt7_1 :
   filter_even_gt7 [1;2;6;9;10;3;12;8] = [10;12;8].
- (* FILL IN HERE *) Admitted.
+Proof. simpl. reflexivity. Qed.
 
 Example test_filter_even_gt7_2 :
   filter_even_gt7 [5;2;6;19;129] = [].
- (* FILL IN HERE *) Admitted.
-(** [] *)
+Proof. simpl. reflexivity. Qed.
 
 (** **** Exercise: 3 stars (partition)  *)
 (** Use [filter] to write a Coq function [partition]:
