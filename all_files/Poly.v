@@ -684,11 +684,18 @@ Proof.
   intros X Y Z f x y.
   reflexivity.
   Qed.
- 
+
+Theorem stupid_lemma: forall (X Y : Type) (p : X * Y),
+  (fst p, snd p) = p.
+Proof.
+  admit.
+  
   
 Theorem curry_uncurry : forall (X Y Z : Type) (f : (X * Y) -> Z) (p : X * Y),
   prod_uncurry (prod_curry f) p = f p.
 Proof.
+  unfold prod_curry.
+  unfold prod_uncurry.
   admit.
 
 (* ###################################################### *)
@@ -808,13 +815,12 @@ Proof. simpl. reflexivity. Qed.
 
 Definition partition {X : Type} (test : X -> bool) (l : list X)
                      : list X * list X :=
-(* FILL IN HERE *) admit.
+((filter test l), (filter (fun x => (negb (test x))) l)).
 
 Example test_partition1: partition oddb [1;2;3;4;5] = ([1;3;5], [2;4]).
-(* FILL IN HERE *) Admitted.
+Proof. simpl. reflexivity. Qed. 
 Example test_partition2: partition (fun x => false) [5;9;0] = ([], [5;9;0]).
-(* FILL IN HERE *) Admitted.
-(** [] *)
+Proof. simpl. reflexivity. Qed.
 
 (* ###################################################### *)
 (** ** Map *)
@@ -860,12 +866,20 @@ Proof. reflexivity.  Qed.
 (** Show that [map] and [rev] commute.  You may need to define an
     auxiliary lemma. *)
 
+Theorem snoc_rev : forall (X:Type) (l : list X) (n:X)
+  snoc (rev l) n = rev (n::l).c  
+Proof.
+  
 
 Theorem map_rev : forall (X Y : Type) (f : X -> Y) (l : list X),
   map f (rev l) = rev (map f l).
 Proof.
-  (* FILL IN HERE *) Admitted.
-(** [] *)
+  intros X Y f l.
+  induction l as [| n l'].
+  simpl.
+  reflexivity.
+  simpl.
+  rewrite -> snoc_rev.
 
 (** **** Exercise: 2 stars (flat_map)  *)
 (** The function [map] maps a [list X] to a [list Y] using a function

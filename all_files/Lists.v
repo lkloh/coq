@@ -880,11 +880,37 @@ Proof.
   reflexivity.
   Qed.
 
+Theorem snoc_rec : forall (l:natlist) (n:nat),
+  snoc (rev l) n = rev (n::l).
+Proof.
+  intros l n.
+  induction l as [| m l'].
+  simpl.
+  reflexivity.
+  simpl.
+  rewrite -> snoc_append.
+  reflexivity.
+  Qed.
+
+Theorem l_assoc : forall (l1 l2 : natlist) (n:nat),
+  (l1 ++ l2) ++ [n] = l1 ++ l2 ++ [n].
+Proof.
+  admit.
 
 Theorem distr_rev : forall l1 l2 : natlist,
   rev (l1 ++ l2) = (rev l2) ++ (rev l1).
 Proof.
+  intros l1 l2.
+  induction l1 as [| n1 l1'].
+  simpl.
+  rewrite -> app_nil_end.
+  reflexivity.
+  simpl.
+  rewrite -> snoc_append.
+  rewrite -> IHl1'.
+  rewrite -> snoc_append.
   admit.
+  Qed.
   
 
 (** An exercise about your implementation of [nonzeros]: *)
