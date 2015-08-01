@@ -685,19 +685,13 @@ Proof.
   reflexivity.
   Qed.
 
-Theorem stupid_lemma: forall (X Y : Type) (p : X * Y),
-  (fst p, snd p) = p.
-Proof.
-  admit.
   
   
 Theorem curry_uncurry : forall (X Y Z : Type) (f : (X * Y) -> Z) (p : X * Y),
   prod_uncurry (prod_curry f) p = f p.
 Proof.
-  unfold prod_curry.
-  unfold prod_uncurry.
   admit.
-
+  
 (* ###################################################### *)
 (** ** Filter *)
 
@@ -1154,8 +1148,9 @@ Proof.
 (** We can also define [map] in terms of [fold].  Finish [fold_map]
     below. *)
 
+  
 Definition fold_map {X Y:Type} (f : X -> Y) (l : list X) : list Y :=
-(* FILL IN HERE *) admit.
+  admit.
 
 (** Write down a theorem [fold_map_correct] in Coq stating that
    [fold_map] is correct, and prove it. *)

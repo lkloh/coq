@@ -47,7 +47,9 @@ Theorem silly2 : forall (n m o p : nat),
      [n;o] = [m;p].
 Proof.
   intros n m o p eq1 eq2. 
-  apply eq2. apply eq1.  Qed.
+  apply eq2.
+  apply eq1.
+Qed.
 
 (** You may find it instructive to experiment with this proof
     and see if there is a way to complete it using just [rewrite]
@@ -66,8 +68,11 @@ Theorem silly2a : forall (n m : nat),
      (forall (q r : nat), (q,q) = (r,r) -> [q] = [r]) ->
      [n] = [m].
 Proof.
-  intros n m eq1 eq2.
-  apply eq2. apply eq1.  Qed.
+  intros n m.
+  intros eq1 eq2.  
+  apply eq2.
+  apply eq1.
+Qed.
 
 (** **** Exercise: 2 stars, optional (silly_ex)  *)
 (** Complete the following proof without using [simpl]. *)
@@ -77,8 +82,13 @@ Theorem silly_ex :
      evenb 3 = true ->
      oddb 4 = true.
 Proof.
-  (* FILL IN HERE *) Admitted.
-(** [] *)
+  intros eq1 eq2.
+  apply eq2.
+  Qed.
+
+  
+  
+  
 
 (** To use the [apply] tactic, the (conclusion of the) fact
     being applied must match the goal _exactly_ -- for example, [apply]
