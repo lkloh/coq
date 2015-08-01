@@ -1083,7 +1083,8 @@ Proof.
   intros m n H.
   unfold plus3.
   rewrite -> H.
-  reflexivity.  Qed.
+  reflexivity.
+  Qed.
 
 (** Now we can prove a first property of [override]: If we
     override a function at some argument [k] and then look up [k], we
@@ -1106,8 +1107,14 @@ Theorem override_neq : forall (X:Type) x1 x2 k1 k2 (f : nat->X),
   beq_nat k2 k1 = false ->
   (override f k2 x2) k1 = x1.
 Proof.
-  (* FILL IN HERE *) Admitted.
-(** [] *)
+  intros X x1 x2 k1 k2 f.
+  unfold override.
+  intros H.
+  intros H1.
+  rewrite -> H1.
+  rewrite -> H.
+  reflexivity.
+Qed.
 
 (** As the inverse of [unfold], Coq also provides a tactic
     [fold], which can be used to "unexpand" a definition.  It is used
@@ -1130,8 +1137,18 @@ Proof. reflexivity. Qed.
 
 Theorem fold_length_correct : forall X (l : list X),
   fold_length l = length l.
-(* FILL IN HERE *) Admitted.
-(** [] *)
+Proof.
+  intros X l.
+  induction l as [| n l'].
+  unfold fold_length.
+  simpl.
+  reflexivity.
+  simpl.
+  rewrite <- IHl'.
+  unfold fold_length.
+  simpl.
+  reflexivity.
+  Qed.
 
 (** **** Exercise: 3 stars (fold_map)  *)
 (** We can also define [map] in terms of [fold].  Finish [fold_map]
