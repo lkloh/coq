@@ -115,7 +115,8 @@ Proof.
   symmetry.
   simpl. (* Actually, this [simpl] is unnecessary, since 
             [apply] will perform simplification first. *)
-  apply H.  Qed.         
+  apply H.
+Qed.         
 
 (** **** Exercise: 3 stars (apply_exercise1)  *)
 (** Hint: you can use [apply] with previously defined lemmas, not
@@ -126,8 +127,13 @@ Theorem rev_exercise1 : forall (l l' : list nat),
      l = rev l' ->
      l' = rev l.
 Proof.
-  (* FILL IN HERE *) Admitted.
-(** [] *)
+  intros l l'.
+  intros eq1.
+  rewrite -> eq1.
+  rewrite -> rev_involutive.
+  reflexivity.
+  Qed.
+  
 
 (** **** Exercise: 1 star, optional (apply_rewrite)  *)
 (** Briefly explain the difference between the tactics [apply] and
@@ -149,8 +155,12 @@ Example trans_eq_example : forall (a b c d e f : nat),
      [c;d] = [e;f] ->
      [a;b] = [e;f].
 Proof.
-  intros a b c d e f eq1 eq2. 
-  rewrite -> eq1. rewrite -> eq2. reflexivity.  Qed.
+  intros a b c d e f.
+  intros eq1 eq2. 
+  rewrite -> eq1.
+  rewrite -> eq2.
+  reflexivity.
+Qed.
 
 (** Since this is a common pattern, we might
     abstract it out as a lemma recording once and for all
@@ -159,8 +169,11 @@ Proof.
 Theorem trans_eq : forall (X:Type) (n m o : X),
   n = m -> m = o -> n = o.
 Proof.
-  intros X n m o eq1 eq2. rewrite -> eq1. rewrite -> eq2. 
-  reflexivity.  Qed.
+  intros X n m o eq1 eq2.
+  rewrite -> eq1.
+  rewrite -> eq2. 
+  reflexivity.
+Qed.
 
 (** Now, we should be able to use [trans_eq] to
     prove the above example.  However, to do this we need
@@ -180,7 +193,10 @@ Proof.
      instantiation for [m]: we have to supply one explicitly
      by adding [with (m:=[c,d])] to the invocation of
      [apply]. *)
-  apply trans_eq with (m:=[c;d]). apply eq1. apply eq2.   Qed.
+  apply trans_eq with (m:=[c;d]).
+  apply eq1.
+  apply eq2.
+Qed.
 
 (**  Actually, we usually don't have to include the name [m]
     in the [with] clause; Coq is often smart enough to
@@ -193,9 +209,14 @@ Example trans_eq_exercise : forall (n m o p : nat),
      (n + p) = m ->
      (n + p) = (minustwo o). 
 Proof.
-  (* FILL IN HERE *) Admitted.
-(** [] *)
-
+  intros n m o p.
+  intros eq1 eq2.
+  apply trans_eq with m.
+  rewrite -> eq2.
+  reflexivity.
+  rewrite -> eq1.
+  reflexivity.
+  Qed.
 
 (* ###################################################### *)
 (** * The [inversion] tactic *)
