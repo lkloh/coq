@@ -405,27 +405,70 @@ Proof.
 Theorem or_distributes_over_and_1 : forall P Q R : Prop,
   P \/ (Q /\ R) -> (P \/ Q) /\ (P \/ R).
 Proof. 
-  intros P Q R. intros H. destruct H as [HP | [HQ HR]]. 
+  intros P Q R.
+  intros H.
+  destruct H as [HP | [HQ HR]]. 
     Case "left". split.
       SCase "left". left. apply HP.
       SCase "right". left. apply HP.
     Case "right". split.
       SCase "left". right. apply HQ.
-      SCase "right". right. apply HR.  Qed.
+      SCase "right". right. apply HR.
+    Qed.
 
 (** **** Exercise: 2 stars (or_distributes_over_and_2)  *)
 Theorem or_distributes_over_and_2 : forall P Q R : Prop,
   (P \/ Q) /\ (P \/ R) -> P \/ (Q /\ R).
 Proof.
-  (* FILL IN HERE *) Admitted.
-(** [] *)
+  intros P Q R.
+  intros H.
+  destruct H as [HL HR].
+  destruct HL as [HL1 | HL2].
+  destruct HR as [HR1 | HR2].
+  left. apply HL1.
+  left. apply HL1.
+  destruct HR as [A | B].
+  left. apply A.
+  right.
+  apply conj.
+  apply HL2.
+  apply B.
+  Qed.
+
+  
 
 (** **** Exercise: 1 star, optional (or_distributes_over_and)  *)
 Theorem or_distributes_over_and : forall P Q R : Prop,
   P \/ (Q /\ R) <-> (P \/ Q) /\ (P \/ R).
 Proof.
-  (* FILL IN HERE *) Admitted.
-(** [] *)
+  intros P Q R.
+  split.
+  intros H1.
+  apply conj.
+  destruct H1 as [H1L | H1R].
+  left.
+  apply H1L.
+  destruct H1R as [A B].
+  right.
+  apply A.
+  destruct H1 as [A | [B C]].
+  left.
+  apply A.
+  right.
+  apply C.
+  intros H2.
+  destruct H2 as [[LP | LQ] [RP | RQ]].
+  left.
+  apply LP.
+  left.
+  apply LP.
+  left.
+  apply RP.
+  right.
+  apply conj.
+  apply LQ.
+  apply RQ.
+Qed.
 
 (* ################################################### *)
 (** ** Relating [/\] and [\/] with [andb] and [orb] *)
@@ -442,40 +485,86 @@ Proof.
 Theorem andb_prop : forall b c,
   andb b c = true -> b = true /\ c = true.
 Proof.
-  (* WORKED IN CLASS *)
   intros b c H.
   destruct b.
-    Case "b = true". destruct c.
-      SCase "c = true". apply conj. reflexivity. reflexivity.
-      SCase "c = false". inversion H.
-    Case "b = false". inversion H.  Qed.
+  Case "b = true".
+   destruct c.
+   SCase "c = true". apply conj. reflexivity. reflexivity.
+   SCase "c = false". inversion H.
+  Case "b = false".
+  inversion H.
+Qed.
 
 Theorem andb_true_intro : forall b c,
   b = true /\ c = true -> andb b c = true.
 Proof.
-  (* WORKED IN CLASS *)
   intros b c H.
   destruct H.
-  rewrite H. rewrite H0. reflexivity. Qed.
+  rewrite H.
+  rewrite H0.
+  reflexivity.
+Qed.
 
 (** **** Exercise: 2 stars, optional (andb_false)  *)
 Theorem andb_false : forall b c,
   andb b c = false -> b = false \/ c = false.
 Proof. 
-  (* FILL IN HERE *) Admitted.
+  intros b c H.
+  destruct b.
+  Case "b = true".
+    destruct c.
+    inversion H.
+    right.
+    reflexivity.
+  Case "b = false".
+    destruct c.
+    left.
+    reflexivity.
+    left.
+    reflexivity.
+Qed.
 
+    
+ 
 (** **** Exercise: 2 stars, optional (orb_false)  *)
 Theorem orb_prop : forall b c,
   orb b c = true -> b = true \/ c = true.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros b c H.
+  destruct b.
+  Case "b = true".
+     left.  
+     reflexivity.
+  Case "b = false".
+     destruct c.
+     right.
+     reflexivity.
+     inversion H.
+Qed.
+
 
 (** **** Exercise: 2 stars, optional (orb_false_elim)  *)
 Theorem orb_false_elim : forall b c,
   orb b c = false -> b = false /\ c = false.
 Proof. 
-  (* FILL IN HERE *) Admitted.
-(** [] *)
+  intros b c H.
+  destruct b.
+  Case "b = true".
+    destruct c.
+    apply conj.
+    inversion H.
+    inversion H.
+    inversion H.
+  Case "b = false".
+    destruct c.
+    apply conj.
+    reflexivity.
+    inversion H.
+    apply conj.
+    reflexivity.
+    reflexivity.
+Qed.
+    
 
 
 
