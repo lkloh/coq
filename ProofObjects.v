@@ -198,11 +198,14 @@ Print eight_is_beautiful'''.
 Theorem six_is_beautiful :
   beautiful 6.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  apply b_sum with (n:=3) (m:=3).
+  apply b_3.
+  apply b_3.
+  Qed.
+  
 
 Definition six_is_beautiful' : beautiful 6 :=
-  (* FILL IN HERE *) admit.
-(** [] *)
+  b_sum 3 3 b_3 b_3.
 
 (** **** Exercise: 1 star (nine_is_beautiful)  *)
 (** Give a tactic proof and a proof object showing that [9] is [beautiful]. *)
@@ -210,11 +213,13 @@ Definition six_is_beautiful' : beautiful 6 :=
 Theorem nine_is_beautiful :
   beautiful 9.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  apply b_sum with (n:=3) (m:=6).
+  apply b_3.
+  apply six_is_beautiful.
+  Qed.
 
 Definition nine_is_beautiful' : beautiful 9 :=
-  (* FILL IN HERE *) admit.
-(** [] *)
+  b_sum 3 6 b_3 six_is_beautiful.
 
 (* ##################################################### *)
 (** * Quantification, Implications and Functions *)
@@ -293,7 +298,7 @@ Definition beautiful_plus3' : Prop :=
 (** Or, equivalently, we can write it in more familiar notation: *)
 
 Definition beatiful_plus3'' : Prop :=
-  forall n, beautiful n -> beautiful (n+3). 
+  forall n, beautiful n -> beautiful (n+3).  
 
 (** In general, "[P -> Q]" is just syntactic sugar for
     "[forall (_:P), Q]". *)
@@ -304,8 +309,8 @@ Definition beatiful_plus3'' : Prop :=
 (** Give a proof object corresponding to the theorem [b_times2] from Prop.v *)
 
 Definition b_times2': forall n, beautiful n -> beautiful (2*n) :=
-  (* FILL IN HERE *) admit.
-(** [] *)
+  fun (n : nat) => fun (H : beautiful n) =>
+    .
 
 
 

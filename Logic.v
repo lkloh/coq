@@ -97,7 +97,10 @@ output.
 *)     
 
 Lemma silly_implication : (1 + 1) = 2  ->  0 * 3 = 0.
-Proof. intros H. reflexivity. Qed.
+Proof.
+  intros H.
+  reflexivity.
+Qed.
 
 (** We can see that the proof term for the above lemma is indeed a
 function: *)
@@ -184,8 +187,11 @@ Theorem and_example :
   (0 = 0) /\ (4 = mult 2 2).
 Proof.
   apply conj.
-  Case "left". reflexivity.
-  Case "right". reflexivity.  Qed.
+  Case "left".
+    reflexivity.
+  Case "right".
+  reflexivity.
+Qed.
 
 (** Just for convenience, we can use the tactic [split] as a shorthand for
     [apply conj]. *)
@@ -195,7 +201,8 @@ Theorem and_example' :
 Proof.
   split.
     Case "left". reflexivity.
-    Case "right". reflexivity.  Qed.
+    Case "right". reflexivity.
+  Qed.
 
 (** ** "Eliminating" conjunctions *)
 (** Conversely, the [destruct] tactic can be used to take a
@@ -208,24 +215,27 @@ Theorem proj1 : forall P Q : Prop,
 Proof.
   intros P Q H.
   destruct H as [HP HQ]. 
-  apply HP.  Qed.
+  apply HP.
+Qed.
 
 (** **** Exercise: 1 star, optional (proj2)  *)
 Theorem proj2 : forall P Q : Prop, 
   P /\ Q -> Q.
 Proof.
-  (* FILL IN HERE *) Admitted.
-(** [] *)
+  intros P Q H.
+  destruct H as [HP HQ].
+  apply HQ.
+Qed.
 
 Theorem and_commut : forall P Q : Prop, 
   P /\ Q -> Q /\ P.
 Proof.
-  (* WORKED IN CLASS *)
   intros P Q H.
   destruct H as [HP HQ]. 
   split.  
     Case "left". apply HQ. 
-    Case "right". apply HP.  Qed.
+    Case "right". apply HP.
+  Qed.
   
 
 (** **** Exercise: 2 stars (and_assoc)  *)
@@ -238,8 +248,12 @@ Theorem and_assoc : forall P Q R : Prop,
 Proof.
   intros P Q R H.
   destruct H as [HP [HQ HR]].
-(* FILL IN HERE *) Admitted.
-(** [] *)
+  split.
+  split.
+  apply HP.
+  apply HQ.
+  apply HR.
+Qed.
 
 
 
@@ -259,17 +273,19 @@ Theorem iff_implies : forall P Q : Prop,
   (P <-> Q) -> P -> Q.
 Proof.  
   intros P Q H. 
-  destruct H as [HAB HBA]. apply HAB.  Qed.
+  destruct H as [HAB HBA].
+  apply HAB.
+Qed.
 
 Theorem iff_sym : forall P Q : Prop, 
   (P <-> Q) -> (Q <-> P).
 Proof.
-  (* WORKED IN CLASS *)
   intros P Q H. 
   destruct H as [HAB HBA].
   split.
     Case "->". apply HBA.
-    Case "<-". apply HAB.  Qed.
+    Case "<-". apply HAB.
+  Qed.
 
 (** **** Exercise: 1 star, optional (iff_properties)  *)
 (** Using the above proof that [<->] is symmetric ([iff_sym]) as
@@ -278,12 +294,30 @@ Proof.
 Theorem iff_refl : forall P : Prop, 
   P <-> P.
 Proof. 
-  (* FILL IN HERE *) Admitted.
+  intros P.
+  split.
+  intros H1.
+  apply H1.
+  intros H2.
+  apply H2.
+Qed.
 
 Theorem iff_trans : forall P Q R : Prop, 
   (P <-> Q) -> (Q <-> R) -> (P <-> R).
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros P Q R H1 H2.
+  inversion H1.
+  inversion H2.
+  split.
+  intros H7.
+  apply H3.
+  apply H.
+  apply H7.
+  intros H8.
+  apply H0.
+  apply H4.
+  apply H8.
+Qed.
 
 (** Hint: If you have an iff hypothesis in the context, you can use
     [inversion] to break it into two separate implications.  (Think
@@ -344,8 +378,13 @@ Theorem or_commut : forall P Q : Prop,
 Proof.
   intros P Q H.
   destruct H as [HP | HQ].
-    Case "left". apply or_intror. apply HP.
-    Case "right". apply or_introl. apply HQ.  Qed.
+  Case "left".
+    apply or_intror.
+    apply HP.
+  Case "right".
+    apply or_introl.
+    apply HQ.
+Qed.
 
 (** From here on, we'll use the shorthand tactics [left] and [right]
     in place of [apply or_introl] and [apply or_intror]. *)
@@ -356,7 +395,8 @@ Proof.
   intros P Q H.
   destruct H as [HP | HQ].
     Case "left". right. apply HP.
-    Case "right". left. apply HQ.  Qed.
+    Case "right". left. apply HQ.
+  Qed.
 
 
 
