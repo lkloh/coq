@@ -588,7 +588,8 @@ Theorem False_implies_nonsense :
   False -> 2 + 2 = 5.
 Proof. 
   intros contra.
-  inversion contra.  Qed. 
+  inversion contra.
+Qed. 
 
 (** How does this work? The [inversion] tactic breaks [contra] into
     each of its possible cases, and yields a subgoal for each case.
@@ -603,7 +604,8 @@ Theorem nonsense_implies_False :
   2 + 2 = 5 -> False.
 Proof.
   intros contra.
-  inversion contra.  Qed.
+  inversion contra.
+Qed.
 
 (** Actually, since the proof of [False_implies_nonsense]
     doesn't actually have anything to do with the specific nonsensical
@@ -613,9 +615,9 @@ Proof.
 Theorem ex_falso_quodlibet : forall (P:Prop),
   False -> P.
 Proof.
-  (* WORKED IN CLASS *)
   intros P contra.
-  inversion contra.  Qed.
+  inversion contra.
+Qed.
 
 (** The Latin _ex falso quodlibet_ means, literally, "from
     falsehood follows whatever you please."  This theorem is also
@@ -669,21 +671,39 @@ Check not.
 Theorem not_False : 
   ~ False.
 Proof.
-  unfold not. intros H. inversion H.  Qed.
+  unfold not.
+  intros H.
+  inversion H.
+Qed.
+
+Theorem not_False':
+  ~ False.
+Proof.
+  unfold not.
+  intros H.
+  apply H.
+Qed.
 
 (** *** *)
 Theorem contradiction_implies_anything : forall P Q : Prop,
   (P /\ ~P) -> Q.
 Proof. 
-  (* WORKED IN CLASS *)
-  intros P Q H. destruct H as [HP HNA]. unfold not in HNA. 
-  apply HNA in HP. inversion HP.  Qed.
+  intros P Q H.
+  destruct H as [HP HNA].
+  unfold not in HNA. 
+  apply HNA in HP.
+  inversion HP.
+Qed.
 
 Theorem double_neg : forall P : Prop,
   P -> ~~P.
 Proof.
-  (* WORKED IN CLASS *)
-  intros P H. unfold not. intros G. apply G. apply H.  Qed.
+  intros P H.
+  unfold not.
+  intros G.
+  apply G.
+  apply H.
+Qed.
 
 (** **** Exercise: 2 stars, advanced (double_neg_inf)  *)
 (** Write an informal proof of [double_neg]:
@@ -699,15 +719,26 @@ Proof.
 Theorem contrapositive : forall P Q : Prop,
   (P -> Q) -> (~Q -> ~P).
 Proof.
-  (* FILL IN HERE *) Admitted.
-(** [] *)
+  intros P Q H1 H2.
+  unfold not in H2.
+  unfold not.
+  intros H3.
+  apply H2.
+  apply H1.
+  apply H3.
+Qed.
 
 (** **** Exercise: 1 star (not_both_true_and_false)  *)
 Theorem not_both_true_and_false : forall P : Prop,
   ~ (P /\ ~P).
 Proof. 
-  (* FILL IN HERE *) Admitted.
-(** [] *)
+  intros P.
+  unfold not.
+  intros H.
+  destruct H.
+  apply H0 in H.
+  apply H.
+Qed.
 
 (** **** Exercise: 1 star, advanced (informal_not_PNP)  *)
 (** Write an informal proof (in English) of the proposition [forall P
@@ -724,8 +755,8 @@ Proof.
 Theorem classic_double_neg : forall P : Prop,
   ~~P -> P.
 Proof.
-  (* WORKED IN CLASS *)
-  intros P H. unfold not in H. 
+  intros P H.
+  unfold not in H. 
   (* But now what? There is no way to "invent" evidence for [~P] 
      from evidence for [P]. *) 
   Abort.
@@ -751,8 +782,27 @@ Definition de_morgan_not_and_not := forall P Q:Prop,
 Definition implies_to_or := forall P Q:Prop, 
   (P->Q) -> (~P\/Q). 
 
-(* FILL IN HERE *)
-(** [] *)
+Theorem equiv1: forall (P:Prop),
+  (~~P -> P) <-> (P \/ ~P).
+Proof.
+  intros P.
+  unfold not.
+  split.
+  Case "one side".
+  intros H1.
+  right.
+  intros e1.
+  admit.
+  Case "other side".
+  intros H2.
+  intros H3.
+  destruct H2 as [H4 | H5].
+  apply H4.
+  apply H3 in H5.
+  inversion H5.
+Qed.
+  
+  
 
 (** **** Exercise: 3 stars (excluded_middle_irrefutable)  *)
 (** This theorem implies that it is always safe to add a decidability
@@ -762,7 +812,17 @@ we would have both [~ (P \/ ~P)] and [~ ~ (P \/ ~P)], a contradiction. *)
 
 Theorem excluded_middle_irrefutable:  forall (P:Prop), ~ ~ (P \/ ~ P).  
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros P.
+  unfold not.
+  intros H.
+  apply H.
+  right.
+  intros H1.
+  apply H.
+  left.
+  apply H1.
+Qed.
+  
 
 
 (* ########################################################## *)
@@ -784,12 +844,15 @@ Notation "x <> y" := (~ (x = y)) : type_scope.
 Theorem not_false_then_true : forall b : bool,
   b <> false -> b = true.
 Proof.
-  intros b H. destruct b.
-  Case "b = true". reflexivity.
-  Case "b = false".
-    unfold not in H.  
-    apply ex_falso_quodlibet.
-    apply H. reflexivity.   Qed.
+  intros b H.
+  unfold not in H.
+  destruct b.
+  reflexivity.
+  apply ex_falso_quodlibet.
+  apply H.
+  reflexivity.
+Qed.
+
 
 
 (** *** *)
@@ -807,15 +870,67 @@ Theorem false_beq_nat : forall n m : nat,
      n <> m ->
      beq_nat n m = false.
 Proof. 
-  (* FILL IN HERE *) Admitted.
-(** [] *)
+  intros n.
+  induction n as [| n'].
+  Case "n=0".
+    intros m H.
+    destruct m.
+    unfold not in H.
+    simpl.
+    apply ex_falso_quodlibet.
+    apply H.
+    reflexivity.
+    unfold not in H.
+    simpl.
+    reflexivity.
+  Case "n= Sn'".
+    intros m H.
+    destruct m.
+    simpl.
+    reflexivity.
+    unfold not in H.
+    apply IHn'.
+    unfold not.
+    intros Y.
+    apply H.
+    rewrite Y.
+    reflexivity.
+Qed.
+    
+    
+  
 
 (** **** Exercise: 2 stars, optional (beq_nat_false)  *)
 Theorem beq_nat_false : forall n m,
   beq_nat n m = false -> n <> m.
 Proof.
-  (* FILL IN HERE *) Admitted.
-(** [] *)
+  intros n.
+  induction n as [| n'].
+  Case "n=0".
+    intros m H.
+    unfold not.
+    intros F.
+    destruct m.
+    inversion H.
+    inversion F.
+  Case "n = S n'".
+    intros m H.
+    unfold not.
+    intros F.
+    destruct m.
+    inversion F.
+    unfold not in IHn'.
+    inversion H.
+    apply IHn' in H1.
+    apply H1.
+    inversion F.
+    reflexivity.
+Qed.
+
+    
+    
+ 
+ 
 
 
 (** $Date: 2014-12-31 11:17:56 -0500 (Wed, 31 Dec 2014) $ *)
