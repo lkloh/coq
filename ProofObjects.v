@@ -77,11 +77,13 @@ Check b_sum.
 
 (** Now let's look again at a previous proof involving [beautiful]. *)
 
-Theorem eight_is_beautiful: beautiful 8.
+Theorem eight_is_beautiful:
+  beautiful 8.
 Proof.
     apply b_sum with (n := 3) (m := 5). 
     apply b_3.
-    apply b_5. Qed.
+    apply b_5.
+  Qed.
 
 (** Just as with ordinary data values and functions, we can use the [Print]
 command to see the _proof object_ that results from this proof script. *)
@@ -113,7 +115,8 @@ Check (b_sum 3 5 b_3 b_5).
 (** This gives us an alternative way to write the proof that [8] is
     beautiful: *)
 
-Theorem eight_is_beautiful': beautiful 8.
+Theorem eight_is_beautiful':
+  beautiful 8.
 Proof.
    apply (b_sum 3 5 b_3 b_5).
 Qed.
@@ -124,6 +127,15 @@ Qed.
     _expression_ that directly builds evidence with the required
     type. *)
 
+Theorem thirteen_is_beautiful:
+  beautiful 13.
+Proof.
+  apply b_sum with (n := 5) (m := 8).
+  apply b_5.
+  apply eight_is_beautiful.
+  Qed.
+  
+  
 
 (* ##################################################### *)
 (** * Proof Scripts and Proof Objects *)
