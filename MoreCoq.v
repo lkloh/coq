@@ -1232,10 +1232,8 @@ Proof.
   reflexivity.
   simpl.
   apply IHm'.
-  induction n as [| n'].
   inversion e1.
-  inversion e1.
-  Abort.
+Abort.
   
   
 
@@ -1256,8 +1254,12 @@ Theorem beq_nat_trans : forall n m p,
   beq_nat m p = true ->
   beq_nat n p = true.
 Proof.
-  (* FILL IN HERE *) Admitted.
-(** [] *)
+  intros n m p eq1 eq2.
+  apply trans_eq with (m:=(beq_nat n m)).
+Abort.
+
+  
+  
 
 (** **** Exercise: 3 stars, advanced (split_combine)  *)
 (** We have just proven that for all lists of pairs, [combine] is the
@@ -1272,7 +1274,7 @@ Proof.
     and [l2] for [split] [combine l1 l2 = (l1,l2)] to be true?)  *)
 
 Definition split_combine_statement : Prop :=
-(* FILL IN HERE *) admit.
+admit.
 
 Theorem split_combine : split_combine_statement.
 Proof.
@@ -1287,8 +1289,21 @@ Theorem override_permute : forall (X:Type) x1 x2 k1 k2 k3 (f : nat->X),
   beq_nat k2 k1 = false ->
   (override (override f k2 x2) k1 x1) k3 = (override (override f k1 x1) k2 x2) k3.
 Proof.
-  (* FILL IN HERE *) Admitted.
-(** [] *)
+  intros X x1 x2 k1 k2 k3 f.
+  intros eq1.
+  unfold override.
+  destruct (beq_nat k1 k3) eqn:e1.
+    Case "beq_nat k1 k3 = true".
+      destruct (beq_nat k2 k3) eqn:e2.
+      admit.
+      reflexivity.
+    Case "beq_nat k1 k3 = false".
+      destruct (beq_nat k2 k3) eqn:e3.  
+      reflexivity.
+      reflexivity.
+Qed.
+  
+  
 
 (** **** Exercise: 3 stars, advanced (filter_exercise)  *)
 (** This one is a bit challenging.  Pay attention to the form of your IH. *)
@@ -1298,8 +1313,22 @@ Theorem filter_exercise : forall (X : Type) (test : X -> bool)
      filter test l = x :: lf ->
      test x = true.
 Proof.
-  (* FILL IN HERE *) Admitted.
-(** [] *)
+  intros X test x l.
+  induction l as [| v l'].
+  Case "l = v".
+  simpl.
+  intros lf eq1. 
+  destruct (test x) eqn:e1.
+  reflexivity.
+  inversion eq1.
+  Case "l = list".
+  intros lf e3.
+  destruct (test x) eqn:e4.
+  reflexivity.
+  rewrite <- e4.
+Abort.
+  
+  
 
 (** **** Exercise: 4 stars, advanced (forall_exists_challenge)  *)
 (** Define two recursive [Fixpoints], [forallb] and [existsb].  The
