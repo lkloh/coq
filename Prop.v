@@ -172,7 +172,6 @@ Inductive beautiful : nat -> Prop :=
 
 Theorem three_is_beautiful: beautiful 3.
 Proof.
-   (* This simply follows from the rule [b_3]. *)
    apply b_3.
 Qed.
 
@@ -195,7 +194,7 @@ hypotheses about [beautiful]. *)
 Theorem beautiful_plus_eight: forall n, beautiful n -> beautiful (8+n).
 Proof.
   intros n B.
-  apply b_sum with (n:=8) (m:=n).
+  apply b_sum.
   apply eight_is_beautiful.
   apply B.
 Qed.
@@ -203,14 +202,31 @@ Qed.
 (** **** Exercise: 2 stars (b_times2)  *)
 Theorem b_times2: forall n, beautiful n -> beautiful (2*n).
 Proof.
-    (* FILL IN HERE *) Admitted.
-(** [] *)
+  intros n H.
+  simpl.
+  rewrite -> plus_0_r.
+  apply b_sum.
+  apply H.
+  apply H.
+Qed.
 
 (** **** Exercise: 3 stars (b_timesm)  *)
 Theorem b_timesm: forall n m, beautiful n -> beautiful (m*n).
 Proof.
-   (* FILL IN HERE *) Admitted.
-(** [] *)
+ intros n m H.
+ induction m as [| m'].
+ Case "m=0".
+   simpl.
+   apply b_0.
+ Case "m = S m'".
+   simpl.
+   apply b_sum.
+   apply H.
+   apply IHm'.
+Qed.
+    
+    
+   
 
 
 (* ####################################################### *)
@@ -254,17 +270,37 @@ Inductive gorgeous : nat -> Prop :=
 (** Write out the definition of [gorgeous] numbers using inference rule
     notation.
  
-(* FILL IN HERE *)
-[]
-*)
+(* 
+-------------
+gorgeous 0
 
+
+gorgeous n
+----------------
+gorgeous (3 + n)
+
+
+gorgeous n
+----------------
+gorgeous (5 + n)
+*)*)
 
 (** **** Exercise: 1 star (gorgeous_plus13)  *)
 Theorem gorgeous_plus13: forall n, 
   gorgeous n -> gorgeous (13+n).
 Proof.
-   (* FILL IN HERE *) Admitted.
-(** [] *)
+  intros n H.
+  assert (H1 : gorgeous (3 + (5 + (5 + n))) = gorgeous (13 + n)).
+  simpl.
+  reflexivity.
+  rewrite <- H1.
+  apply g_plus3.
+  apply g_plus5.
+  apply g_plus5.
+  apply H.
+Qed.
+
+ 
 
 (** *** *)
 (** It seems intuitively obvious that, although [gorgeous] and
@@ -276,9 +312,11 @@ Proof.
 Theorem gorgeous__beautiful_FAILED : forall n, 
   gorgeous n -> beautiful n.
 Proof.
-   intros. induction n as [| n'].
-   Case "n = 0". apply b_0.
-   Case "n = S n'". (* We are stuck! *)
+  intros.
+  induction n as [| n'].
+  Case "n = 0".
+    apply b_0.
+  Case "n = S n'". (* We are stuck! *)
 Abort.
 
 (** The problem here is that doing induction on [n] doesn't yield a
@@ -303,10 +341,13 @@ Proof.
    Case "g_0".
        apply b_0.
    Case "g_plus3". 
-       apply b_sum. apply b_3.
+       apply b_sum.
+       apply b_3.
        apply IHgorgeous.
    Case "g_plus5".
-       apply b_sum. apply b_5. apply IHgorgeous. 
+       apply b_sum.
+       apply b_5.
+       apply IHgorgeous. 
 Qed.
 
 
@@ -316,8 +357,23 @@ Qed.
 Theorem gorgeous_sum : forall n m,
   gorgeous n -> gorgeous m -> gorgeous (n + m).
 Proof.
- (* FILL IN HERE *) Admitted.
-(** [] *)
+  intros n m H1 H2.
+  induction H2 as [| h2' | h2' ].
+  Case "g_0".
+    rewrite -> plus_0_r.
+    apply H1.
+  Case "g_plus3".
+    rewrite -> plus_swap.
+    apply g_plus3.
+    apply IHgorgeous.
+  Case "g_plus5".
+    rewrite -> plus_swap.
+    apply g_plus5.
+    apply IHgorgeous.
+Qed.
+
+    
+
 
 (** **** Exercise: 3 stars, advanced (beautiful__gorgeous)  *)
 Theorem beautiful__gorgeous : forall n, beautiful n -> gorgeous n.
