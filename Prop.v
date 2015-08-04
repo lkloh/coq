@@ -373,31 +373,45 @@ Proof.
 Qed.
 
     
-
-
 (** **** Exercise: 3 stars, advanced (beautiful__gorgeous)  *)
-Theorem beautiful__gorgeous : forall n, beautiful n -> gorgeous n.
+Theorem beautiful__gorgeous : forall n,
+  beautiful n -> gorgeous n.
 Proof.
- (* FILL IN HERE *) Admitted.
-(** [] *)
-
-
-
+  intros n H.
+  induction H as [| h' | h' | h' ].
+    apply g_0.
+    apply g_plus3. apply g_0.
+    apply g_plus5. apply g_0.
+    apply gorgeous_sum. apply IHbeautiful1. apply IHbeautiful2.
+Qed.
+   
 
 (** **** Exercise: 3 stars, optional (g_times2)  *)
 (** Prove the [g_times2] theorem below without using [gorgeous__beautiful].
     You might find the following helper lemma useful. *)
 
-Lemma helper_g_times2 : forall x y z, x + (z + y) = z + x + y.
+Lemma helper_g_times2 : forall x y z,
+  x + (z + y) = z + x + y.
 Proof.
-   (* FILL IN HERE *) Admitted.
+  intros x y z.
+  rewrite -> plus_swap.
+  rewrite -> plus_assoc.
+  reflexivity.
+Qed.
 
 Theorem g_times2: forall n, gorgeous n -> gorgeous (2*n).
 Proof.
    intros n H. simpl. 
    induction H.
-   (* FILL IN HERE *) Admitted.
-(** [] *)
+   apply g_0.
+   apply gorgeous_sum. apply g_plus3. apply H.
+   apply gorgeous_sum. apply g_plus3. apply H.
+   apply g_0.
+   apply gorgeous_sum. apply g_plus5. apply H.
+   apply gorgeous_sum. apply g_plus5. apply H.
+   apply g_0.
+Qed.
+   
 
 
 
