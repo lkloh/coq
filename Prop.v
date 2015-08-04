@@ -421,20 +421,38 @@ the computational one. *)
 Theorem ev__even : forall n,
   ev n -> even n.
 Proof.
-  intros n E. induction E as [| n' E'].
+  intros n E.
+  induction E as [| n' E'].
   Case "E = ev_0". 
-    unfold even. reflexivity.
+    unfold even.
+    reflexivity.
   Case "E = ev_SS n' E'".  
-    unfold even. apply IHE'.  
+    unfold even.
+    apply IHE'.  
 Qed.
 
 (** **** Exercise: 1 star (ev__even)  *) 
 (** Could this proof also be carried out by induction on [n] instead
-    of [E]?  If not, why not? *)
+    of [E]?  If not, why not? no*)
 
-(* FILL IN HERE *)
-(** [] *)
+Theorem ev__even' : forall n,
+  ev n -> even n.
+Proof.
+  intros n E.
+  induction n as [| n'].
+  Case "n = 0".
+    unfold even.
+    reflexivity.
+  Case "n = S n'".
+    unfold even.
+    induction E as [| v E'].
+    reflexivity.
+    apply IHE'.
+Qed.
 
+    
+  
+  
 (** Intuitively, the induction principle [ev n] evidence [ev n] is
     similar to induction on [n], but restricts our attention to only
     those numbers for which evidence [ev n] could be generated. *)
@@ -460,10 +478,12 @@ Qed.
 
 Theorem ev_sum : forall n m,
    ev n -> ev m -> ev (n+m).
-Proof. 
-  (* FILL IN HERE *) Admitted.
-(** [] *)
-
+Proof.
+  intros n m H1 H2.
+  induction H1 as [| n1 H1'].
+  simpl. apply H2.
+  simpl. apply ev_SS. apply IHH1'.
+Qed.
 
 
 (* ####################################################### *)
@@ -483,7 +503,8 @@ Proof.
   intros n E.
   inversion E as [| n' E'].
   Case "E = ev_0". simpl. apply ev_0. 
-  Case "E = ev_SS n' E'". simpl. apply E'.  Qed.
+  Case "E = ev_SS n' E'". simpl. apply E'.
+Qed.
 
 (** **** Exercise: 1 star, optional (ev_minus2_n)  *)
 (** What happens if we try to use [destruct] on [n] instead of [inversion] on [E]? *)
@@ -500,7 +521,8 @@ Theorem SSev__even : forall n,
 Proof.
   intros n E. 
   inversion E as [| n' E']. 
-  apply E'. Qed.
+  apply E'.
+Qed.
 
 (** ** The Inversion Tactic Revisited *)
 
@@ -540,7 +562,11 @@ Proof.
 Theorem SSSSev__even : forall n,
   ev (S (S (S (S n)))) -> ev n.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros n H.
+  inversion H.
+  inversion H1.
+  apply H3.
+Qed.
 
 (** The [inversion] tactic can also be used to derive goals by showing
     the absurdity of a hypothesis. *)
@@ -548,8 +574,11 @@ Proof.
 Theorem even5_nonsense : 
   ev 5 -> 2 + 2 = 9.
 Proof.
-  (* FILL IN HERE *) Admitted.
-(** [] *)
+  intros H.
+  inversion H.
+  inversion H1.
+  inversion H3.
+Qed.
 
 (** **** Exercise: 3 stars, advanced (ev_ev__ev)  *)
 (** Finding the appropriate thing to do induction on is a
@@ -558,8 +587,12 @@ Proof.
 Theorem ev_ev__ev : forall n m,
   ev (n+m) -> ev n -> ev m.
 Proof.
-  (* FILL IN HERE *) Admitted.
-(** [] *)
+  intros n m H1 H2.
+  induction H2 as [| n2 H2'].
+  simpl in H1. apply H1.
+  apply IHH2'. simpl in H1. inversion H1. apply H0.
+Qed.
+  
 
 (** **** Exercise: 3 stars, optional (ev_plus_plus)  *)
 (** Here's an exercise that just requires applying existing lemmas.  No
@@ -569,9 +602,21 @@ Proof.
 Theorem ev_plus_plus : forall n m p,
   ev (n+m) -> ev (n+p) -> ev (m+p).
 Proof.
-  (* FILL IN HERE *) Admitted.
-(** [] *)
-
+  intros n m p H1 H2.
+  apply ev_ev__ev with (n+n).
+  assert (H : ev (n + n + (m + p)) = ev ((n + m) + (n + p)) ).
+    rewrite -> plus_swap.
+    rewrite -> plus_assoc.
+    admit.
+  rewrite -> H.
+  apply ev_sum.
+  apply H1.
+  apply H2.
+  rewrite <- double_plus.
+  apply double_even.
+Qed.
+  
+ 
 
 (* ####################################################### *)
 (** * Discussion and Variations *)
@@ -622,18 +667,26 @@ Inductive ev_list {X:Type} : list X -> Prop :=
 (** Of course, this proposition is equivalent to just saying that the
 length of the list is even. *)
 
-Lemma ev_list__ev_length: forall X (l : list X), ev_list l -> ev (length l).
+Lemma ev_list__ev_length: forall X (l : list X),
+  ev_list l -> ev (length l).
 Proof. 
-    intros X l H. induction H.
-    Case "el_nil". simpl. apply ev_0.
-    Case "el_cc".  simpl.  apply ev_SS. apply IHev_list.
+  intros X l H.
+  induction H.
+  Case "el_nil".
+    simpl.
+    apply ev_0.
+  Case "el_cc".
+    simpl.
+    apply ev_SS.
+    apply IHev_list.
 Qed.
 
 (** However, because evidence for [ev] contains less information than
 evidence for [ev_list], the converse direction must be stated very
 carefully. *)
 
-Lemma ev_length__ev_list: forall X n, ev n -> forall (l : list X), n = length l -> ev_list l.
+Lemma ev_length__ev_list: forall X n,
+  ev n -> forall (l : list X), n = length l -> ev_list l.
 Proof.
   intros X n H. 
   induction H.
