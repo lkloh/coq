@@ -1223,17 +1223,25 @@ Proof.
 Theorem beq_nat_sym : forall (n m : nat),
   beq_nat n m = beq_nat m n.
 Proof.
-  intros n m.
-  destruct (beq_nat n m) eqn:e1.
-  Case "beq_nat n m = true".
-  apply beq_nat_true in e1.
-  rewrite -> e1.
-  induction m as [| m'].
-  reflexivity.
-  simpl.
-  apply IHm'.
-  inversion e1.
-Abort.
+  intros n.
+  induction n as [| n'].
+  Case "n=0".
+    intros m.
+    destruct m.
+    reflexivity.
+    simpl.
+    reflexivity.
+  Case "n = S n'".
+    intros m.
+    destruct m.
+    simpl.
+    reflexivity.
+    simpl.
+    apply IHn'.
+Qed.
+  
+  
+  
   
   
 
@@ -1254,9 +1262,42 @@ Theorem beq_nat_trans : forall n m p,
   beq_nat m p = true ->
   beq_nat n p = true.
 Proof.
-  intros n m p eq1 eq2.
-  apply trans_eq with (m:=(beq_nat n m)).
-Abort.
+  intros n.
+  induction n as [| n'].
+  Case "n = 0".
+  intros m.
+  destruct m.
+  SCase "m=0".
+  intros p H1 H2.
+  apply H2.
+  intros p H1 H2.
+  destruct p.
+  simpl.
+  reflexivity.
+  simpl.
+  inversion H1.
+  Case "n = S n'".
+    intros m.
+    destruct m.
+    intros p H1 H2.
+    destruct p. 
+    apply H1.
+    simpl.
+    admit.
+    intros p H1 H2.
+    destruct p.
+    simpl.
+    inversion H2.
+    simpl.
+    admit.
+    
+    
+    
+  
+  
+  
+    
+    
 
   
   

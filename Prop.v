@@ -51,8 +51,18 @@ Inductive ev : nat -> Prop :=
 Theorem double_even : forall n,
   ev (double n).
 Proof.
-  (* FILL IN HERE *) Admitted.
-(** [] *)
+  intros n.
+  induction n as [| n'].
+  Case "n=0".
+    simpl.
+    apply ev_0.
+  Case "n=S n'".
+    simpl.
+    apply ev_SS.
+    apply IHn'.
+Qed.
+    
+  
 
 
 
