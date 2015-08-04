@@ -715,15 +715,23 @@ Qed.
       of the list; just having a single constructor
         c : forall l, l = rev l -> pal l
       may seem obvious, but will not work very well.)
- 
+
     - Prove [pal_app_rev] that 
        forall l, pal (l ++ rev l).
     - Prove [pal_rev] that 
        forall l, pal l -> l = rev l.
-*)
+       *)
 
-(* FILL IN HERE *)
-(** [] *)
+Inductive pal {X:Type} : list X -> Prop :=
+  | pal_nil : pal []
+  | pal_one : forall x, pal [x]
+  | pal_many : forall x l, pal l -> pal (snoc (x::l) x).
+
+Lemma pal_app_rev : forall X (l : list X),
+  pal (l ++ rev l).
+Proof.
+  intros X l.
+  destr
 
 (* Again, the converse direction is much more difficult, due to the
 lack of evidence. *)

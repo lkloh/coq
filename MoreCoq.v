@@ -464,13 +464,17 @@ Proof.
     inversion H.
   Case "n = S n'".
     intros m H.
-    destruct m.
+    induction m as [| m'].
     inversion H.
+    apply f_equal.
+    apply IHn'.
+    simpl in H.
+    rewrite <- plus_n_Sm in H.
+    symmetry in H.
+    rewrite <- plus_n_Sm in H.
     inversion H.
-Abort.
- 
-  
-  
+    reflexivity.
+Qed. 
 
 (* ###################################################### *)
 (** * Varying the Induction Hypothesis *)
