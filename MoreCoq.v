@@ -34,7 +34,8 @@ Proof.
      done several times above. But we can achieve the
      same effect in a single step by using the 
      [apply] tactic instead: *)
-  apply eq2.  Qed.
+  apply eq2.
+Qed.
 
 (** The [apply] tactic also works with _conditional_ hypotheses
     and lemmas: if the statement being applied is an implication, then
@@ -193,7 +194,7 @@ Proof.
      instantiation for [m]: we have to supply one explicitly
      by adding [with (m:=[c,d])] to the invocation of
      [apply]. *)
-  apply trans_eq with (m:=[c;d]).
+  apply trans_eq with ([c;d]).
   apply eq1.
   apply eq2.
 Qed.
@@ -314,8 +315,8 @@ Proof.
   intros eq1 eq2.
   inversion eq1.
   inversion eq2.
-  rewrite -> H0.
-  reflexivity.
+  symmetry.
+  apply H0.
   Qed.
   
 Theorem silly6 : forall (n : nat),
@@ -453,30 +454,20 @@ Theorem plus_n_n_injective : forall n m,
      n + n = m + m ->
      n = m.
 Proof.
-  intros n m.
+  intros n.
   induction n as [| n'].
-  Case "n=0".
-  simpl.
-  intros eq.
-  destruct m as [| m'].
-  SCase "m=0".
-  reflexivity.
-  SCase "m=Sm'".
-  simpl in eq.
-  inversion eq.
-  Case "n = Sn'".
-  destruct m as [| m'].
-  SCase "m=0".
-  simpl.
-  intros eq.
-  inversion eq.
-  simpl.
-  intros eq2.
-  inversion eq2.
-  apply f_equal.
-  admit.
-  Qed.
-  
+  Case "n = 0".
+    intros m H.
+    induction m as [| m'].
+    reflexivity.
+    simpl in H.
+    inversion H.
+  Case "n = S n'".
+    intros m H.
+    destruct m.
+    inversion H.
+    inversion H.
+Abort.
  
   
   

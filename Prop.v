@@ -690,11 +690,16 @@ Lemma ev_length__ev_list: forall X n,
 Proof.
   intros X n H. 
   induction H.
-  Case "ev_0". intros l H. destruct l.
+  Case "ev_0".
+    intros l H.
+    destruct l.
     SCase "[]". apply el_nil. 
     SCase "x::l". inversion H.
-  Case "ev_SS". intros l H2. destruct l. 
-    SCase "[]". inversion H2. destruct l.
+  Case "ev_SS".
+    intros l H2.
+    destruct l. 
+    SCase "[]". apply el_nil.
+    destruct l.
     SCase "[x]". inversion H2.
     SCase "x :: x0 :: l". apply el_cc. apply IHev. inversion H2. reflexivity.
 Qed.
