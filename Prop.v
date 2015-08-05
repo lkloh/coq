@@ -731,7 +731,27 @@ Lemma pal_app_rev : forall X (l : list X),
   pal (l ++ rev l).
 Proof.
   intros X l.
-  destr
+  induction l as [| v l'].
+  Case "l = nil".
+    simpl.
+    apply pal_nil.
+  Case "l = list".
+    simpl.
+Abort.
+
+Lemma pal_rev : forall X (l : list X),
+  pal l -> l = rev l.
+Proof.
+  intros X l H.
+  induction H.
+  Case "l = []". simpl. reflexivity.
+  Case "l = [x]". reflexivity.
+  Case "l = list".
+    rewrite -> rev_snoc. 
+    induction l.
+    simpl. reflexivity.
+   Abort.
+  
 
 (* Again, the converse direction is much more difficult, due to the
 lack of evidence. *)
@@ -794,20 +814,25 @@ Notation "m <= n" := (le m n).
 Theorem test_le1 :
   3 <= 3.
 Proof.
-  (* WORKED IN CLASS *)
-  apply le_n.  Qed.
+  apply le_n.
+Qed.
 
 Theorem test_le2 :
   3 <= 6.
 Proof.
-  (* WORKED IN CLASS *)
-  apply le_S. apply le_S. apply le_S. apply le_n.  Qed.
+  apply le_S.
+  apply le_S.
+  apply le_S.
+  apply le_n.
+Qed.
 
 Theorem test_le3 :
   (2 <= 1) -> 2 + 2 = 5.
 Proof. 
-  (* WORKED IN CLASS *)
-  intros H. inversion H. inversion H2.  Qed.
+  intros H.
+  inversion H.
+  inversion H2.
+Qed.
 
 (** *** *)
 (** The "strictly less than" relation [n < m] can now be defined
@@ -824,6 +849,8 @@ Notation "m < n" := (lt m n).
 Inductive square_of : nat -> nat -> Prop :=
   sq : forall n:nat, square_of n (n * n).
 
+Check square_of 3.
+
 Inductive next_nat : nat -> nat -> Prop :=
   | nn : forall n:nat, next_nat n (S n).
 
@@ -835,85 +862,270 @@ Inductive next_even : nat -> nat -> Prop :=
 (** Define an inductive binary relation [total_relation] that holds
     between every pair of natural numbers. *)
 
-(* FILL IN HERE *)
-(** [] *)
+Inductive total_relation : nat -> nat -> Prop :=
+  | t_equal : forall n m, n = m -> total_relation n m
+  | t_lt : forall n m, (lt m n) -> total_relation n m
+| t_gt : forall n m, (lt n m) -> total_relation n m.
+
+Check total_relation 3 4.
 
 (** **** Exercise: 2 stars (empty_relation)  *)
 (** Define an inductive binary relation [empty_relation] (on numbers)
     that never holds. *)
 
-(* FILL IN HERE *)
-(** [] *)
+
 
 (** **** Exercise: 2 stars, optional (le_exercises)  *)
 (** Here are a number of facts about the [<=] and [<] relations that
     we are going to need later in the course.  The proofs make good
     practice exercises. *)
 
-Lemma le_trans : forall m n o, m <= n -> n <= o -> m <= o.
+Lemma le_help : forall m n,
+  S m <= n -> m <= n.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros m n H.
+  induction H.
+  Case "1".
+    apply le_S.
+    apply le_n.
+  Case "2".
+    apply le_S.
+    apply IHle.
+Qed.
+    
+ 
+  
+
+Lemma le_trans : forall m n o,
+  m <= n -> n <= o -> m <= o.
+Proof.
+  intros m n o A B.
+  induction A.
+  Case "1".
+     apply B.
+  Case "2".
+     induction B.
+     SCase "B1".
+       apply IHA.
+       apply le_S.
+       apply le_n.
+     SCase "B2".
+       apply IHA.
+       apply le_S.
+       apply le_help.
+       apply B.
+Qed.
+        
 
 Theorem O_le_n : forall n,
   0 <= n.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros n.
+  induction n as [| n'].
+  Case "n=0".
+    apply le_n.
+  Case "n = S n'".
+    apply le_S.
+    apply IHn'.
+Qed.
 
 Theorem n_le_m__Sn_le_Sm : forall n m,
   n <= m -> S n <= S m.
 Proof. 
-  (* FILL IN HERE *) Admitted.
+  intros n m H.
+  induction H.
+  Case "1".
+    apply le_n.
+  Case "2".
+    apply le_S.
+    apply IHle.
+Qed.
 
 
 Theorem Sn_le_Sm__n_le_m : forall n m,
   S n <= S m -> n <= m.
 Proof. 
-  (* FILL IN HERE *) Admitted.
-
-
+  intros n m H.
+  induction n as [| n'].
+  Case "n = 0".
+    apply O_le_n.
+  Case "n = S n'".
+    induction m as [| m'].
+    SCase "m = 0".
+      inversion H.
+      inversion H1.
+    SCase "m = S m'".
+      inversion H.
+      apply le_n.
+      apply le_help.
+      apply H1.
+Qed.
+ 
 Theorem le_plus_l : forall a b,
   a <= a + b.
 Proof. 
-  (* FILL IN HERE *) Admitted.
+  intros a b.
+  induction a as [| a'].
+  Case "a = 0".
+    simpl.
+    apply O_le_n.
+  Case "a = S a'".
+    induction b as [| b'].
+    SCase "b = 0".
+      simpl.
+      rewrite -> plus_0_r.
+      apply le_n.
+    SCase "b = S b'".
+      simpl.
+      apply n_le_m__Sn_le_Sm.
+      apply IHa'.
+Qed.
 
 Theorem plus_lt : forall n1 n2 m,
   n1 + n2 < m ->
   n1 < m /\ n2 < m.
 Proof. 
- unfold lt. 
- (* FILL IN HERE *) Admitted.
+  unfold lt.
+  intros n1 n2 m H.
+  induction H.
+  Case "H1".
+    split.
+    apply n_le_m__Sn_le_Sm.
+    apply le_plus_l.
+    apply n_le_m__Sn_le_Sm.
+    rewrite -> plus_comm.
+    apply le_plus_l.
+  Case "H2".
+    split.
+    apply le_S.
+    destruct IHle as [A B].
+    apply A.
+    apply le_S.
+    destruct IHle as [A B].
+    apply B.
+Qed.
+  
 
 Theorem lt_S : forall n m,
   n < m ->
   n < S m.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  unfold lt.
+  intros n m H.
+  apply le_S.
+  apply H.
+Qed.
+
+
+
+Theorem ble_nat_to_S : forall n m,
+  ble_nat n m = true -> ble_nat (S n) (S m) = true.
+Proof.
+  intros n.
+  induction n as [| n'].
+  Case "n=0".
+    intros m H.
+    induction m as [| m'].
+    reflexivity.
+    apply IHm'.
+    apply H.
+  Case "n = S n'".
+    intros m H.
+    induction m as [| m'].
+    inversion H.
+    apply IHn'.
+    inversion H.
+    reflexivity.
+Qed.
+    
 
 Theorem ble_nat_true : forall n m,
   ble_nat n m = true -> n <= m.
 Proof. 
-  (* FILL IN HERE *) Admitted.
+  intros n.
+  induction n as [| n'].
+  Case "n=0".
+    intros m H.
+    destruct m.
+    SCase "m=0". apply le_n.
+    SCase "m=Sm'". apply le_S. apply O_le_n.
+  Case "n=S n'".
+    intros m H.
+    destruct m.
+    SCase "m=0". inversion H.
+    SCase "m=Sm'". apply n_le_m__Sn_le_Sm. apply IHn'. simpl in H. apply H.
+Qed.
+  
 
 Theorem le_ble_nat : forall n m,
   n <= m ->
   ble_nat n m = true.
 Proof.
-  (* Hint: This may be easiest to prove by induction on [m]. *)
-  (* FILL IN HERE *) Admitted.
+  intros n.
+  induction n as [| n'].
+  Case "n=0".
+    intros m H.
+    inversion H.
+    reflexivity.
+    reflexivity.
+  Case "n = S n'".
+    intros m H.
+    induction m as [| m'].
+    SCase "m = 0".
+      inversion H.
+    SCase "n = S n'".
+      simpl.
+      apply IHn'.
+      apply Sn_le_Sm__n_le_m.
+      apply H.
+Qed.
+      
 
 Theorem ble_nat_true_trans : forall n m o,
   ble_nat n m = true -> ble_nat m o = true -> ble_nat n o = true.                               
 Proof.
-  (* Hint: This theorem can be easily proved without using [induction]. *)
-  (* FILL IN HERE *) Admitted.
+  intros n m o H1 H2.
+  apply ble_nat_true in H1.
+  apply ble_nat_true in H2.
+  apply le_ble_nat.
+  generalize dependent H2.
+  generalize dependent H1.
+  apply le_trans.
+Qed.
 
+Theorem ble_nat_less : forall n m,
+   ble_nat n (S m) = false -> ble_nat n m = false.
+Proof.
+  intros n.
+  induction n as [| n'].
+  Case "n = 0".
+    intros m H.
+    inversion H.
+  Case "n = S n'".
+    intros m H.
+    simpl in H.
+    induction m as [| m'].
+    SCase "m=0".
+      simpl. reflexivity.
+    SCase "m = S m'".
+      simpl.
+      apply IHn'.
+      apply H.
+Qed.
+  
+  
 (** **** Exercise: 2 stars, optional (ble_nat_false)  *)
 Theorem ble_nat_false : forall n m,
   ble_nat n m = false -> ~(n <= m).
 Proof.
-  (* FILL IN HERE *) Admitted.
-(** [] *)
-
+  intros.
+  unfold not.
+  intros H1.
+  induction H1.
+  Case "le_n". rewrite <- ble_nat_refl in H. inversion H.
+  Case "le_S". apply IHle. apply ble_nat_less. apply H.
+Qed.
+  
 
 (** **** Exercise: 3 stars (R_provability2)  *)
 Module R.

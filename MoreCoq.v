@@ -810,17 +810,14 @@ Theorem index_after_last: forall  (X : Type) (l : list X)(n : nat),
 Proof.
   intros X l.
   induction l as [| v l'].
-  intros n eq.
-  simpl.
-  reflexivity.
-  intros n eq.
-  simpl.
-  destruct n as [| n'].
-  simpl.
-  inversion eq.
-  simpl.
-  Abort.
-  
+  Case "l = []".
+    intros n H.
+    simpl.
+    reflexivity.
+  Case "l = list".
+    intros n H.
+    inversion H.
+Abort.
   
   
   
