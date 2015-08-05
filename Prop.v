@@ -1140,6 +1140,7 @@ Inductive R : nat -> nat -> nat -> Prop :=
    | c4 : forall m n o, R (S m) (S n) (S (S o)) -> R m n o
    | c5 : forall m n o, R m n o -> R n m o.
 
+
 (** - Which of the following propositions are provable?
       - [R 1 1 2]
       - [R 2 2 6]
@@ -1151,10 +1152,24 @@ Inductive R : nat -> nat -> nat -> Prop :=
     - If we dropped constructor [c4] from the definition of [R],
       would the set of provable propositions change?  Briefly (1
       sentence) explain your answer.
+**)
 
-(* FILL IN HERE *)
-[]
-*)
+
+Theorem R_test1:
+  R 1 1 2.
+Proof.
+  apply c3.
+  apply c2.
+  apply c1.
+Qed.
+
+Theorem R_test2:
+  R 2 2 6.
+Proof.
+  apply c3.
+  apply c2.
+Abort.
+  
 
 (** **** Exercise: 3 stars, optional (R_fact)  *)  
 (** Relation [R] actually encodes a familiar function.  State and prove two
@@ -1163,8 +1178,32 @@ Inductive R : nat -> nat -> nat -> Prop :=
     [n], and [o], and vice versa?
 *)
 
-(* FILL IN HERE *)
-(** [] *)
+Theorem n_le_Sn: forall n m,
+  n <= m -> n <= S m.
+Proof.
+  intros n.
+  destruct n.
+  intros m H.
+     apply le_S. apply H.
+  intros m H.
+     apply le_S. apply H.
+Qed.
+
+Theorem R_fact: forall n m o,
+  R n m o -> (m <= o \/ n <= o).
+Proof.
+  intros n m o H.
+  induction H.
+  left. apply le_n.
+  destruct IHR as [A | B]. left. inversion A. apply n_le_Sn. apply le_n.
+  apply n_le_Sn. apply n_le_Sn. apply H0.
+  right. apply n_le_m__Sn_le_Sm. apply B.
+  destruct IHR as [A | B]. left. apply n_le_m__Sn_le_Sm. apply A.
+  right. apply n_le_Sn. apply B.
+  destruct IHR as [A | B]. left. admit.
+  left. admit.
+  destruct IHR as [A | B]. right. apply A. left. apply B.
+Qed.
 
 End R.
 
