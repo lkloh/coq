@@ -136,8 +136,6 @@ Proof.
   apply H0.
 Abort.
   
-  
-  
 
 (** **** Exercise: 2 stars (dist_exists_or)  *)
 (** Prove that existential quantification distributes over
@@ -146,8 +144,20 @@ Abort.
 Theorem dist_exists_or : forall (X:Type) (P Q : X -> Prop),
   (exists x, P x \/ Q x) <-> (exists x, P x) \/ (exists x, Q x).
 Proof.
-   (* FILL IN HERE *) Admitted.
-(** [] *)
+  intros.
+  split.
+  Case "->".
+    intros.
+    inversion H.
+    destruct H0 as [A | B].
+    left. exists witness. apply A.
+    right. exists witness. apply B.
+  Case "<-".
+    intros.
+    destruct H as [A | B].
+    inversion A. exists witness. left. apply H.
+    inversion B. exists witness. right. apply H.
+Qed.
 
 (* ###################################################### *)
 (** * Evidence-Carrying Booleans *)
@@ -184,29 +194,28 @@ Notation "{ A } + { B }" :=  (sumbool A B) : type_scope.
 
 (** Here's how we can define a [sumbool] for equality on [nat]s *)
 
-Theorem eq_nat_dec : forall n m : nat, {n = m} + {n <> m}.
+Theorem eq_nat_dec : forall n m : nat,
+  {n = m} + {n <> m}.
 Proof.
-  (* WORKED IN CLASS *)
   intros n.
-  induction n as [|n'].
-  Case "n = 0".
-    intros m.
-    destruct m as [|m'].
-    SCase "m = 0".
+  induction n as [| n'].
+  Case "n=0".
+    destruct m as [| m'].
+    SCase "m=0".
       left. reflexivity.
     SCase "m = S m'".
-      right. intros contra. inversion contra.
+      right. intros contra. inversion contra. 
   Case "n = S n'".
-    intros m.
-    destruct m as [|m'].
-    SCase "m = 0".
+    destruct m as [| m'].
+    SCase "m=0".
       right. intros contra. inversion contra.
-    SCase "m = S m'". 
-      destruct IHn' with (m := m') as [eq | neq].
-      left. apply f_equal.  apply eq.
-      right. intros Heq. inversion Heq as [Heq']. apply neq. apply Heq'.
-Defined. 
-  
+    SCase "m = S m'".
+      destruct IHn' with (m:=m') as [eq | neq].
+      left. apply f_equal. apply eq.
+      right. intros contra. inversion contra. apply neq. apply H0.
+Qed.
+       
+
 (** Read as a theorem, this says that equality on [nat]s is decidable:
     that is, given two [nat] values, we can always produce either
     evidence that they are equal or evidence that they are not.  Read
@@ -231,14 +240,15 @@ Theorem override_same' : forall (X:Type) x1 k1 k2 (f : nat->X),
   f k1 = x1 -> 
   (override' f k1 x1) k2 = f k2.
 Proof.
-  intros X x1 k1 k2 f. intros Hx1.
+  intros.
   unfold override'.
-  destruct (eq_nat_dec k1 k2).   (* observe what appears as a hypothesis *)
+  destruct (eq_nat_dec k1 k2).
   Case "k1 = k2".
-    rewrite <- e.
-    symmetry. apply Hx1.
-  Case "k1 <> k2". 
-    reflexivity.  Qed.
+    rewrite <- e. symmetry. apply H.
+  Case "k1 != k2".
+    reflexivity.
+Qed.
+  
 
 (** Compare this to the more laborious proof (in MoreCoq.v) for the
     version of [override] defined using [beq_nat], where we had to use
@@ -249,11 +259,14 @@ Proof.
 Theorem override_shadow' : forall (X:Type) x1 x2 k1 k2 (f : nat->X),
   (override' (override' f k1 x2) k1 x1) k2 = (override' f k1 x1) k2.
 Proof.
-  (* FILL IN HERE *) Admitted.
-(** [] *)
-
-
-
+  intros.
+  unfold override'.
+  destruct (eq_nat_dec k1 k2).
+  Case "k1=k2".
+    reflexivity.
+  Case "k1 != k2".
+    reflexivity.
+Qed.
 
 
 (* ####################################################### *)
