@@ -113,9 +113,13 @@ Qed.
 Theorem dist_not_exists : forall (X:Type) (P : X -> Prop),
   (forall x, P x) -> ~ (exists x, ~ P x).
 Proof. 
-  (* FILL IN HERE *) Admitted.
-(** [] *)
-
+  unfold not.
+  intros X P H1 H2.
+  inversion H2 as [x1 Hx1].
+  apply Hx1.
+  apply H1.
+Qed.
+  
 (** **** Exercise: 3 stars, optional (not_exists_dist)  *)
 (** (The other direction of this theorem requires the classical "law
     of the excluded middle".) *)
@@ -125,8 +129,15 @@ Theorem not_exists_dist :
   forall (X:Type) (P : X -> Prop),
     ~ (exists x, ~ P x) -> (forall x, P x).
 Proof.
-  (* FILL IN HERE *) Admitted.
-(** [] *)
+  unfold excluded_middle.
+  unfold not.
+  intros.
+  apply ex_falso_quodlibet.
+  apply H0.
+Abort.
+  
+  
+  
 
 (** **** Exercise: 2 stars (dist_exists_or)  *)
 (** Prove that existential quantification distributes over
