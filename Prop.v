@@ -1189,7 +1189,8 @@ Proof.
      apply le_S. apply H.
 Qed.
 
-Theorem R_fact: forall n m o,
+
+Theorem R_fact': forall n m o,
   R n m o -> (m <= o \/ n <= o).
 Proof.
   intros n m o H.
@@ -1239,8 +1240,62 @@ End R.
       Hint: choose your induction carefully!
 *)
 
-(* FILL IN HERE *)
-(** [] *)
+Inductive subseq : list nat -> list nat -> Prop :=
+| s_0 : forall l, subseq [] l
+| s_same : forall x l1 l2, subseq l1 l2 -> subseq (x::l1) (x::l2)
+| s_diff : forall x y l1 l2, subseq l1 l2 /\ (beq_nat x y) = false -> subseq (x::l1) (y::l2). 
+
+Theorem subseq_refl : forall (l : list nat),
+  subseq l l.
+Proof.
+  intros l.
+  induction l as [| n l'].
+  Case "l = nil". apply s_0.
+  Case "l = list".
+    apply s_same.
+    apply IHl'.
+Qed.
+
+Theorem subset_app : forall (l1 l2 l3 : list nat),
+  subseq l1 l2 -> subseq l1 (l2++l3).
+Proof.
+  intros l1 l2 l3.
+  intros H.
+  induction H.
+  Case "s_0". apply s_0.
+  Case "s_same". simpl. apply s_same. apply IHsubseq.
+  Case "s_diff". simpl. apply s_diff.
+    split.
+    SCase "S1".
+      destruct H as [A B].
+      admit.
+    SCase "S2".
+    destruct H as [A B]. apply B.
+Qed.
+
+Theorem subseq_trans : forall (l1 l2 l3 : list nat),
+  subseq l1 l2 /\ subseq l2 l3 -> subseq l1 l3.
+Proof.
+  intros l1.
+  induction l1 as [| n1 l1'].
+  Case "nil".
+    intros l2 l3 H.
+    destruct H as [A B].
+    induction l3.
+    apply s_0. apply s_0.
+  Case "list".
+    intros l2 l3 H.
+    destruct H as [A B].
+    induction l2 as [| n2 l2'].
+    SCase "nil".
+      inversion A.
+    SCase "list".
+      apply IHl2'. 
+      Abort.
+      
+
+  
+  
 
 (** **** Exercise: 2 stars, optional (R_provability)  *)
 (** Suppose we give Coq the following definition:
@@ -1255,8 +1310,29 @@ End R.
     - [R 6 [3,2,1,0]]
 *)
 
-(** [] *)
+Inductive RR : nat -> list nat -> Prop :=
+  | c1 : RR 0 []
+  | c2 : forall n l, RR n l -> RR (S n) (n :: l)
+  | c3 : forall n l, RR (S n) l -> RR n l.
 
+Theorem RR_test1 :
+  RR 2 [1;0].
+Proof.
+  apply c2.
+  apply c2.
+  apply c1.
+Qed.
+
+Theorem RR_test2 :
+  RR 1 [1;2;1;0].
+Proof.
+  apply c3. apply c2. apply c3. Abort.
+
+Theorem RR_test3:
+  RR 6 [3;2;1;0].
+Proof.
+  apply c3. apply c3. apply c3. Abort.
+  
 
 (* ##################################################### *)
 (** * Programming with Propositions *)
@@ -1309,7 +1385,8 @@ Check plus_fact.
 
 Theorem plus_fact_is_true : 
   plus_fact.
-Proof. reflexivity.  Qed.
+Proof.
+  reflexivity.  Qed.
 
 (** *** *)
 (** We've seen several ways of constructing propositions.  
@@ -1387,8 +1464,6 @@ Definition natural_number_induction_valid : Prop :=
 
 
 
-
-
 (** **** Exercise: 3 stars (combine_odd_even)  *)
 (** Complete the definition of the [combine_odd_even] function
     below. It takes as arguments two properties of numbers [Podd] and
@@ -1397,7 +1472,10 @@ Definition natural_number_induction_valid : Prop :=
     equivalent to [Peven n] otherwise. *)
 
 Definition combine_odd_even (Podd Peven : nat -> Prop) : nat -> Prop :=
-  (* FILL IN HERE *) admit.
+  fun n => match (oddb n) with
+             | true => Podd n
+             | false => Peven n
+  end.
 
 (** To test your definition, see whether you can prove the following
     facts: *)
@@ -1408,7 +1486,18 @@ Theorem combine_odd_even_intro :
     (oddb n = false -> Peven n) ->
     combine_odd_even Podd Peven n.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros Podd Peven n.
+  intros H1 H2.
+  unfold combine_odd_even.
+  destruct (oddb n).
+  Case "odd".
+    apply H1. reflexivity.
+  Case "even".
+    apply H2. reflexivity.
+Qed.
+    
+  
+ 
 
 Theorem combine_odd_even_elim_odd :
   forall (Podd Peven : nat -> Prop) (n : nat),
@@ -1416,7 +1505,16 @@ Theorem combine_odd_even_elim_odd :
     oddb n = true ->
     Podd n.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  unfold combine_odd_even.
+  intros Podd Peven n.
+  destruct (oddb n).
+  Case "odd".
+    intros H1 H2.
+    apply H1.
+  Case "even".
+    intros H1 H2.
+    inversion H2.
+Qed.
 
 Theorem combine_odd_even_elim_even :
   forall (Podd Peven : nat -> Prop) (n : nat),
@@ -1424,9 +1522,16 @@ Theorem combine_odd_even_elim_even :
     oddb n = false ->
     Peven n.
 Proof.
-  (* FILL IN HERE *) Admitted.
-
-(** [] *)
+  unfold combine_odd_even.
+  intros Podd Peven n.
+  destruct (oddb n).
+  Case "odd".
+    intros H1 H2.
+    inversion H2.
+  Case "even".
+    intros H1 H2.
+    apply H1.
+Qed.
 
 (* ##################################################### *)
 (** One more quick digression, for adventurous souls: if we can define
@@ -1441,9 +1546,7 @@ Proof.
     [true_upto_n__true_everywhere] that makes
     [true_upto_n_example] work. *)
 
-(* 
-Fixpoint true_upto_n__true_everywhere
-(* FILL IN HERE *)
+
 
 Example true_upto_n_example :
     (true_upto_n__true_everywhere 3 (fun n => even n))

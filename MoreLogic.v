@@ -45,10 +45,13 @@ Notation "'exists' x : X , p" := (ex _ (fun x:X => p))
     not appear in its conclusion, we need to explicitly give its value
     when we use [apply]. *)
 
-Example exists_example_1 : exists n, n + (n * n) = 6.
+Example exists_example_1 :
+  exists n, n + (n * n) = 6.
 Proof.
-  apply ex_intro with (witness:=2). 
-  reflexivity.  Qed.
+  apply ex_intro with (witness:=2).
+  reflexivity.
+  Qed.
+
 
 (** Note that we have to explicitly give the witness. *)
 
@@ -60,7 +63,8 @@ Proof.
 Example exists_example_1' : exists n, n + (n * n) = 6.
 Proof.
   exists 2. 
-  reflexivity.  Qed.
+  reflexivity.
+Qed.
 
 (** *** *)
 (** Conversely, if we have an existential hypothesis in the
@@ -78,19 +82,18 @@ Proof.
   intros n H.
   inversion H as [m Hm]. 
   exists (2 + m).  
-  apply Hm.  Qed. 
+  apply Hm.
+Qed. 
 
 
 (** Here is another example of how to work with existentials. *)
 Lemma exists_example_3 : 
   exists (n:nat), even n /\ beautiful n.
 Proof.
-(* WORKED IN CLASS *)
   exists 8.
   split.
   unfold even. simpl. reflexivity.
-  apply b_sum with (n:=3) (m:=5).
-  apply b_3. apply b_5.
+  apply b_sum with (n:=3) (m:=5). apply b_3. apply b_5.
 Qed.
 
 (** **** Exercise: 1 star, optional (english_exists)  *)
