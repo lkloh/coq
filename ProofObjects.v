@@ -544,8 +544,9 @@ may be used to skip arguments that Coq can infer.  *)
 Lemma plus_comm_r'' : forall a b c, c + (b + a) = c + (a + b).
 Proof.
   intros a b c.
-  rewrite (plus_comm _ a).
-  reflexivity. Qed.
+  rewrite (plus_comm b _).
+  reflexivity.
+Qed.
 
 (** The author of a lemma can choose to declare easily inferable arguments
 to be implicit, just as with functions and constructors. 
@@ -556,9 +557,11 @@ to be implicit, just as with functions and constructors.
 Lemma plus_comm_r''' : forall a b c, c + (b + a) = c + (a + b).
 Proof.
   intros a b c.
-  rewrite plus_comm with (n := b). 
-  reflexivity. Qed.
+  rewrite plus_comm with (n:=b) (m:=a).
+  reflexivity.
+Qed.
 
+Check trans_eq.
 
 (** **** Exercise: 2 stars (trans_eq_example_redux)  *)
 (** Redo the proof of the following theorem (from MoreCoq.v) using
@@ -569,10 +572,11 @@ Example trans_eq_example' : forall (a b c d e f : nat),
      [c;d] = [e;f] ->
      [a;b] = [e;f].
 Proof.
-  (* FILL IN HERE *) Admitted.
-(** [] *)
-
-
+  intros.
+  inversion H. inversion H0.
+  reflexivity.
+Qed.
+ 
 
 (* ##################################################### *)
 (** * Programming with Tactics (Advanced) *)
@@ -582,11 +586,10 @@ Proof.
     than explicit terms.  Sure! *)
 
 Definition add1 : nat -> nat. 
-intro n. 
-Show Proof.
-apply S. 
-Show Proof.
-apply n. Defined.
+  intro n.
+  apply S.
+  apply n.
+Defined.
 
 Print add1. 
 (* ==>

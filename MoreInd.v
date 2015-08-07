@@ -33,10 +33,10 @@ Check nat_ind.
 Theorem mult_0_r' : forall n:nat, 
   n * 0 = 0.
 Proof.
-  apply nat_ind. 
-  Case "O". reflexivity.
-  Case "S". simpl. intros n IHn. rewrite -> IHn. 
-    reflexivity.  Qed.
+  apply nat_ind.
+  Case "n=0". reflexivity.
+  Case "n = S n'". intros. simpl. apply H.
+Qed.
 
 
 (** This proof is basically the same as the earlier one, but a
@@ -73,8 +73,10 @@ Proof.
 Theorem plus_one_r' : forall n:nat, 
   n + 1 = S n.
 Proof.
-  (* FILL IN HERE *) Admitted.
-(** [] *)
+  apply nat_ind.
+  Case "n=0". simpl. reflexivity.
+  Case "n = S n'". simpl. intros. rewrite -> H. reflexivity.
+Qed.
 
 (** Coq generates induction principles for every datatype defined with
     [Inductive], including those that aren't recursive. (Although 
@@ -118,7 +120,13 @@ Inductive rgb : Type :=
   | green : rgb
   | blue : rgb.
 Check rgb_ind.
-(** [] *)
+(**  
+  rgb_ind: forall P : rgb -> Prop,
+    P red ->
+    P green ->
+    P blue ->
+    forall y, rgb, P y
+*)
 
 (** Here's another example, this time with one of the constructors
     taking some arguments. *)
@@ -144,7 +152,8 @@ Inductive natlist1 : Type :=
   | nsnoc1 : natlist1 -> nat -> natlist1.
 
 (** Now what will the induction principle look like? *)
-(** [] *)
+(**  
+*)
 
 (** From these examples, we can extract this general rule:
 
