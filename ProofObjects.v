@@ -80,10 +80,10 @@ Check b_sum.
 Theorem eight_is_beautiful:
   beautiful 8.
 Proof.
-    apply b_sum with (n := 3) (m := 5). 
-    apply b_3.
-    apply b_5.
-  Qed.
+  apply b_sum with (n:=3) (m:=5).
+  apply b_3.
+  apply b_5.
+Qed.
 
 (** Just as with ordinary data values and functions, we can use the [Print]
 command to see the _proof object_ that results from this proof script. *)
@@ -118,8 +118,7 @@ Check (b_sum 3 5 b_3 b_5).
 Theorem eight_is_beautiful':
   beautiful 8.
 Proof.
-   apply (b_sum 3 5 b_3 b_5).
-Qed.
+  apply (b_sum 3 5 b_3 b_5).
 
 (** Notice that we're using [apply] here in a new way: instead of just
     supplying the _name_ of a hypothesis or previously proved theorem
@@ -130,10 +129,11 @@ Qed.
 Theorem thirteen_is_beautiful:
   beautiful 13.
 Proof.
-  apply b_sum with (n := 5) (m := 8).
+  apply b_sum with (n:=5) (m:=8).
   apply b_5.
   apply eight_is_beautiful.
-  Qed.
+Qed.
+  
   
   
 
@@ -180,12 +180,13 @@ Qed.
 Definition eight_is_beautiful''' : beautiful 8 :=
   b_sum 3 5 b_3 b_5.
 
+
 (** All these different ways of building the proof lead to exactly the
     same evidence being saved in the global environment. *)
 
 Print eight_is_beautiful.
 (* ===> eight_is_beautiful    = b_sum 3 5 b_3 b_5 : beautiful 8 *)
-Print eight_is_beautiful'.
+(* Print eight_is_beautiful'. *)
 (* ===> eight_is_beautiful'   = b_sum 3 5 b_3 b_5 : beautiful 8 *)
 Print eight_is_beautiful''.
 (* ===> eight_is_beautiful''  = b_sum 3 5 b_3 b_5 : beautiful 8 *)
@@ -235,13 +236,15 @@ Definition nine_is_beautiful' : beautiful 9 :=
 
     For example, consider this statement: *)
 
-Theorem b_plus3: forall n, beautiful n -> beautiful (3+n).
+Theorem b_plus3: forall n,
+  beautiful n -> beautiful (3+n).
 Proof.
-   intros n H.
-   apply b_sum.
-   apply b_3.
-   apply H.
+  intros n H.
+  apply b_sum.
+  apply b_3.
+  apply H.
 Qed.
+   
 
 (** What is the proof object corresponding to [b_plus3]? 
 
@@ -250,9 +253,8 @@ Qed.
     takes two arguments (one number and a piece of evidence) and
     returns a piece of evidence!  Here it is: *)
 
-Definition b_plus3' : forall n, beautiful n -> beautiful (3+n) := 
-  fun (n : nat) => fun (H : beautiful n) =>
-    b_sum 3 n b_3 H.
+Definition b_plus3': forall n, beautiful n -> beautiful (3+n) :=
+  fun (n:nat) => fun (H : beautiful n) => b_sum 3 n b_3 H.
 
 Check b_plus3'.
 (* ===> b_plus3' : forall n : nat, beautiful n -> beautiful (3+n) *)
@@ -260,7 +262,7 @@ Check b_plus3'.
 (** Recall that [fun n => blah] means "the function that, given [n],
     yields [blah]."  Another equivalent way to write this definition is: *)
 
-Definition b_plus3'' (n : nat) (H : beautiful n) : beautiful (3+n) := 
+Definition b_plus3'' (n : nat) (H : beautiful n) : beautiful (3+n) :=
   b_sum 3 n b_3 H.
 
 Check b_plus3''.
@@ -308,21 +310,38 @@ Definition beatiful_plus3'' : Prop :=
 
 (** Give a proof object corresponding to the theorem [b_times2] from Prop.v *)
 
+
+Check b_sum 3 0 b_3 b_0.
+
 Definition b_times2': forall n, beautiful n -> beautiful (2*n) :=
   fun (n : nat) => fun (H : beautiful n) =>
-    .
+     b_sum n (n+0) H (b_sum n 0 H b_0).
 
 
 
 (** **** Exercise: 2 stars, optional (gorgeous_plus13_po)  *) 
 (** Give a proof object corresponding to the theorem [gorgeous_plus13] from Prop.v *)
 
+Theorem thirteen_is_gorgeous:
+  gorgeous 13.
+Proof.
+  apply g_plus5.
+  apply g_plus5.
+  apply g_plus3.
+  apply g_0.
+Qed.
+
+Check thirteen_is_gorgeous.
+
+Definition gorgeous_plus3_po: forall n, gorgeous n -> gorgeous (3+n):=
+   fun (n : nat) => fun (H : gorgeous n) =>
+     g_plus3 n H.
+
+
 Definition gorgeous_plus13_po: forall n, gorgeous n -> gorgeous (13+n):=
-   (* FILL IN HERE *) admit.
-(** [] *)
-
-
-
+  fun (n : nat) => fun (H : gorgeous n) =>
+    g_plus3 (10+n) (g_plus5 (5+n) (g_plus5 n H)).
+    
 
 (** It is particularly revealing to look at proof objects involving the 
 logical connectives that we defined with inductive propositions in Logic.v. *)
@@ -331,9 +350,10 @@ Theorem and_example :
   (beautiful 0) /\ (beautiful 3).
 Proof.
   apply conj.
-   (* Case "left". *)  apply b_0.
-   (* Case "right". *)  apply b_3.  Qed.
-
+  apply b_0.
+  apply b_3.
+Qed.
+  
 (** Let's take a look at the proof object for the above theorem. *)
 
 Print and_example. 
@@ -355,11 +375,11 @@ Print and_example.
 Theorem and_commut : forall P Q : Prop, 
   P /\ Q -> Q /\ P.
 Proof.
-  intros P Q H.
-  inversion H as [HP HQ]. 
-  split.  
-    (* Case "left". *) apply HQ. 
-    (* Case "right". *) apply HP.  Qed.
+  intros.
+  destruct H as [HP HQ].
+  apply conj.
+  apply HQ. apply HP.
+Qed.
 
 (** Once again, we have commented out the [Case] tactics to make the
     proof object for this theorem easier to understand. It is still
@@ -394,9 +414,25 @@ we get: *)
 (** **** Exercise: 2 stars, optional (conj_fact)  *)
 (** Construct a proof object demonstrating the following proposition. *)
 
+Theorem conj_fact': forall P Q R,
+  P /\ Q -> Q /\ R -> P /\ R.
+Proof.
+  intros.
+  destruct H as [HP HQ].
+  destruct H0 as [HHQ HHR].
+  apply conj.
+  apply HP. apply HHR.
+Qed.
+
+Print conj_fact'.
+
 Definition conj_fact : forall P Q R, P /\ Q -> Q /\ R -> P /\ R :=
-  (* FILL IN HERE *) admit.
-(** [] *)
+  fun (P Q R : Prop) (PQ : P /\ Q) (QR : Q /\ R) =>
+    match PQ with
+      | conj HP _ => match QR with
+               | conj _ HHR => conj P R HP HHR
+                     end
+      end.
 
 
 (** **** Exercise: 2 stars, advanced, optional (beautiful_iff_gorgeous)  *)
@@ -408,18 +444,37 @@ Definition conj_fact : forall P Q R, P /\ Q -> Q /\ R -> P /\ R :=
     using tactics. (_Hint_: if you make use of previously defined
     theorems, you should only need a single line!) *)
 
+Print beautiful__gorgeous.
+
 Definition beautiful_iff_gorgeous :
   forall n, beautiful n <-> gorgeous n :=
-  (* FILL IN HERE *) admit.
-(** [] *)
+    fun n => conj _ _ (beautiful__gorgeous n) (gorgeous__beautiful n).
+
 
 
 (** **** Exercise: 2 stars, optional (or_commut'')  *)
 (** Try to write down an explicit proof object for [or_commut] (without
     using [Print] to peek at the ones we already defined!). *)
 
-(* FILL IN HERE *)
-(** [] *)
+Theorem or_commut : forall P Q : Prop,
+  P \/ Q -> Q \/ P.
+Proof.
+  intros P Q H.
+  destruct H as [HP | HQ].
+    Case "left". apply or_intror. apply HP.
+    Case "right". apply or_introl. apply HQ.
+  Qed.
+
+Print or_commut.
+
+Definition or_commut' : forall (P Q : Prop), P \/ Q -> Q \/ P :=
+  fun (P Q : Prop) (H : P \/ Q) =>
+    match H with
+      | or_introl HP => or_intror Q P HP
+      | or_intror HQ => or_introl Q P HQ
+    end.
+
+
 
 (** Recall that we model an existential for a property as a pair consisting of 
 a witness value and a proof that the witness obeys that property. 
@@ -430,6 +485,8 @@ Check ex.
 
 Definition some_nat_is_even : Prop := 
   ex _ ev.
+
+Print some_nat_is_even.
 
 (** To prove this proposition, we need to choose a particular number
     as witness -- say, 4 -- and give some evidence that that number is
@@ -442,9 +499,9 @@ Definition snie : some_nat_is_even :=
 (** **** Exercise: 2 stars, optional (ex_beautiful_Sn)  *)
 (** Complete the definition of the following proof object: *)
 
+
 Definition p : ex _ (fun n => beautiful (S n)) :=
-(* FILL IN HERE *) admit.
-(** [] *)
+  admit.
 
 
 
@@ -466,21 +523,21 @@ Check plus_comm.
 
 Lemma plus_comm_r : forall a b c, c + (b + a) = c + (a + b).
 Proof.
-   intros a b c.
-   (* rewrite plus_comm. *) 
-      (* rewrites in the first possible spot; not what we want *)
-   rewrite (plus_comm b a).  (* directs rewriting to the right spot *)
-   reflexivity.  Qed.
+  intros a b c.
+  rewrite (plus_comm b a).
+  reflexivity.
+Qed.
 
 
 (** In this case, giving just one argument would be sufficient. *)
 
 Lemma plus_comm_r' : forall a b c, c + (b + a) = c + (a + b).
 Proof.
-   intros a b c.
-   rewrite (plus_comm b). 
-   reflexivity.  Qed.
-
+  intros.
+  rewrite (plus_comm b).
+  reflexivity.
+Qed.
+  
 (** Arguments must be given in order, but wildcards (_)
 may be used to skip arguments that Coq can infer.  *)
 
