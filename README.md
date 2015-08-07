@@ -6,6 +6,7 @@
 2. fold_map
 3. Church chapter
 
-## MoreCoq
+## ProofObjects.v
 
-1. plus_n_n_injective
+1. ex_beautiful_Sn
+
