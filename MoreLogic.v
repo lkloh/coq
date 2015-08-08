@@ -130,11 +130,22 @@ Theorem not_exists_dist :
     ~ (exists x, ~ P x) -> (forall x, P x).
 Proof.
   unfold excluded_middle.
-  unfold not.
-  intros.
-  apply ex_falso_quodlibet.
-  apply H0.
-Abort.
+  intro M.
+  intro X.
+  intro P.
+  intro E.
+  intro y.
+  specialize M with (P := P y).
+  Case "P y".
+    case M.
+    auto.
+  intro q.
+  unfold not in E.
+  elim E.
+  unfold not in q.
+  exists y.
+  apply q.
+Qed.
   
 
 (** **** Exercise: 2 stars (dist_exists_or)  *)
