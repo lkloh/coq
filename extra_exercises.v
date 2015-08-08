@@ -36,35 +36,25 @@ Proof.
 Theorem plus_comm : forall n m : nat,
   n + m = m + n.
 Proof.
-  Admitted.
-
-Lemma helper : forall (n x : nat),
-  n = 2 * x + 1 -> S (S n) = 2 * (x + 1) + 1.
-Proof.
-  intros n.
+  intros n m.
   induction n as [| n'].
-    intros x H. 
-    destruct x.
-      simpl in H. inversion H.
-      inversion H.
-    intros x H.
-      destruct x.
-      simpl in H. simpl. rewrite -> H. reflexivity.
-      simpl. rewrite -> plus_0_r. 
-      apply n_eq_m__Sn_eq_Sm.
-      assert (HH : x + 1 + S (x + 1) + 1 = 2 * (x + 1) + 1).
-        admit.
-   admit.
+  simpl. rewrite -> plus_0_r. reflexivity.
+  simpl. rewrite -> IHn'. rewrite -> plus_n_Sm. reflexivity.
 Qed.
+
 
 Theorem plus_swap : forall n m p : nat, 
   n + (m + p) = m + (n + p).
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros n m p.
+  induction n as [| n'].
+  simpl. reflexivity.
+  simpl. rewrite -> IHn'. rewrite -> plus_n_Sm. reflexivity.
+Qed.
 
-  Lemma expand_S : forall n : nat,
-    S n = n + 1.
-  Proof.
+Lemma expand_S : forall n : nat,
+  S n = n + 1.
+Proof.
     intros n.
     induction n.
     reflexivity.
@@ -157,17 +147,7 @@ Proof.
       inversion H.
       exists 0. reflexivity.
       destruct H1.
-      admit.
-
-Lemma myOdd2_lemma' : forall n,
-  myOdd2 n -> (exists m, n = 2*m + 1).
-Proof.
-  intros.
-  induction n as [| n'].
-    inversion H.
-    inversion H. exists 0. reflexivity.
-      assert (HH :  
-     
+      
       
       
       
