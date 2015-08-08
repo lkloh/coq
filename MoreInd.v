@@ -302,14 +302,12 @@ Inductive foo' (X:Type) : Type :=
    in the blanks, then check your answer with Coq.)
      foo'_ind :
         forall (X : Type) (P : foo' X -> Prop),
-              (forall (l : list X) (f : foo' X),
-                    _______________________ -> 
-                    _______________________   ) ->
-             ___________________________________________ ->
-             forall f : foo' X, ________________________
+              (forall (l : list X) (f : foo' X), P f -> P (C1 X l f) )->
+               P (C2 X) ->
+             forall f : foo' X, P f
 *)
 
-(** [] *)
+Check foo'_ind.
 
 (* ##################################################### *)
 (** ** Induction Hypotheses *)
@@ -346,12 +344,16 @@ Definition P_m0r' : nat->Prop :=
 Theorem mult_0_r'' : forall n:nat, 
   P_m0r n.
 Proof.
+  unfold P_m0r.
   apply nat_ind.
-  Case "n = O". reflexivity.
-  Case "n = S n'". 
-    (* Note the proof state at this point! *)
-    intros n IHn. 
-    unfold P_m0r in IHn. unfold P_m0r. simpl. apply IHn. Qed.
+  Case "n=0".
+    simpl.
+    reflexivity.
+  Case "n=S n'".
+    intros.
+    simpl.
+    apply H.
+Qed.
 
 (** This extra naming step isn't something that we'll do in
     normal proofs, but it is useful to do it explicitly for an example
@@ -448,9 +450,34 @@ Proof.
     induction, and state the theorem and proof in terms of this
     defined proposition.  *)
 
-(* FILL IN HERE *)
-(** [] *)
+Definition n_m_p_assoc : nat -> nat -> nat -> Prop :=
+  fun n m p => n + (m + p) = (n + m) + p.
 
+Definition n_m_comm : nat -> nat -> Prop :=
+  fun n m => n + m = m + n.
+
+Check plus_n_Sm.
+
+Theorem plus_comm''' : forall n m : nat,
+  n_m_comm n m.
+Proof.
+  intros.
+  apply nat_ind.
+  Case "m = 0".
+    unfold n_m_comm.
+    simpl.
+    rewrite (plus_0_r n).
+    reflexivity.
+  Case "m = S m'".
+    unfold n_m_comm.
+    intros.
+    simpl.
+    rewrite <- H.
+    rewrite -> plus_n_Sm.
+    reflexivity.
+Qed.
+    
+    
 
 (** ** Generalizing Inductions. *)
 
@@ -481,32 +508,45 @@ Abort.
    But in some cases, it suffices to pull out any concrete arguments
    into separate equations, like this: *)
 
-Lemma one_not_beautiful: forall n, n = 1 -> ~ beautiful n. 
+Lemma one_not_beautiful: forall n,
+  n = 1 -> ~ beautiful n. 
 Proof.
- intros n E H.
-  induction H  as [| | | p q Hp IHp Hq IHq]. 
+  intros n E H.
+  induction H as [| | | ].
     Case "b_0".
       inversion E.
-    Case "b_3". 
-      inversion E. 
-    Case "b_5". 
-      inversion E. 
-    Case "b_sum". 
-      (* the rest is a tedious case analysis *)
-      destruct p as [|p'].
-      SCase "p = 0".
-        destruct q as [|q'].
-        SSCase "q = 0". 
+    Case "b_3".
+      inversion E.
+    Case "b_5".
+      inversion E.
+    Case "b_sum".
+      destruct n as [| n'].
+      SCase "n=0".
+        destruct m as [| m'].
+        SSCase "m=0".
           inversion E.
-        SSCase "q = S q'".
-          apply IHq. apply E. 
-      SCase "p = S p'". 
-        destruct q as [|q'].
-        SSCase "q = 0". 
-          apply IHp.  rewrite plus_0_r in E. apply E. 
-        SSCase "q = S q'".
-          simpl in E. inversion E.  destruct p'.  inversion H0.  inversion H0. 
+        SSCase "m = S m'".
+          apply IHbeautiful2.
+          simpl in E.
+          apply E.
+      SCase "n = S n'".
+        destruct m as [| m'].
+        SSCase "m = 0".
+          apply IHbeautiful1.
+          rewrite -> plus_0_r in E.
+          apply E.
+        SSCase "m = S m'".
+          apply IHbeautiful1.
+          inversion E.
+          apply f_equal.
+          destruct n'.
+            simpl.
+            simpl in H2.
+            symmetry.
+            apply H2.
+          inversion E.
 Qed.
+      
 
 (** There's a handy [remember] tactic that can generate the second
 proof state out of the original one. *)
@@ -516,10 +556,22 @@ Proof.
   intros H.  
   remember 1 as n eqn:E. 
   (* now carry on as above *)
-  induction H.   
-Admitted.
-
-
+  induction H as [| | | ].   
+  inversion E.
+  inversion E.
+  inversion E.
+  destruct n.
+    destruct m.
+      inversion E.
+      apply IHbeautiful2. simpl in E. apply E.
+    destruct m.
+      apply IHbeautiful1. simpl in E. rewrite -> plus_0_r in E. apply E.
+      apply IHbeautiful1. destruct n.
+        reflexivity.
+        inversion E.
+Qed.
+        
+    
 (* ####################################################### *)
 (** * Informal Proofs (Advanced) *)
 
@@ -797,22 +849,17 @@ Check gorgeous_ind.
 
 (** As expected, we can apply [gorgeous_ind] directly instead of using [induction]. *)
 
-Theorem gorgeous__beautiful' : forall n, gorgeous n -> beautiful n.
+Theorem gorgeous__beautiful' : forall n,
+  gorgeous n -> beautiful n.
 Proof.
-   intros.
-   apply gorgeous_ind.
-   Case "g_0".
-       apply b_0.
-   Case "g_plus3".
-       intros.
-       apply b_sum. apply b_3.
-       apply H1.
-   Case "g_plus5".
-       intros.
-       apply b_sum. apply b_5.
-       apply H1.
-   apply H.
+  intros.
+  apply gorgeous_ind.
+  Case "g_0". apply b_0.
+  Case "g_plus3". intros. apply b_sum. apply b_3. apply H1.
+  Case "g_plus5". intros. apply b_sum. apply b_5. apply H1.
+  Case "g n". apply H.
 Qed.
+  
 
 
 
@@ -870,13 +917,19 @@ Check le_ind.
    generated by Coq. 
    foo_ind
         : forall (X Y : Set) (P : foo X Y -> Prop),   
-          (forall x : X, __________________________________) ->
-          (forall y : Y, __________________________________) ->
-          (________________________________________________) ->
-           ________________________________________________
+          (forall x : X, P (foo1 X Y x) ) ->
+          (forall y : Y, P (foo2 X Y y) ) ->
+          (forall f1 : foo X Y , P f1 -> P (foo3 X Y f1) ) ->
+           forall f2 : foo X Y, foo f2
 
 *)
-(** [] *)
+
+Inductive fool (X : Set) (Y : Set) : Set :=
+ | foo1 : X -> fool X Y
+ | foo2 : Y -> fool X Y
+ | foo3 : fool X Y -> fool X Y.
+
+Check fool_ind.
 
 (** **** Exercise: 2 stars, optional (bar_ind_principle)  *)
 (** Consider the following induction principle:
@@ -887,13 +940,14 @@ Check le_ind.
           (forall (b : bool) (b0 : bar), P b0 -> P (bar3 b b0)) ->
           forall b : bar, P b
    Write out the corresponding inductive set definition.
-   Inductive bar : Set :=
-     | bar1 : ________________________________________
-     | bar2 : ________________________________________
-     | bar3 : ________________________________________.
-
 *)
-(** [] *)
+
+ Inductive barr : Set :=
+   | bar1 : nat -> barr
+     | bar2 : barr -> barr
+     | bar3 : bool -> barr -> barr.
+
+Check barr_ind.
 
 (** **** Exercise: 2 stars, optional (no_longer_than_ind)  *)
 (** Given the following inductively defined proposition:
@@ -906,18 +960,24 @@ Check le_ind.
   write the induction principle generated by Coq.
   no_longer_than_ind
        : forall (X : Set) (P : list X -> nat -> Prop),
-         (forall n : nat, ____________________) ->
+         (forall n : nat, P nlt_nil ) ->
          (forall (x : X) (l : list X) (n : nat),
-          no_longer_than X l n -> ____________________ -> 
-                                  _____________________________ ->
+            no_longer_than X l n 
+            -> P l n 
+            -> P (x::l) (S n) ) ->
          (forall (l : list X) (n : nat),
-          no_longer_than X l n -> ____________________ -> 
-                                  _____________________________ ->
-         forall (l : list X) (n : nat), no_longer_than X l n -> 
-           ____________________
-
+            no_longer_than X l n ->
+            -> P l n
+            -> P l (S n) ) -> 
+         forall (l : list X) (n : nat), no_longer_than X l n -> P l n)
 *)
-(** [] *)
+
+Inductive no_longer_than (X : Set) : (list X) -> nat -> Prop :=
+  | nlt_nil  : forall n, no_longer_than X [] n
+  | nlt_cons : forall x l n, no_longer_than X l n -> no_longer_than X (x::l) (S n)
+  | nlt_succ : forall l n, no_longer_than X l n -> no_longer_than X l (S n).
+
+Check no_longer_than_ind.
 
 
 (* ##################################################### *)
