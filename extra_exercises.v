@@ -16,9 +16,9 @@ Proof.
   intros n.
   intros H.
   induction n as [| n'].
-    exists 0. simpl. inversion H.
+    inversion H.
     induction H as [| ].
-      exists 0. simpl. reflexivity.
+      exists 0. reflexivity.
       inversion IHmyOdd.
       exists (x + 1).
       assert (HH : n = 2 * x + 1 -> S (S n) = 2 * (x + 1) + 1).
@@ -31,17 +31,37 @@ Qed.
 (* 2. Define myOdd2 and myEven2 mutually inductively. 
    Prove the lemma: forall n, myOdd2 n -> exists m, n = 2*m +1. *)
 
+(*
+  Inductive myEven2: nat -> Set :=
+    | e2_1 : myEven2 0
+    | e2_IH : forall n : nat, myOdd2 n -> myEven2 (S n)
+  with myOdd2 : nat -> Set :=
+    | o2_IH : forall n : nat, myEven2 n -> myOdd2 (S n).
+*)
 
-Inductive myEven2: nat -> Set :=
-  | e2_1 : myEven2 0
-  | e2_IH : forall n : nat, myOdd2 n -> myEven2 (S n)
-with myOdd2 : nat -> Set :=
-  | o2_IH : forall n : nat, myEven2 n -> myOdd2 (S n).
+Inductive myOdd2: nat -> Set :=
+  | o2_1 : myOdd2 1
+  | o2_IH : forall n : nat, myEven2 n -> myOdd2 (S n)
+with myEven2 : nat -> Set :=
+  | e2_IH : forall n : nat, myOdd2 n -> myEven2 (S n).
+
 
 Lemma myOdd2_lemma : forall n,
   myOdd2 n -> (exists m, n = 2*m + 1).
 Proof.
   intros n.
+  induction n as  [| n'].
+    intros H. inversion H.
+    intros H.
+      induction H as [| ].
+      exists 0. reflexivity.
+     admit.
+      
+
+      
+      
+      
+
     
   
 
