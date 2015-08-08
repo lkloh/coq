@@ -26,9 +26,24 @@ Proof.
       apply HH.
       apply H0.
 Qed.
-     
-      
 
 
 (* 2. Define myOdd2 and myEven2 mutually inductively. 
-Prove the lemma: forall n, myOdd2 n -> exists m, n = 2*m +1. *)
+   Prove the lemma: forall n, myOdd2 n -> exists m, n = 2*m +1. *)
+
+
+Inductive myEven2: nat -> Set :=
+  | e2_1 : myEven2 0
+  | e2_IH : forall n : nat, myOdd2 n -> myEven2 (S n)
+with myOdd2 : nat -> Set :=
+  | o2_IH : forall n : nat, myEven2 n -> myOdd2 (S n).
+
+Lemma myOdd2_lemma : forall n,
+  myOdd2 n -> (exists m, n = 2*m + 1).
+Proof.
+  intros n.
+    
+  
+
+
+
