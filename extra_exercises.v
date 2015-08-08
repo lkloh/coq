@@ -4,16 +4,6 @@
  forall n, myOdd n -> exists m, n = 2*m +1 *)
 
 
-
-Goal
-  exists x, 1 + x = 3.
-Proof.                        (* ⊢ exists x, 1 + x = 3 *)
-  eapply ex_intro.            (* ⊢ 1 + ?42 = 3 *)
-  simpl.                      (* ⊢ S ?42 = 3 *)
-  apply f_equal.              (* ⊢ ?42 = 2 *)
-  reflexivity.                (* proof completed *)
-Qed.
-
 Inductive myOdd : nat -> Set :=
 | m_1 : myOdd 1
 | m_IH : forall n : nat, myOdd n -> myOdd (S (S n)).
@@ -26,7 +16,19 @@ Proof.
   intros n.
   intros H.
   induction n as [| n'].
-  eapply ex_intro.
+    exists 0. simpl. inversion H.
+    induction H as [| ].
+      exists 0. simpl. reflexivity.
+      inversion IHmyOdd.
+      exists (x + 1).
+      assert (HH : n = 2 * x + 1 -> S (S n) = 2 * (x + 1) + 1).
+        admit.
+      apply HH.
+      apply H0.
+Qed.
+     
+      
+
 
 (* 2. Define myOdd2 and myEven2 mutually inductively. 
 Prove the lemma: forall n, myOdd2 n -> exists m, n = 2*m +1. *)

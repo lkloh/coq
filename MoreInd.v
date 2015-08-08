@@ -1024,14 +1024,20 @@ Check eq'_ind.
 (** **** Exercise: 1 star, optional (and_ind_principle)  *)
 (** See if you can predict the induction principle for conjunction. *)
 
-(* Check and_ind. *)
-(** [] *)
+Check and_ind. 
+(** 
+  forall (P Q H : Prop), 
+    (P -> Q -> H) -> P /\ Q -> H
+ *)
 
 (** **** Exercise: 1 star, optional (or_ind_principle)  *)
 (** See if you can predict the induction principle for disjunction. *)
 
-(* Check or_ind. *)
-(** [] *)
+Check or_ind.
+(**  
+  forall (P Q H : Prop), 
+    (P -> H) -> (Q -> H) -> P \/ Q -> H
+*)
 
 Check and_ind.
 
@@ -1070,8 +1076,15 @@ Check and_ind.
 (** **** Exercise: 1 star, optional (False_ind_principle)  *)
 (** Can you predict the induction principle for falsehood? *)
 
-(* Check False_ind. *)
-(** [] *)
+
+Check False_ind.
+(**  
+  if sth is false, can prove anything you like   
+
+
+  forall P : Prop,
+    false -> P
+*)
 
 (** Here's the induction principle that Coq generates for existentials: *)
 
@@ -1184,18 +1197,26 @@ Print nat_rect.
      The [induction ... using] tactic variant gives a convenient way to
      specify a non-standard induction principle like this. *)
  
-Lemma even__ev' : forall n, even n -> ev n.
+Lemma even__ev' : forall n,
+  even n -> ev n.
 Proof. 
- intros.  
- induction n as [ | |n'] using nat_ind2. 
-  Case "even 0". 
-    apply ev_0.  
-  Case "even 1". 
+  intros.
+  induction n as [| | n'] using nat_ind2.
+  Case "n=0".
+    apply ev_0.
+  Case "n=1".
+    unfold even in H.
+    simpl in H.
     inversion H.
-  Case "even (S(S n'))". 
-    apply ev_SS. 
-    apply IHn'.  unfold even.  unfold even in H.  simpl in H. apply H. 
-Qed. 
+  Case "n = S n'".
+    apply ev_SS.
+    unfold even in H.
+    apply IHn'.
+    simpl in H.
+    unfold even.
+    apply H.
+Qed.
+    
 
 (* ######################################################### *)
 (** ** The Coq Trusted Computing Base *)
