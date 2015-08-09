@@ -892,19 +892,44 @@ Proof. reflexivity.  Qed.
 Theorem snoc_rev : forall (X:Type) (l:list X) (n : X),
   snoc (rev l) n = rev (n::l).  
 Proof.
-  intros X l n.
+  intros.
   induction l as [| v l'].
-  simpl.
-  reflexivity.
-  simpl.
-  reflexivity.
-  Qed.
+  Case "nil".
+    simpl. reflexivity.
+  Case "v::l'".
+    simpl. reflexivity.
+Qed.
+
+Theorem map_help: forall (X Y : Type) (f : X -> Y) (l : list X) (n : X),
+  map f (snoc l n) = snoc (map f l) (f n).
+Proof.
+  intros.
+  induction l as [| v l'].
+  Case "nil".
+    simpl.
+    reflexivity.
+  Case "v::l'".
+    simpl.
+    rewrite -> IHl'.
+    reflexivity.
+Qed.
   
 
 Theorem map_rev : forall (X Y : Type) (f : X -> Y) (l : list X),
   map f (rev l) = rev (map f l).
 Proof.
-  admit.
+  intros.
+  induction l as [| n l'].
+  Case "nil".
+    simpl.
+    reflexivity.
+  Case "n::l'".
+    simpl.
+    rewrite <- IHl'. 
+    rewrite -> map_help.
+    reflexivity.
+Qed.
+    
 
 (** **** Exercise: 2 stars (flat_map)  *)
 (** The function [map] maps a [list X] to a [list Y] using a function
