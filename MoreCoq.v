@@ -1253,16 +1253,21 @@ Qed.
     things than necessary.  Hint: what property do you need of [l1]
     and [l2] for [split] [combine l1 l2 = (l1,l2)] to be true?)  *)
 
+
+
 Definition split_combine_statement : Prop :=
-admit.
+  forall {X : Type}(l: list (X*X)) (l1 l2 : list X),
+    combine l1 l2 = l -> split l = (l1, l2).
 
-Theorem split_combine : split_combine_statement.
+Theorem split_combine : forall {X : Type} (l: list(X*X)) (l1 l2 : list X),
+  split l = (l1, l2) -> combine l1 l2 = l.
 Proof.
-(* FILL IN HERE *) Admitted.
+  intros.
+  induction l as [| v l'].
+  Case "l = nil".
+  Abort.
+    
 
-
-
-(** [] *)
 
 (** **** Exercise: 3 stars (override_permute)  *)
 Theorem override_permute : forall (X:Type) x1 x2 k1 k2 k3 (f : nat->X),
@@ -1295,20 +1300,25 @@ Theorem filter_exercise : forall (X : Type) (test : X -> bool)
 Proof.
   intros X test x l.
   induction l as [| v l'].
-  Case "l = v".
-  simpl.
-  intros lf eq1. 
-  destruct (test x) eqn:e1.
-  reflexivity.
-  inversion eq1.
-  Case "l = list".
-  intros lf e3.
-  destruct (test x) eqn:e4.
-  reflexivity.
-  rewrite <- e4.
-Abort.
-  
-  
+  Case "l = nil".
+    intros.
+    inversion H.
+  Case "l = x::l'".
+    intros.
+    simpl in H.
+    remember (test v) in H.
+    destruct b.
+    SCase " test v = true".
+      inversion H.
+      rewrite <- H1.
+      symmetry.
+      apply Heqb.
+    SCase "test v = false".
+      apply IHl' in H.
+      apply H.
+Qed.
+
+
 
 (** **** Exercise: 4 stars, advanced (forall_exists_challenge)  *)
 (** Define two recursive [Fixpoints], [forallb] and [existsb].  The
@@ -1337,10 +1347,45 @@ Abort.
     the same behavior.
 *)
 
-(* FILL IN HERE *)
-(** [] *)
+Fixpoint forallb {X : Type} (f : X -> bool) (l : list X) : bool :=
+  match l with
+    | nil => true
+    | x :: l' => match (f x) with
+                   | false => false
+                   | true => (forallb f l')
+                 end
+   end.
 
-(** $Date: 2014-12-31 16:01:37 -0500 (Wed, 31 Dec 2014) $ *)
+Example check1:
+  forallb oddb [1;3;5;7;9] = true.
+Proof.
+  simpl. reflexivity.
+Qed.
 
+Example check2:
+  forallb evenb [0;2;4;5] = false.
+Proof.
+  simpl. reflexivity.
+Qed.
+  
 
+Fixpoint existsb {X : Type} (f : X -> bool) (l : list X) : bool :=
+  match l with
+    | nil => false
+    | x :: l' => match (f x) with
+                   | false => existsb f l'
+                   | true => true
+                 end
+  end.
 
+Example e_check1:
+  existsb (beq_nat 5) [0;2;3;6] = false.
+Proof.
+  simpl. reflexivity.
+Qed.
+
+Example e_check2:
+  existsb (andb true) [true;true;false] = true.
+Proof.
+  simpl. reflexivity.
+Qed.
