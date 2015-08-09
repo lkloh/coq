@@ -157,16 +157,17 @@ Inductive mumble : Type :=
   | a : mumble
   | b : mumble -> nat -> mumble
   | c : mumble.
+
 Inductive grumble (X:Type) : Type :=
   | d : mumble -> grumble X
   | e : X -> grumble X.
 
 (** Which of the following are well-typed elements of [grumble X] for
     some type [X]?
-      - [d (b a 5)]
-      - [d mumble (b a 5)]
-      - [d bool (b a 5)]
-      - [e bool true]
+      - [d (b a 5)] NO
+      - [d mumble (b a 5)] NO
+      - [d bool (b a 5)] NO
+      - [e bool true] YES
       - [e mumble (b c 0)]
       - [e bool (b c 0)]
       - [c] 
@@ -183,7 +184,7 @@ Inductive baz : Type :=
    | y : baz -> bool -> baz.
 
 (** How _many_ elements does the type [baz] have? 
-(* FILL IN HERE *)
+1
 *)
 (** [] *)
 
@@ -399,44 +400,52 @@ Theorem rev_snoc : forall X : Type,
                      forall s : list X,
   rev (snoc s v) = v :: (rev s).
 Proof.
-  intros X v s.
+  intros.
   induction s as [| n s'].
-  simpl.
-  reflexivity.
-  simpl.
-  rewrite -> IHs'.
-  simpl.
-  reflexivity.
-  Qed.
+  Case "nil".
+    simpl. reflexivity.
+  Case "n::s'".
+    simpl.
+    rewrite -> IHs'.
+    simpl.
+    reflexivity.
+Qed.
+
+  
   
   
 
 Theorem rev_involutive : forall X : Type, forall l : list X,
   rev (rev l) = l.
 Proof.
-  intros X l.
-  induction l as [| n l'].
-  simpl.
-  reflexivity.
- simpl.
-rewrite -> rev_snoc.
-rewrite -> IHl'.
-reflexivity.
+  intros.
+  induction l as [| n s'].
+  Case "nil".
+    simpl. 
+    reflexivity.
+  Case "n::s'".
+    simpl.
+    rewrite -> rev_snoc.
+    rewrite -> IHs'.
+    reflexivity.
 Qed.
+  
 
 Theorem snoc_with_append : forall X : Type,
                          forall l1 l2 : list X,
                          forall v : X,
   snoc (l1 ++ l2) v = l1 ++ (snoc l2 v).
 Proof.
-  intros X l1 l2 v.
+  intros.
   induction l1 as [| n1 l1'].
-  simpl.
-  reflexivity.
-  simpl.
-  rewrite -> IHl1'.
-  reflexivity.
-  Qed.
+  Case "nil".
+    simpl. 
+    reflexivity.
+  Case "n1::l1'".
+    simpl.
+    rewrite -> IHl1'.
+    reflexivity.
+Qed.
 
 (* ###################################################### *)
 (** ** Polymorphic Pairs *)
@@ -475,10 +484,14 @@ Notation "X * Y" := (prod X Y) : type_scope.
     much as they would in any functional programming language. *)
 
 Definition fst {X Y : Type} (p : X * Y) : X :=
-  match p with (x,y) => x end.
+  match p with
+    | (x,y) => x
+  end.
 
 Definition snd {X Y : Type} (p : X * Y) : Y :=
-  match p with (x,y) => y end.
+  match p with
+   | (x,y) => y
+  end.
 
 (** The following function takes two lists and combines them
     into a list of pairs.  In many functional programming languages,
@@ -495,15 +508,28 @@ Fixpoint combine {X Y : Type} (lx : list X) (ly : list Y)
   | (x::tx, y::ty) => (x,y) :: (combine tx ty)
   end.
 
+
+
 (** **** Exercise: 1 star, optional (combine_checks)  *)
 (** Try answering the following questions on paper and
     checking your answers in coq:
     - What is the type of [combine] (i.e., what does [Check
       @combine] print?)
+      
+      forall (X Y : Type), 
+        list X -> list Y -> list (X * Y) 
+
     - What does
         Eval compute in (combine [1;2] [false;false;true;true]).
-      print?   []
-*)
+      print?   
+        
+       (1,false) :: (2,false) :: nil
+
+      *)
+
+Check @combine.
+Eval compute in (combine [1;2] [false;false;true;true]).
+
 
 (** **** Exercise: 2 stars (split)  *)
 (** The function [split] is the right inverse of combine: it takes a
@@ -513,20 +539,18 @@ Fixpoint combine {X Y : Type} (lx : list X) (ly : list Y)
     Uncomment the material below and fill in the definition of
     [split].  Make sure it passes the given unit tests. *)
 
-Fixpoint split
-           {X Y : Type} (l : list (X*Y))
-           : (list X) * (list Y) :=
-           match l with
-             | nil => (nil, nil)
-             | p::l' => ( (fst p)::(fst (split l')), (snd p)::(snd (split l')) )
-           end. 
+Fixpoint split {X Y : Type} (l : list (X*Y)) : (list X) * (list Y) :=
+  match l with
+    | nil => (nil, nil)
+    | p::l' => ( (fst p)::(fst (split l')), (snd p)::(snd (split l')) )
+  end. 
              
 
 Example test_split:
   split [(1,false);(2,false)] = ([1;2],[false;false]).
 Proof.
-simpl.
-reflexivity.
+  simpl.
+  reflexivity.
 Qed.
 
 (* ###################################################### *)
@@ -668,9 +692,8 @@ Definition prod_curry {X Y Z : Type}
 (** As an exercise, define its inverse, [prod_uncurry].  Then prove
     the theorems below to show that the two are inverses. *)
 
-Definition prod_uncurry {X Y Z : Type}
-  (f : X -> Y -> Z) (p : X * Y) : Z :=
-  (f (fst p)) (snd p).
+Definition prod_uncurry {X Y Z : Type} (f : X -> Y -> Z) (p : X * Y) : Z :=
+   f (fst p) (snd p).
 
 (** (Thought exercise: before running these commands, can you
     calculate the types of [prod_curry] and [prod_uncurry]?) *)
@@ -690,7 +713,15 @@ Proof.
 Theorem curry_uncurry : forall (X Y Z : Type) (f : (X * Y) -> Z) (p : X * Y),
   prod_uncurry (prod_curry f) p = f p.
 Proof.
-  admit.
+  intros.
+  destruct p.
+  unfold prod_uncurry.
+  simpl.
+  unfold prod_curry.
+  reflexivity.
+Qed.
+  
+  
   
 (* ###################################################### *)
 (** ** Filter *)
@@ -700,12 +731,10 @@ Proof.
     and "filters" the list, returning a new list containing just those
     elements for which the predicate returns [true]. *)
 
-Fixpoint filter {X:Type} (test: X->bool) (l:list X)
-                : (list X) :=
+Fixpoint filter {X:Type} (test: X->bool) (l:list X) : (list X) :=
   match l with
-  | []     => []
-  | h :: t => if test h then h :: (filter test t)
-                        else       filter test t
+    | []     => []
+    | h :: t => if test h then h :: (filter test t) else filter test t
   end.
 
 (** For example, if we apply [filter] to the predicate [evenb]
