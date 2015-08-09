@@ -61,7 +61,7 @@ Proof.
     simpl. rewrite <- IHn. reflexivity.
 Qed.
 
-Theorem plus_assoc : forall n m p : nat,
+Lemma plus_assoc : forall n m p : nat,
   n + (m + p) = (n + m) + p.
 Proof.
   intros n m p. induction n as [| n'].
@@ -128,13 +128,25 @@ with myEven2 : nat -> Set :=
   | e2_IH : forall n : nat, myOdd2 n -> myEven2 (S n).
 
   
-
+Check myOdd2_ind.
 
 Theorem ex_falso_quodlibet : forall (P:Prop),
   False -> P.
 Proof.
   intros P contra.
   inversion contra.
+Qed.
+
+Lemma odd_to_even : forall n,
+  myOdd2 n -> myEven2 (S n).
+Proof.
+  admit.
+Qed.
+
+Lemma even_to_odd : forall n,
+  myEven2 n -> myOdd2 (S n).
+Proof.
+  admit.
 Qed.
 
 Lemma myOdd2_lemma : forall n,
@@ -146,7 +158,7 @@ Proof.
     intros H.
       inversion H.
       exists 0. reflexivity.
-      destruct H1.
+      generalize dependent.
       
       
       
