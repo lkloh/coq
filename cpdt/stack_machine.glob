@@ -1,0 +1,6 @@
+DIGEST 0d34c819f4b7917d0ee486628e4fdf7c
+Fstack_machine
+R15:18 Coq.Bool.Bool <> <> lib
+R20:24 Coq.Arith.Arith <> <> lib
+R26:29 Coq.Lists.List <> <> lib
+R31:41 CpdtTactics <> <> lib
