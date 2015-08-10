@@ -127,8 +127,32 @@ Inductive myOdd2: nat -> Set :=
 with myEven2 : nat -> Set :=
   | e2_IH : forall n : nat, myOdd2 n -> myEven2 (S n).
 
-  
 Check myOdd2_ind.
+
+Example myOdd2_test_1:
+  myOdd2 1.
+Proof.
+  apply o2_1.
+Qed.
+
+
+Example myOdd2_test_2:
+  myOdd2 5.
+Proof.
+  apply o2_IH.
+  apply e2_IH.
+  apply o2_IH.
+  apply e2_IH.
+  apply o2_1.
+
+Example myEven2_test_3:
+  myEven2 4.
+Proof.
+  apply e2_IH.
+  apply o2_IH.
+  apply e2_IH.
+  apply o2_1.
+Qed.
 
 Theorem ex_falso_quodlibet : forall (P:Prop),
   False -> P.
@@ -137,29 +161,21 @@ Proof.
   inversion contra.
 Qed.
 
-Lemma odd_to_even : forall n,
-  myOdd2 n -> myEven2 (S n).
-Proof.
-  admit.
-Qed.
+Scheme myOdd2_mut := Induction for myOdd2 Sort Prop
+  with myEven2_mut := Induction for myEven2 Sort Prop.
 
-Lemma even_to_odd : forall n,
-  myEven2 n -> myOdd2 (S n).
-Proof.
-  admit.
-Qed.
+Check myOdd2_mut.
 
-Lemma myOdd2_lemma : forall n,
+Lemma myOdd2_lemma_p : forall n,
   myOdd2 n -> (exists m, n = 2*m + 1).
 Proof.
-  intros n.
-  induction n as  [| n'].
-    intros H. inversion H.
-    intros H.
-      inversion H.
-      exists 0. reflexivity.
-      generalize dependent.
-      
+  apply (myOdd2_mut
+    (fun no : myOdd2 => (exists mo : nat, no = 2*mo + 1) )
+    (fun ne : myEven2 => (exists me : nat, S ne = 2*me + 1) )
+  ).
+  
+
+  
       
       
       

@@ -60,7 +60,8 @@ Proof.
     time, we can use the convenient shorthand [exists e], which means
     the same thing. *)
 
-Example exists_example_1' : exists n, n + (n * n) = 6.
+Example exists_example_1' : exists n,
+  n + (n * n) = 6.
 Proof.
   exists 2. 
   reflexivity.
@@ -79,22 +80,25 @@ Theorem exists_example_2 : forall n,
   (exists m, n = 4 + m) ->
   (exists o, n = 2 + o).
 Proof.
-  intros n H.
-  inversion H as [m Hm]. 
-  exists (2 + m).  
-  apply Hm.
-Qed. 
+  intros.
+  inversion H.
+  exists (2 + witness).
+  apply H0.
+Qed.
+  
+  
 
 
 (** Here is another example of how to work with existentials. *)
 Lemma exists_example_3 : 
   exists (n:nat), even n /\ beautiful n.
 Proof.
-  exists 8.
+  exists 6.
   split.
-  unfold even. simpl. reflexivity.
-  apply b_sum with (n:=3) (m:=5). apply b_3. apply b_5.
+  unfold even. reflexivity.
+  apply b_sum with (n:=3) (m:=3). apply b_3. apply b_3.
 Qed.
+  
 
 (** **** Exercise: 1 star, optional (english_exists)  *)
 (** In English, what does the proposition 
@@ -102,9 +106,9 @@ Qed.
 ]] 
     mean? *)
 
-(* FILL IN HERE *)
 
 (*
+  There exists a natural number such that its successor is beautiful
 *)
 (** **** Exercise: 1 star (dist_not_exists)  *)
 (** Prove that "[P] holds for all [x]" implies "there is no [x] for
@@ -114,11 +118,12 @@ Theorem dist_not_exists : forall (X:Type) (P : X -> Prop),
   (forall x, P x) -> ~ (exists x, ~ P x).
 Proof. 
   unfold not.
-  intros X P H1 H2.
-  inversion H2 as [x1 Hx1].
-  apply Hx1.
+  intros.
+  inversion H0.
   apply H1.
+  apply H.
 Qed.
+  
   
 (** **** Exercise: 3 stars, optional (not_exists_dist)  *)
 (** (The other direction of this theorem requires the classical "law
@@ -160,15 +165,17 @@ Proof.
   Case "->".
     intros.
     inversion H.
-    destruct H0 as [A | B].
-    left. exists witness. apply A.
-    right. exists witness. apply B.
+    destruct H0 as [HP | HQ].
+    left. exists witness. apply HP.
+    right. exists witness. apply HQ.
   Case "<-".
     intros.
-    destruct H as [A | B].
-    inversion A. exists witness. left. apply H.
-    inversion B. exists witness. right. apply H.
+    destruct H as [HP | HQ].
+    inversion HP. exists witness. left. apply H.
+    inversion HQ. exists witness. right. apply H.
 Qed.
+      
+    
 
 (* ###################################################### *)
 (** * Evidence-Carrying Booleans *)
@@ -335,8 +342,53 @@ Fixpoint forallb {X : Type} (test : X -> bool) (l : list X) : bool :=
     for one list to be a merge of two others.  Do this with an
     inductive relation, not a [Fixpoint].)  *)
 
-(* FILL IN HERE *)
-(** [] *)
+Inductive merger {X : Type} : list X -> list X -> list X -> Prop :=
+  | m_nil : merger [] [] []
+  | m_first : forall (l1 l2 l : list X) (x : X), merger l1 l2 l -> merger (x::l1) l2 (x::l)
+  | m_second : forall (l1 l2 l : list X) (x : X), merger l1 l2 l -> merger (x::l1) (x::l2) (x::l).
+
+Fixpoint existsb {X : Type} (test : X -> bool) (l : list X) : bool :=
+  match l with
+    | [] => false
+    | x :: l' => orb (test x) (forallb test l')
+  end.
+
+Example existb_1: existsb oddb [1;2] = true.
+Proof. reflexivity. Qed.
+
+Example existsb_2: existsb oddb [2;4] = false.
+Proof. reflexivity. Qed.
+
+Example existsb_3: existsb oddb [] = false.
+Proof. reflexivity. Qed.  
+  
+Lemma merger_property : forall {X : Type} (test : X -> bool) (l1 l2 l : list X),
+  forallb test l1 = true /\ ~(existsb test l2 = true) /\ merger l1 l2 l
+    -> filter test l = l1.
+Proof.
+  intros.
+  induction l as [| n l'].
+  Case "nil".
+    destruct H as [A [B C]].
+    inversion C.
+    simpl.
+    reflexivity.
+  Case "n::l'".
+    destruct H as [A [B C]].
+    simpl.
+    remember (test n).
+    destruct b.
+    SCase "true = test n".
+      admit.
+    SCase "false = test n".
+      apply IHl'.
+      split. apply A.
+      split. apply B.
+      induction l1 as [| n1 l1'].
+        admit.
+Abort.
+        
+  
 
 (** **** Exercise: 5 stars, advanced, optional (filter_challenge_2)  *)
 (** A different way to formally characterize the behavior of [filter]
@@ -363,7 +415,22 @@ Inductive appears_in {X:Type} (a:X) : list X -> Prop :=
 Lemma appears_in_app : forall (X:Type) (xs ys : list X) (x:X), 
      appears_in x (xs ++ ys) -> appears_in x xs \/ appears_in x ys.
 Proof.
-   admit.
+   intros X xs.
+  induction xs as [| xn xs'].
+  Case "nil".
+    intros.
+    simpl in H.
+    right. apply H.
+  Case "xn::xs'".
+    intros.
+    inversion H.
+    SCase "now".
+      left. constructor.
+    SCase "later".
+      apply IHxs' in H1.
+      inversion H1.
+      Abort.
+    
     
   
 
@@ -407,8 +474,9 @@ Proof.
     does not stutter.) *)
 
 Inductive nostutter:  list nat -> Prop :=
- (* FILL IN HERE *)
-.
+  | ns_nil : nostutter []
+  | ns_elem : forall (n : nat), nostutter [n]
+  | ns_cons : forall (n m : nat) (l : list nat), nostutter (m::l) -> n <> m -> nostutter (n::m::l).
 
 (** Make sure each of these tests succeeds, but you are free
     to change the proof if the given one doesn't work for you.
@@ -422,34 +490,48 @@ Inductive nostutter:  list nat -> Prop :=
     you prefer you can also prove each example with more basic
     tactics.  *)
 
-Example test_nostutter_1:      nostutter [3;1;4;1;5;6].
-(* FILL IN HERE *) Admitted.
-(* 
-  Proof. repeat constructor; apply beq_nat_false; auto. Qed.
-*)
+Example test_nostutter_1:
+  nostutter [3].
+Proof.
+  apply ns_elem.
+Qed.
 
-Example test_nostutter_2:  nostutter [].
-(* FILL IN HERE *) Admitted.
-(* 
-  Proof. repeat constructor; apply beq_nat_false; auto. Qed.
-*)
+Example test_no_stutter_2:
+  nostutter [2;3].
+Proof.
+  apply ns_cons.
+  apply ns_elem.
+  unfold not. intros H. inversion H.
+Qed.
 
-Example test_nostutter_3:  nostutter [5].
-(* FILL IN HERE *) Admitted.
-(* 
-  Proof. repeat constructor; apply beq_nat_false; auto. Qed.
-*)
+  
 
-Example test_nostutter_4:      not (nostutter [3;1;1;4]).
-(* FILL IN HERE *) Admitted.
-(* 
-  Proof. intro.
+Example test_nostutter_3:      nostutter [3;1;4;1;5;6].
+Proof.
+  repeat constructor; apply beq_nat_false. auto.
+  unfold not. reflexivity. reflexivity. reflexivity. reflexivity.
+Qed.
+
+
+Example test_nostutter_4:  nostutter [].
+Proof. repeat constructor; apply beq_nat_false; auto. Qed.
+
+
+Example test_nostutter_5:  nostutter [5].
+Proof. repeat constructor; apply beq_nat_false; auto. Qed.
+
+Example test_nostutter_6:
+  not (nostutter [3;1;1;4]).
+Proof.
+  intro.
   repeat match goal with 
     h: nostutter _ |- _ => inversion h; clear h; subst 
   end.
-  contradiction H1; auto. Qed.
-*)
-(** [] *)
+  unfold not in H5.
+  apply H5.
+  reflexivity.
+Qed.
+
 
 (** **** Exercise: 4 stars, advanced (pigeonhole principle)  *)
 (** The "pigeonhole principle" states a basic fact about counting:
@@ -464,21 +546,62 @@ Example test_nostutter_4:      not (nostutter [3;1;1;4]).
 Lemma app_length : forall (X:Type) (l1 l2 : list X),
   length (l1 ++ l2) = length l1 + length l2. 
 Proof. 
-  (* FILL IN HERE *) Admitted.
+  intros X l1.
+  induction l1 as [| n1 l1'].
+  Case "nil".
+    intros.
+    simpl.
+    reflexivity.
+  Case "n1::l1'".
+    intros.
+    simpl.
+    apply f_equal.
+    apply IHl1'.
+Qed.
 
 Lemma appears_in_app_split : forall (X:Type) (x:X) (l:list X),
   appears_in x l -> 
   exists l1, exists l2, l = l1 ++ (x::l2).
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros.
+  induction H.
+  Case "here".
+    exists [].
+    simpl.
+    exists l.
+    reflexivity.
+  Case "later".
+    inversion IHappears_in. exists (b::witness). simpl.
+    inversion H0. exists witness0.
+    rewrite <- H1.
+    reflexivity.
+Qed.
+  
+    
+    
 
 (** Now define a predicate [repeats] (analogous to [no_repeats] in the
    exercise above), such that [repeats X l] asserts that [l] contains
    at least one repeated element (of type [X]).  *)
 
 Inductive repeats {X:Type} : list X -> Prop :=
-  (* FILL IN HERE *)
-.
+  | r_elem : forall (n : X), repeats [n;n]
+  | r_left : forall (l : list X) (n m : X), repeats (n::n::l) -> repeats (m::n::n::l)
+  | r_right : forall (l : list X) (n m : X),
+      repeats (snoc (snoc l n) n) -> repeats (snoc (snoc (snoc l n) n) m).
+
+Example repeats1 :
+  repeats [2;2].
+Proof.
+  apply r_elem.
+Qed.
+
+Example repeats2 :
+  repeats [3;4;4;4;5].
+Proof.
+  apply r_left.
+  apply r_left.
+Abort.
 
 (** Now here's a way to formalize the pigeonhole principle. List [l2]
     represents a list of pigeonhole labels, and list [l1] represents

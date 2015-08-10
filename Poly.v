@@ -929,7 +929,6 @@ Proof.
     rewrite -> map_help.
     reflexivity.
 Qed.
-    
 
 (** **** Exercise: 2 stars (flat_map)  *)
 (** The function [map] maps a [list X] to a [list Y] using a function
@@ -941,8 +940,7 @@ Qed.
       = [1; 2; 3; 5; 6; 7; 10; 11; 12].
 *)
 
-Fixpoint flat_map {X Y:Type} (f:X -> list Y) (l:list X)
-                   : (list Y) :=
+Fixpoint flat_map {X Y:Type} (f:X -> list Y) (l:list X) : (list Y) :=
   match l with
     | [] => []
     | h :: t => (f h) ++ (flat_map f t)
@@ -975,6 +973,18 @@ Definition option_map {X Y : Type} (f : X -> Y) (xo : option X)
     done so correctly.  (This exercise is not to be turned in; it is
     probably easiest to do it on a _copy_ of this file that you can
     throw away afterwards.)  [] *)
+
+Fixpoint filter' (X:Type) (test: X -> bool) (l:list X) : (list X) :=
+  match l with
+  | [] => []
+  | h :: t => if test h then h :: (filter' X test t) else filter' X test t
+  end.
+
+Fixpoint map' (X Y:Type) (f:X -> Y) (l:list X) : (list Y) :=
+  match l with
+  | [] => []
+  | h :: t => (f h) :: (map' X Y f t)
+  end.
 
 (* ###################################################### *)
 (** ** Fold *)
@@ -1089,7 +1099,8 @@ Theorem override_example : forall (b:bool),
 Proof.
   simpl.
   reflexivity.
-  Qed.
+Qed.
+
 (** We'll use function overriding heavily in parts of the rest of the
     course, and we will end up needing to know quite a bit about its
     properties.  To prove these properties, though, we need to know
@@ -1128,11 +1139,11 @@ Theorem unfold_example : forall m n,
   3 + n = m ->
   plus3 n + 1 = m + 1.
 Proof.
-  intros m n H.
+  intros.
   unfold plus3.
   rewrite -> H.
   reflexivity.
-  Qed.
+Qed.
 
 (** Now we can prove a first property of [override]: If we
     override a function at some argument [k] and then look up [k], we
@@ -1141,10 +1152,11 @@ Proof.
 Theorem override_eq : forall {X:Type} x k (f:nat->X),
   (override f k x) k = x.
 Proof.
-  intros X x k f.
+  intros.
   unfold override.
   rewrite <- beq_nat_refl.
-  reflexivity.  Qed.
+  reflexivity.
+Qed.
 
 (** This proof was straightforward, but note that it requires
     [unfold] to expand the definition of [override]. *)
@@ -1155,13 +1167,10 @@ Theorem override_neq : forall (X:Type) x1 x2 k1 k2 (f : nat->X),
   beq_nat k2 k1 = false ->
   (override f k2 x2) k1 = x1.
 Proof.
-  intros X x1 x2 k1 k2 f.
+  intros.
   unfold override.
-  intros H.
-  intros H1.
-  rewrite -> H1.
-  rewrite -> H.
-  reflexivity.
+  rewrite -> H0.
+  apply H.
 Qed.
 
 (** As the inverse of [unfold], Coq also provides a tactic
@@ -1186,31 +1195,43 @@ Proof. reflexivity. Qed.
 Theorem fold_length_correct : forall X (l : list X),
   fold_length l = length l.
 Proof.
-  intros X l.
+  intros.
   induction l as [| n l'].
-  unfold fold_length.
-  simpl.
-  reflexivity.
-  simpl.
-  rewrite <- IHl'.
-  unfold fold_length.
-  simpl.
-  reflexivity.
-  Qed.
+  Case "nil".
+    simpl.
+    reflexivity.
+  Case "n::l'".
+    simpl.
+    rewrite <- IHl'.
+    reflexivity.
+Qed.
+    
 
 (** **** Exercise: 3 stars (fold_map)  *)
 (** We can also define [map] in terms of [fold].  Finish [fold_map]
     below. *)
 
   
-Definition fold_map {X Y:Type} (f : X -> Y) (l : list X) : list Y :=
-  admit.
+Definition fold_map {X Y:Type} (f : X -> Y) (lx : list X) : list Y :=
+  fold (fun x ly => (f x)::ly) lx nil.
 
 (** Write down a theorem [fold_map_correct] in Coq stating that
    [fold_map] is correct, and prove it. *)
 
-(* FILL IN HERE *)
-(** [] *)
+Lemma fold_map_correct : forall {X Y:Type} (f : X -> Y) (lx : list X),
+  fold_map f lx = map f lx.
+Proof.
+  intros.
+  induction lx as [| x lx'].
+  Case "nil".
+    simpl.
+    reflexivity.
+  Case "x::lx'".
+    simpl.
+    rewrite <- IHlx'.
+    reflexivity.
+Qed.
+  
 
 (** **** Exercise: 2 stars, advanced (index_informal)  *)
 (** Recall the definition of the [index] function:
@@ -1221,9 +1242,30 @@ Definition fold_map {X Y:Type} (f : X -> Y) (l : list X) : list Y :=
      end.
    Write an informal proof of the following theorem:
    forall X n l, length l = n -> @index X n l = None.
-(* FILL IN HERE *)
 *)
-(** [] *)
+Lemma index_none: forall {X : Type} (n : nat) (l : list X),
+  length l = n -> @index X n l = None.
+Proof.
+  intros.
+  generalize dependent n.
+  induction l as [| v l'].
+  Case "nil".
+    intros.
+    simpl.
+    reflexivity.
+  Case "v::l'".
+    intros.
+    simpl.
+    destruct n.
+    SCase "n=0".
+      inversion H.
+    SCase "n = S n'".
+      simpl.
+      apply IHl'.
+      inversion H.
+      reflexivity.
+Qed.
+     
 
 (** **** Exercise: 4 stars, advanced (church_numerals)  *)
 
@@ -1268,36 +1310,36 @@ Definition three : nat := @doit3times.
 (** Successor of a natural number *)
 
 Definition succ (n : nat) : nat :=
-  (* FILL IN HERE *) admit.
+ fun (X: Type) (f: X -> X) (x: X) => n X f (f x).
 
 Example succ_1 : succ zero = one.
-Proof. (* FILL IN HERE *) Admitted.
+Proof. simpl. reflexivity. Qed.
 
 Example succ_2 : succ one = two.
-Proof. (* FILL IN HERE *) Admitted.
+Proof. simpl. reflexivity. Qed.
 
 Example succ_3 : succ two = three.
-Proof. (* FILL IN HERE *) Admitted.
+Proof. simpl. reflexivity. Qed.
 
 (** Addition of two natural numbers *)
 
 Definition plus (n m : nat) : nat :=
-  (* FILL IN HERE *) admit.
+  fun (X : Type) (f: X -> X) (x : X) => n X f (m X f x).
 
 Example plus_1 : plus zero one = one.
-Proof. (* FILL IN HERE *) Admitted.
+Proof. simpl. reflexivity. Qed. 
 
 Example plus_2 : plus two three = plus three two.
-Proof. (* FILL IN HERE *) Admitted.
+Proof. simpl. reflexivity. Qed.
 
 Example plus_3 :
   plus (plus two two) three = plus one (plus three three).
-Proof. (* FILL IN HERE *) Admitted.
+Proof. simpl. reflexivity. Qed.
 
 (** Multiplication *)
 
 Definition mult (n m : nat) : nat := 
-  (* FILL IN HERE *) admit.
+  admit.
 
 Example mult_1 : mult one one = one.
 Proof. (* FILL IN HERE *) Admitted.
