@@ -1,0 +1,943 @@
+DIGEST 74d9e6271d00b05061774bc626c6488c
+FInductiveTypes
+R305:308 Coq.Lists.List <> <> lib
+R327:337 CpdtTactics <> <> lib
+R3534:3536 Coq.Init.Datatypes <> nat ind
+R3541:3541 InductiveTypes <> x var
+R3681:3684 Coq.Init.Logic <> True ind
+R3689:3689 InductiveTypes <> x var
+R4402:4402 Coq.Init.Logic <> I constr
+R4520:4524 Coq.Init.Logic <> False ind
+R4529:4529 Coq.Init.Logic <> I constr
+R4790:4794 Coq.Init.Logic <> False ind
+R4799:4799 InductiveTypes <> x var
+ind 6927:6930 <> unit
+constr 6945:6946 <> tt
+R6947:6947 InductiveTypes <> unit ind
+R7112:7115 InductiveTypes <> unit ind
+R7145:7146 InductiveTypes <> tt constr
+prf 7253:7266 <> unit_singleton
+R7281:7284 InductiveTypes <> unit ind
+R7288:7290 Coq.Init.Logic <> :type_scope:x_'='_x not
+R7287:7287 InductiveTypes <> x var
+R7291:7292 InductiveTypes <> tt constr
+R8340:8347 InductiveTypes <> unit_ind scheme
+ind 10178:10186 <> Empty_set
+prf 10282:10299 <> the_sky_is_falling
+R10314:10322 InductiveTypes <> Empty_set ind
+R10330:10332 Coq.Init.Logic <> :type_scope:x_'='_x not
+R10326:10328 Coq.Init.Peano <> :nat_scope:x_'+'_x not
+R11235:11247 InductiveTypes <> Empty_set_ind scheme
+def 11685:11687 <> e2u
+R11694:11702 InductiveTypes <> Empty_set ind
+R11707:11710 InductiveTypes <> unit ind
+R11721:11721 InductiveTypes <> e var
+ind 12343:12346 <> bool
+constr 12359:12362 <> true
+constr 12366:12370 <> false
+R12363:12363 InductiveTypes <> bool ind
+R12371:12371 InductiveTypes <> bool ind
+def 12490:12493 <> negb
+R12500:12503 InductiveTypes <> bool ind
+R12508:12511 InductiveTypes <> bool ind
+R12524:12524 InductiveTypes <> b var
+R12537:12540 InductiveTypes <> true constr
+R12545:12549 InductiveTypes <> false constr
+R12557:12561 InductiveTypes <> false constr
+R12566:12569 InductiveTypes <> true constr
+def 12778:12782 <> negb'
+R12789:12792 InductiveTypes <> bool ind
+R12797:12800 InductiveTypes <> bool ind
+R12810:12810 InductiveTypes <> b var
+R12828:12831 InductiveTypes <> true constr
+R12817:12821 InductiveTypes <> false constr
+prf 12916:12927 <> negb_inverse
+R12942:12945 InductiveTypes <> bool ind
+R12961:12963 Coq.Init.Logic <> :type_scope:x_'='_x not
+R12948:12951 InductiveTypes <> negb def
+R12954:12957 InductiveTypes <> negb def
+R12959:12959 InductiveTypes <> b var
+R12964:12964 InductiveTypes <> b var
+prf 13641:13649 <> negb_ineq
+R13664:13667 InductiveTypes <> bool ind
+R13676:13679 Coq.Init.Logic <> :type_scope:x_'<>'_x not
+R13670:13673 InductiveTypes <> negb def
+R13675:13675 InductiveTypes <> b var
+R13680:13680 InductiveTypes <> b var
+R14090:14097 InductiveTypes <> bool_ind scheme
+ind 14992:14994 <> nat
+constr 15007:15007 <> O
+constr 15017:15017 <> S
+R15011:15013 InductiveTypes <> nat ind
+R15028:15030 InductiveTypes <> nat ind
+R15021:15023 InductiveTypes <> nat ind
+def 15294:15299 <> isZero
+R15306:15308 InductiveTypes <> nat ind
+R15313:15316 InductiveTypes <> bool ind
+R15329:15329 InductiveTypes <> n var
+R15342:15342 InductiveTypes <> O constr
+R15347:15350 InductiveTypes <> true constr
+R15358:15358 InductiveTypes <> S constr
+R15365:15369 InductiveTypes <> false constr
+def 15390:15393 <> pred
+R15400:15402 InductiveTypes <> nat ind
+R15407:15409 InductiveTypes <> nat ind
+R15422:15422 InductiveTypes <> n var
+R15435:15435 InductiveTypes <> O constr
+R15440:15440 InductiveTypes <> O constr
+R15448:15448 InductiveTypes <> S constr
+def 15727:15730 <> plus
+R15739:15741 InductiveTypes <> nat ind
+R15746:15748 InductiveTypes <> nat ind
+R15761:15761 InductiveTypes <> n var
+R15774:15774 InductiveTypes <> O constr
+R15779:15779 InductiveTypes <> m var
+R15787:15787 InductiveTypes <> S constr
+R15795:15795 InductiveTypes <> S constr
+R15798:15801 InductiveTypes <> plus def
+R15806:15806 InductiveTypes <> m var
+prf 15972:15979 <> O_plus_n
+R15994:15996 InductiveTypes <> nat ind
+R16007:16009 Coq.Init.Logic <> :type_scope:x_'='_x not
+R15999:16002 InductiveTypes <> plus def
+R16006:16006 InductiveTypes <> n var
+R16004:16004 InductiveTypes <> O constr
+R16010:16010 InductiveTypes <> n var
+prf 16398:16405 <> n_plus_O
+R16420:16422 InductiveTypes <> nat ind
+R16433:16435 Coq.Init.Logic <> :type_scope:x_'='_x not
+R16425:16428 InductiveTypes <> plus def
+R16432:16432 InductiveTypes <> O constr
+R16430:16430 InductiveTypes <> n var
+R16436:16436 InductiveTypes <> n var
+R0:-1 InductiveTypes <> y var
+R0:-1 InductiveTypes <> y var
+R17315:17321 InductiveTypes <> nat_ind scheme
+prf 17997:18001 <> S_inj
+R18018:18020 InductiveTypes <> nat ind
+R18037:18039 Coq.Init.Logic <> :type_scope:x_'='_x not
+R18036:18036 InductiveTypes <> n var
+R18040:18040 InductiveTypes <> m var
+R18026:18028 Coq.Init.Logic <> :type_scope:x_'='_x not
+R18023:18023 InductiveTypes <> S constr
+R18025:18025 InductiveTypes <> n var
+R18029:18029 InductiveTypes <> S constr
+R18031:18031 InductiveTypes <> m var
+ind 19156:19163 <> nat_list
+constr 19176:19179 <> NNil
+constr 19194:19198 <> NCons
+R19183:19190 InductiveTypes <> nat_list ind
+R19221:19228 InductiveTypes <> nat_list ind
+R19209:19216 InductiveTypes <> nat_list ind
+R19202:19204 InductiveTypes <> nat ind
+def 19347:19353 <> nlength
+R19361:19368 InductiveTypes <> nat_list ind
+R19373:19375 InductiveTypes <> nat ind
+R19388:19389 InductiveTypes <> ls var
+R19402:19405 InductiveTypes <> NNil constr
+R19410:19410 InductiveTypes <> O constr
+R19418:19422 InductiveTypes <> NCons constr
+R19433:19433 InductiveTypes <> S constr
+R19436:19442 InductiveTypes <> nlength def
+def 19466:19469 <> napp
+R19482:19489 InductiveTypes <> nat_list ind
+R19494:19501 InductiveTypes <> nat_list ind
+R19514:19516 InductiveTypes <> ls1 var
+R19529:19532 InductiveTypes <> NNil constr
+R19537:19539 InductiveTypes <> ls2 var
+R19547:19551 InductiveTypes <> NCons constr
+R19563:19567 InductiveTypes <> NCons constr
+R19572:19575 InductiveTypes <> napp def
+R19582:19584 InductiveTypes <> ls2 var
+prf 19679:19690 <> nlength_napp
+R19711:19718 InductiveTypes <> nat_list ind
+R19743:19747 Coq.Init.Logic <> :type_scope:x_'='_x not
+R19721:19727 InductiveTypes <> nlength def
+R19730:19733 InductiveTypes <> napp def
+R19739:19741 InductiveTypes <> ls2 var
+R19735:19737 InductiveTypes <> ls1 var
+R19748:19751 InductiveTypes <> plus def
+R19768:19774 InductiveTypes <> nlength def
+R19776:19778 InductiveTypes <> ls2 var
+R19754:19760 InductiveTypes <> nlength def
+R19762:19764 InductiveTypes <> ls1 var
+R0:-1 InductiveTypes <> y var
+R0:-1 InductiveTypes <> y var
+R0:-1 InductiveTypes <> y var
+R0:-1 InductiveTypes <> y var
+R19852:19863 InductiveTypes <> nat_list_ind scheme
+ind 20206:20214 <> nat_btree
+constr 20227:20231 <> NLeaf
+constr 20247:20251 <> NNode
+R20235:20243 InductiveTypes <> nat_btree ind
+R20288:20296 InductiveTypes <> nat_btree ind
+R20275:20283 InductiveTypes <> nat_btree ind
+R20268:20270 InductiveTypes <> nat ind
+R20255:20263 InductiveTypes <> nat_btree ind
+def 20543:20547 <> nsize
+R20555:20563 InductiveTypes <> nat_btree ind
+R20568:20570 InductiveTypes <> nat ind
+R20583:20584 InductiveTypes <> tr var
+R20597:20601 InductiveTypes <> NLeaf constr
+R20606:20606 InductiveTypes <> S constr
+R20608:20608 InductiveTypes <> O constr
+R20616:20620 InductiveTypes <> NNode constr
+R20635:20638 InductiveTypes <> plus def
+R20653:20657 InductiveTypes <> nsize def
+R20641:20645 InductiveTypes <> nsize def
+def 20681:20687 <> nsplice
+R20700:20708 InductiveTypes <> nat_btree ind
+R20713:20721 InductiveTypes <> nat_btree ind
+R20734:20736 InductiveTypes <> tr1 var
+R20749:20753 InductiveTypes <> NLeaf constr
+R20758:20762 InductiveTypes <> NNode constr
+R20770:20774 InductiveTypes <> NLeaf constr
+R20768:20768 InductiveTypes <> O constr
+R20764:20766 InductiveTypes <> tr2 var
+R20782:20786 InductiveTypes <> NNode constr
+R20803:20807 InductiveTypes <> NNode constr
+R20810:20816 InductiveTypes <> nsplice def
+R20823:20825 InductiveTypes <> tr2 var
+prf 20851:20860 <> plus_assoc
+R20882:20884 InductiveTypes <> nat ind
+R20907:20909 Coq.Init.Logic <> :type_scope:x_'='_x not
+R20887:20890 InductiveTypes <> plus def
+R20905:20906 InductiveTypes <> n3 var
+R20893:20896 InductiveTypes <> plus def
+R20901:20902 InductiveTypes <> n2 var
+R20898:20899 InductiveTypes <> n1 var
+R20910:20913 InductiveTypes <> plus def
+R20919:20922 InductiveTypes <> plus def
+R20927:20928 InductiveTypes <> n3 var
+R20924:20925 InductiveTypes <> n2 var
+R20915:20916 InductiveTypes <> n1 var
+R0:-1 InductiveTypes <> y var
+R0:-1 InductiveTypes <> y var
+R0:-1 InductiveTypes <> y var
+R0:-1 InductiveTypes <> y var
+R0:-1 InductiveTypes <> y var
+R0:-1 InductiveTypes <> y var
+R21008:21015 InductiveTypes <> n_plus_O thm
+R21017:21026 InductiveTypes <> plus_assoc thm
+prf 21038:21050 <> nsize_nsplice
+R21071:21079 InductiveTypes <> nat_btree ind
+R21105:21109 Coq.Init.Logic <> :type_scope:x_'='_x not
+R21082:21086 InductiveTypes <> nsize def
+R21089:21095 InductiveTypes <> nsplice def
+R21101:21103 InductiveTypes <> tr2 var
+R21097:21099 InductiveTypes <> tr1 var
+R21110:21113 InductiveTypes <> plus def
+R21128:21132 InductiveTypes <> nsize def
+R21134:21136 InductiveTypes <> tr1 var
+R21116:21120 InductiveTypes <> nsize def
+R21122:21124 InductiveTypes <> tr2 var
+R0:-1 InductiveTypes <> y var
+R0:-1 InductiveTypes <> y var
+R0:-1 InductiveTypes <> y var
+R0:-1 InductiveTypes <> y var
+R0:-1 InductiveTypes <> y var
+R21400:21412 InductiveTypes <> nat_btree_ind scheme
+ind 22031:22034 <> list
+constr 22057:22059 <> Nil
+constr 22072:22075 <> Cons
+R22063:22066 InductiveTypes <> list ind
+R22094:22097 InductiveTypes <> list ind
+R22084:22087 InductiveTypes <> list ind
+def 22112:22117 <> length
+R22127:22130 InductiveTypes <> list ind
+R22132:22132 InductiveTypes <> T var
+R22137:22139 InductiveTypes <> nat ind
+R22152:22153 InductiveTypes <> ls var
+R22166:22168 InductiveTypes <> Nil constr
+R22173:22173 InductiveTypes <> O constr
+R22181:22184 InductiveTypes <> Cons constr
+R22195:22195 InductiveTypes <> S constr
+R22198:22203 InductiveTypes <> length def
+def 22227:22229 <> app
+R22244:22247 InductiveTypes <> list ind
+R22249:22249 InductiveTypes <> T var
+R22254:22257 InductiveTypes <> list ind
+R22259:22259 InductiveTypes <> T var
+R22272:22274 InductiveTypes <> ls1 var
+R22287:22289 InductiveTypes <> Nil constr
+R22294:22296 InductiveTypes <> ls2 var
+R22304:22307 InductiveTypes <> Cons constr
+R22319:22322 InductiveTypes <> Cons constr
+R22327:22329 InductiveTypes <> app def
+R22336:22338 InductiveTypes <> ls2 var
+prf 22357:22366 <> length_app
+R22390:22393 InductiveTypes <> list ind
+R22395:22395 InductiveTypes <> T var
+R22419:22423 Coq.Init.Logic <> :type_scope:x_'='_x not
+R22399:22404 InductiveTypes <> length def
+R22407:22409 InductiveTypes <> app def
+R22415:22417 InductiveTypes <> ls2 var
+R22411:22413 InductiveTypes <> ls1 var
+R22424:22427 InductiveTypes <> plus def
+R22443:22448 InductiveTypes <> length def
+R22450:22452 InductiveTypes <> ls2 var
+R22430:22435 InductiveTypes <> length def
+R22437:22439 InductiveTypes <> ls1 var
+R0:-1 InductiveTypes <> y var
+R0:-1 InductiveTypes <> y var
+R0:-1 InductiveTypes <> y var
+R0:-1 InductiveTypes <> y var
+R22821:22824 InductiveTypes <> list ind
+sec 22851:22854 <> list
+var 22868:22868 list T
+ind 22890:22893 <> list
+constr 22908:22910 <> Nil
+constr 22923:22926 <> Cons
+R22914:22917 InductiveTypes <> list ind
+R22943:22946 InductiveTypes <> list ind
+R22935:22938 InductiveTypes <> list ind
+R22930:22930 InductiveTypes <> list.T var
+def 22961:22966 <> length
+R22974:22977 InductiveTypes <> list ind
+R22982:22984 InductiveTypes <> nat ind
+R22999:23000 InductiveTypes <> ls var
+R23015:23017 InductiveTypes <> Nil constr
+R23022:23022 InductiveTypes <> O constr
+R23032:23035 InductiveTypes <> Cons constr
+R23046:23046 InductiveTypes <> S constr
+R23049:23054 InductiveTypes <> length def
+def 23082:23084 <> app
+R23097:23100 InductiveTypes <> list ind
+R23105:23108 InductiveTypes <> list ind
+R23123:23125 InductiveTypes <> ls1 var
+R23140:23142 InductiveTypes <> Nil constr
+R23147:23149 InductiveTypes <> ls2 var
+R23159:23162 InductiveTypes <> Cons constr
+R23174:23177 InductiveTypes <> Cons constr
+R23182:23184 InductiveTypes <> app def
+R23191:23193 InductiveTypes <> ls2 var
+prf 23216:23225 <> length_app
+R23246:23249 InductiveTypes <> list ind
+R23272:23278 Coq.Init.Logic <> :type_scope:x_'='_x not
+R23252:23257 InductiveTypes <> length def
+R23260:23262 InductiveTypes <> app def
+R23268:23270 InductiveTypes <> ls2 var
+R23264:23266 InductiveTypes <> ls1 var
+R23279:23282 InductiveTypes <> plus def
+R23298:23303 InductiveTypes <> length def
+R23305:23307 InductiveTypes <> ls2 var
+R23285:23290 InductiveTypes <> length def
+R23292:23294 InductiveTypes <> ls1 var
+R0:-1 InductiveTypes <> y var
+R0:-1 InductiveTypes <> y var
+R0:-1 InductiveTypes <> y var
+R0:-1 InductiveTypes <> y var
+R23382:23385 InductiveTypes list <> sec
+R23408:23410 InductiveTypes <> Nil constr
+R24436:24441 InductiveTypes <> length def
+R24609:24616 InductiveTypes <> list_ind scheme
+ind 25302:25310 <> even_list
+constr 25323:25326 <> ENil
+constr 25342:25346 <> ECons
+ind 25385:25392 <> odd_list
+constr 25405:25409 <> OCons
+R25330:25338 InductiveTypes <> even_list ind
+R25369:25377 InductiveTypes <> even_list ind
+R25357:25364 InductiveTypes <> odd_list ind
+R25350:25352 InductiveTypes <> nat ind
+R25433:25440 InductiveTypes <> odd_list ind
+R25420:25428 InductiveTypes <> even_list ind
+R25413:25415 InductiveTypes <> nat ind
+def 25453:25459 <> elength
+def 25566:25572 <> olength
+R25467:25475 InductiveTypes <> even_list ind
+R25580:25587 InductiveTypes <> odd_list ind
+R25480:25482 InductiveTypes <> nat ind
+R25592:25594 InductiveTypes <> nat ind
+R25495:25496 InductiveTypes <> el var
+R25509:25512 InductiveTypes <> ENil constr
+R25517:25517 InductiveTypes <> O constr
+R25525:25529 InductiveTypes <> ECons constr
+R25539:25539 InductiveTypes <> S constr
+R25542:25548 InductiveTypes <> olength def
+R25607:25608 InductiveTypes <> ol var
+R25621:25625 InductiveTypes <> OCons constr
+R25635:25635 InductiveTypes <> S constr
+R25638:25644 InductiveTypes <> elength def
+def 25667:25670 <> eapp
+def 25798:25801 <> oapp
+R25683:25691 InductiveTypes <> even_list ind
+R25809:25816 InductiveTypes <> odd_list ind
+R25825:25833 InductiveTypes <> even_list ind
+R25696:25704 InductiveTypes <> even_list ind
+R25838:25845 InductiveTypes <> odd_list ind
+R25717:25719 InductiveTypes <> el1 var
+R25732:25735 InductiveTypes <> ENil constr
+R25740:25742 InductiveTypes <> el2 var
+R25750:25754 InductiveTypes <> ECons constr
+R25764:25768 InductiveTypes <> ECons constr
+R25773:25776 InductiveTypes <> oapp def
+R25781:25783 InductiveTypes <> el2 var
+R25858:25859 InductiveTypes <> ol var
+R25872:25876 InductiveTypes <> OCons constr
+R25887:25891 InductiveTypes <> OCons constr
+R25896:25899 InductiveTypes <> eapp def
+R25905:25906 InductiveTypes <> el var
+prf 26058:26069 <> elength_eapp
+R26090:26098 InductiveTypes <> even_list ind
+R26125:26127 Coq.Init.Logic <> :type_scope:x_'='_x not
+R26103:26109 InductiveTypes <> elength def
+R26112:26115 InductiveTypes <> eapp def
+R26121:26123 InductiveTypes <> el2 var
+R26117:26119 InductiveTypes <> el1 var
+R26128:26131 InductiveTypes <> plus def
+R26148:26154 InductiveTypes <> elength def
+R26156:26158 InductiveTypes <> el2 var
+R26134:26140 InductiveTypes <> elength def
+R26142:26144 InductiveTypes <> el1 var
+R0:-1 InductiveTypes <> y var
+R0:-1 InductiveTypes <> y var
+R0:-1 InductiveTypes <> y var
+R0:-1 InductiveTypes <> y var
+R0:-1 InductiveTypes <> y var
+R0:-1 InductiveTypes <> y var
+R26729:26741 InductiveTypes <> even_list_ind scheme
+def 27146:27158 <> even_list_mut
+R27177:27185 InductiveTypes <> even_list ind
+def 27202:27213 <> odd_list_mut
+R27232:27239 InductiveTypes <> odd_list ind
+R27718:27730 InductiveTypes <> even_list_mut scheme
+prf 29037:29045 <> n_plus_O'
+R29060:29062 InductiveTypes <> nat ind
+R29073:29075 Coq.Init.Logic <> :type_scope:x_'='_x not
+R29065:29068 InductiveTypes <> plus def
+R29072:29072 InductiveTypes <> O constr
+R29070:29070 InductiveTypes <> n var
+R29076:29076 InductiveTypes <> n var
+R29087:29093 InductiveTypes <> nat_ind scheme
+R29087:29093 InductiveTypes <> nat_ind scheme
+R29687:29693 InductiveTypes <> nat_ind scheme
+R29713:29715 Coq.Init.Logic <> :type_scope:x_'='_x not
+R29705:29708 InductiveTypes <> plus def
+R29712:29712 InductiveTypes <> O constr
+R29710:29710 InductiveTypes <> n var
+R29716:29716 InductiveTypes <> n var
+R29687:29693 InductiveTypes <> nat_ind scheme
+R29713:29715 Coq.Init.Logic <> :type_scope:x_'='_x not
+R29705:29708 InductiveTypes <> plus def
+R29712:29712 InductiveTypes <> O constr
+R29710:29710 InductiveTypes <> n var
+R29716:29716 InductiveTypes <> n var
+R0:-1 InductiveTypes <> y var
+R0:-1 InductiveTypes <> y var
+R0:-1 InductiveTypes <> y var
+prf 29986:29997 <> elength_eapp
+R30018:30026 InductiveTypes <> even_list ind
+R30053:30055 Coq.Init.Logic <> :type_scope:x_'='_x not
+R30031:30037 InductiveTypes <> elength def
+R30040:30043 InductiveTypes <> eapp def
+R30049:30051 InductiveTypes <> el2 var
+R30045:30047 InductiveTypes <> el1 var
+R30056:30059 InductiveTypes <> plus def
+R30076:30082 InductiveTypes <> elength def
+R30084:30086 InductiveTypes <> el2 var
+R30062:30068 InductiveTypes <> elength def
+R30070:30072 InductiveTypes <> el1 var
+R30100:30112 InductiveTypes <> even_list_mut scheme
+R30245:30252 InductiveTypes <> odd_list ind
+R30269:30277 InductiveTypes <> even_list ind
+R30306:30308 Coq.Init.Logic <> :type_scope:x_'='_x not
+R30286:30292 InductiveTypes <> olength def
+R30295:30298 InductiveTypes <> oapp def
+R30303:30304 InductiveTypes <> el var
+R30300:30301 InductiveTypes <> ol var
+R30309:30312 InductiveTypes <> plus def
+R30328:30334 InductiveTypes <> elength def
+R30336:30337 InductiveTypes <> el var
+R30315:30321 InductiveTypes <> olength def
+R30323:30324 InductiveTypes <> ol var
+R30129:30137 InductiveTypes <> even_list ind
+R30155:30163 InductiveTypes <> even_list ind
+R30194:30196 Coq.Init.Logic <> :type_scope:x_'='_x not
+R30172:30178 InductiveTypes <> elength def
+R30181:30184 InductiveTypes <> eapp def
+R30190:30192 InductiveTypes <> el2 var
+R30186:30188 InductiveTypes <> el1 var
+R30197:30200 InductiveTypes <> plus def
+R30217:30223 InductiveTypes <> elength def
+R30225:30227 InductiveTypes <> el2 var
+R30203:30209 InductiveTypes <> elength def
+R30211:30213 InductiveTypes <> el1 var
+R30100:30112 InductiveTypes <> even_list_mut scheme
+R30245:30252 InductiveTypes <> odd_list ind
+R30269:30277 InductiveTypes <> even_list ind
+R30306:30308 Coq.Init.Logic <> :type_scope:x_'='_x not
+R30286:30292 InductiveTypes <> olength def
+R30295:30298 InductiveTypes <> oapp def
+R30303:30304 InductiveTypes <> el var
+R30300:30301 InductiveTypes <> ol var
+R30309:30312 InductiveTypes <> plus def
+R30328:30334 InductiveTypes <> elength def
+R30336:30337 InductiveTypes <> el var
+R30315:30321 InductiveTypes <> olength def
+R30323:30324 InductiveTypes <> ol var
+R30129:30137 InductiveTypes <> even_list ind
+R30155:30163 InductiveTypes <> even_list ind
+R30194:30196 Coq.Init.Logic <> :type_scope:x_'='_x not
+R30172:30178 InductiveTypes <> elength def
+R30181:30184 InductiveTypes <> eapp def
+R30190:30192 InductiveTypes <> el2 var
+R30186:30188 InductiveTypes <> el1 var
+R30197:30200 InductiveTypes <> plus def
+R30217:30223 InductiveTypes <> elength def
+R30225:30227 InductiveTypes <> el2 var
+R30203:30209 InductiveTypes <> elength def
+R30211:30213 InductiveTypes <> el1 var
+R0:-1 InductiveTypes <> y var
+R0:-1 InductiveTypes <> y var
+R0:-1 InductiveTypes <> y var
+R0:-1 InductiveTypes <> y var
+R0:-1 InductiveTypes <> y var
+R0:-1 InductiveTypes <> y var
+R0:-1 InductiveTypes <> y var
+R0:-1 InductiveTypes <> y var
+ind 31254:31261 <> pformula
+constr 31274:31278 <> Truth
+constr 31293:31301 <> Falsehood
+constr 31316:31326 <> Conjunction
+R31282:31289 InductiveTypes <> pformula ind
+R31305:31312 InductiveTypes <> pformula ind
+R31354:31361 InductiveTypes <> pformula ind
+R31342:31349 InductiveTypes <> pformula ind
+R31330:31337 InductiveTypes <> pformula ind
+def 31411:31415 <> prod'
+R31420:31423 Coq.Init.Datatypes <> prod ind
+def 32046:32059 <> pformulaDenote
+R32066:32073 InductiveTypes <> pformula ind
+R32094:32094 InductiveTypes <> f var
+R32107:32111 InductiveTypes <> Truth constr
+R32116:32119 Coq.Init.Logic <> True ind
+R32127:32135 InductiveTypes <> Falsehood constr
+R32140:32144 Coq.Init.Logic <> False ind
+R32152:32162 InductiveTypes <> Conjunction constr
+R32190:32193 Coq.Init.Logic <> :type_scope:x_'/\'_x not
+R32173:32186 InductiveTypes <> pformulaDenote def
+R32194:32207 InductiveTypes <> pformulaDenote def
+ind 32471:32477 <> formula
+constr 32490:32491 <> Eq
+constr 32519:32521 <> And
+constr 32557:32562 <> Forall
+R32509:32515 InductiveTypes <> formula ind
+R32502:32504 InductiveTypes <> nat ind
+R32495:32497 InductiveTypes <> nat ind
+R32547:32553 InductiveTypes <> formula ind
+R32536:32542 InductiveTypes <> formula ind
+R32525:32531 InductiveTypes <> formula ind
+R32586:32592 InductiveTypes <> formula ind
+R32574:32580 InductiveTypes <> formula ind
+R32567:32569 InductiveTypes <> nat ind
+def 32961:32971 <> forall_refl
+R32975:32981 InductiveTypes <> formula ind
+R32986:32991 InductiveTypes <> Forall constr
+R33003:33004 InductiveTypes <> Eq constr
+R33008:33008 InductiveTypes <> x var
+R33006:33006 InductiveTypes <> x var
+def 33169:33181 <> formulaDenote
+R33188:33194 InductiveTypes <> formula ind
+R33215:33215 InductiveTypes <> f var
+R33228:33229 InductiveTypes <> Eq constr
+R33242:33244 Coq.Init.Logic <> :type_scope:x_'='_x not
+R33254:33256 InductiveTypes <> And constr
+R33283:33286 Coq.Init.Logic <> :type_scope:x_'/\'_x not
+R33267:33279 InductiveTypes <> formulaDenote def
+R33287:33299 InductiveTypes <> formulaDenote def
+R33310:33315 InductiveTypes <> Forall constr
+R33334:33336 InductiveTypes <> nat ind
+R33339:33351 InductiveTypes <> formulaDenote def
+R33357:33357 InductiveTypes <> n var
+def 33496:33502 <> swapper
+R33509:33515 InductiveTypes <> formula ind
+R33520:33526 InductiveTypes <> formula ind
+R33539:33539 InductiveTypes <> f var
+R33552:33553 InductiveTypes <> Eq constr
+R33564:33565 InductiveTypes <> Eq constr
+R33579:33581 InductiveTypes <> And constr
+R33592:33594 InductiveTypes <> And constr
+R33610:33616 InductiveTypes <> swapper def
+R33597:33603 InductiveTypes <> swapper def
+R33628:33633 InductiveTypes <> Forall constr
+R33641:33646 InductiveTypes <> Forall constr
+R33658:33664 InductiveTypes <> swapper def
+R33670:33670 InductiveTypes <> n var
+prf 33781:33803 <> swapper_preserves_truth
+R33836:33848 InductiveTypes <> formulaDenote def
+R33851:33857 InductiveTypes <> swapper def
+R33859:33859 InductiveTypes <> f var
+R33817:33829 InductiveTypes <> formulaDenote def
+R33831:33831 InductiveTypes <> f var
+R0:-1 InductiveTypes <> y var
+R0:-1 InductiveTypes <> y var
+R0:-1 InductiveTypes <> y var
+R0:-1 InductiveTypes <> y var
+R34004:34014 InductiveTypes <> formula_ind scheme
+ind 35874:35877 <> term
+constr 35888:35890 <> App
+constr 35894:35896 <> Abs
+R35891:35891 InductiveTypes <> term ind
+R35897:35897 InductiveTypes <> term ind
+R35905:35908 InductiveTypes <> term ind
+def 35922:35925 <> uhoh
+R35930:35930 InductiveTypes <> O constr
+R39041:39048 InductiveTypes <> nat_rect scheme
+def 40354:40367 <> plus_recursive
+R40374:40376 InductiveTypes <> nat ind
+R40388:40390 InductiveTypes <> nat ind
+R40381:40383 InductiveTypes <> nat ind
+R40403:40403 InductiveTypes <> n var
+R40416:40416 InductiveTypes <> O constr
+R40430:40430 InductiveTypes <> m var
+R40438:40438 InductiveTypes <> S constr
+R40455:40455 InductiveTypes <> S constr
+R40458:40471 InductiveTypes <> plus_recursive def
+R40476:40476 InductiveTypes <> m var
+def 40498:40505 <> plus_rec
+R40523:40525 InductiveTypes <> nat ind
+R40516:40518 InductiveTypes <> nat ind
+R40509:40511 InductiveTypes <> nat ind
+R40532:40538 InductiveTypes <> nat_rec scheme
+R40595:40595 InductiveTypes <> S constr
+R40598:40598 InductiveTypes <> r var
+R40600:40600 InductiveTypes <> m var
+R40578:40578 InductiveTypes <> m var
+R40549:40551 InductiveTypes <> nat ind
+R40563:40565 InductiveTypes <> nat ind
+R40556:40558 InductiveTypes <> nat ind
+prf 40614:40628 <> plus_equivalent
+R40646:40648 Coq.Init.Logic <> :type_scope:x_'='_x not
+R40632:40645 InductiveTypes <> plus_recursive def
+R40649:40656 InductiveTypes <> plus_rec def
+def 42319:42327 <> nat_rect'
+R42334:42336 InductiveTypes <> nat ind
+R42356:42356 InductiveTypes <> P var
+R42358:42358 InductiveTypes <> O constr
+R42386:42386 InductiveTypes <> P var
+R42389:42389 InductiveTypes <> S constr
+R42391:42391 InductiveTypes <> n var
+R42379:42379 InductiveTypes <> P var
+R42381:42381 InductiveTypes <> n var
+R42400:42402 InductiveTypes <> nat ind
+R42416:42416 InductiveTypes <> n var
+R42425:42425 InductiveTypes <> P var
+R42427:42427 InductiveTypes <> n var
+R42440:42440 InductiveTypes <> O constr
+R42445:42446 InductiveTypes <> HO var
+R42454:42454 InductiveTypes <> S constr
+R42462:42463 InductiveTypes <> HS var
+R42469:42477 InductiveTypes <> nat_rect' def
+R42484:42485 InductiveTypes <> HS var
+R42481:42482 InductiveTypes <> HO var
+R42479:42479 InductiveTypes <> P var
+sec 42613:42620 <> nat_ind'
+var 42714:42714 nat_ind' P
+R42718:42720 InductiveTypes <> nat ind
+var 42992:42997 nat_ind' O_case
+R43001:43001 InductiveTypes <> nat_ind'.P var
+R43003:43003 InductiveTypes <> O constr
+var 43106:43111 nat_ind' S_case
+R43126:43128 InductiveTypes <> nat ind
+R43138:43138 InductiveTypes <> nat_ind'.P var
+R43141:43141 InductiveTypes <> S constr
+R43143:43143 InductiveTypes <> n var
+R43131:43131 InductiveTypes <> nat_ind'.P var
+R43133:43133 InductiveTypes <> n var
+def 43238:43245 <> nat_ind'
+R43252:43254 InductiveTypes <> nat ind
+R43259:43259 InductiveTypes <> nat_ind'.P var
+R43261:43261 InductiveTypes <> n var
+R43276:43276 InductiveTypes <> n var
+R43291:43291 InductiveTypes <> O constr
+R43296:43301 InductiveTypes <> nat_ind'.O_case var
+R43311:43311 InductiveTypes <> S constr
+R43319:43324 InductiveTypes <> nat_ind'.S_case var
+R43327:43334 InductiveTypes <> nat_ind' def
+R43353:43360 InductiveTypes nat_ind' <> sec
+sec 44938:44951 <> even_list_mut'
+var 45026:45030 even_list_mut' Peven
+R45034:45042 InductiveTypes <> even_list ind
+var 45064:45067 even_list_mut' Podd
+R45071:45078 InductiveTypes <> odd_list ind
+var 45154:45162 even_list_mut' ENil_case
+R45166:45170 InductiveTypes <> even_list_mut'.Peven var
+R45172:45175 InductiveTypes <> ENil constr
+var 45191:45200 even_list_mut' ECons_case
+R45216:45218 InductiveTypes <> nat ind
+R45226:45233 InductiveTypes <> odd_list ind
+R45247:45251 InductiveTypes <> even_list_mut'.Peven var
+R45254:45258 InductiveTypes <> ECons constr
+R45262:45262 InductiveTypes <> o var
+R45260:45260 InductiveTypes <> n var
+R45237:45240 InductiveTypes <> even_list_mut'.Podd var
+R45242:45242 InductiveTypes <> o var
+var 45279:45288 even_list_mut' OCons_case
+R45304:45306 InductiveTypes <> nat ind
+R45314:45322 InductiveTypes <> even_list ind
+R45337:45340 InductiveTypes <> even_list_mut'.Podd var
+R45343:45347 InductiveTypes <> OCons constr
+R45351:45351 InductiveTypes <> e var
+R45349:45349 InductiveTypes <> n var
+R45326:45330 InductiveTypes <> even_list_mut'.Peven var
+R45332:45332 InductiveTypes <> e var
+def 45421:45434 <> even_list_mut'
+def 45575:45587 <> odd_list_mut'
+R45441:45449 InductiveTypes <> even_list ind
+R45594:45601 InductiveTypes <> odd_list ind
+R45454:45458 InductiveTypes <> even_list_mut'.Peven var
+R45460:45460 InductiveTypes <> e var
+R45606:45609 InductiveTypes <> even_list_mut'.Podd var
+R45611:45611 InductiveTypes <> o var
+R45475:45475 InductiveTypes <> e var
+R45490:45493 InductiveTypes <> ENil constr
+R45498:45506 InductiveTypes <> even_list_mut'.ENil_case var
+R45516:45520 InductiveTypes <> ECons constr
+R45529:45538 InductiveTypes <> even_list_mut'.ECons_case var
+R45543:45555 InductiveTypes <> odd_list_mut' def
+R45626:45626 InductiveTypes <> o var
+R45641:45645 InductiveTypes <> OCons constr
+R45654:45663 InductiveTypes <> even_list_mut'.OCons_case var
+R45668:45681 InductiveTypes <> even_list_mut' def
+R45699:45712 InductiveTypes even_list_mut' <> sec
+sec 45901:45912 <> formula_ind'
+var 45926:45926 formula_ind' P
+R45930:45936 InductiveTypes <> formula ind
+var 45960:45966 formula_ind' Eq_case
+R45985:45987 InductiveTypes <> nat ind
+R45990:45990 InductiveTypes <> formula_ind'.P var
+R45993:45994 InductiveTypes <> Eq constr
+R45999:46000 InductiveTypes <> n2 var
+R45996:45997 InductiveTypes <> n1 var
+var 46017:46024 formula_ind' And_case
+R46043:46049 InductiveTypes <> formula ind
+R46072:46072 InductiveTypes <> formula_ind'.P var
+R46075:46077 InductiveTypes <> And constr
+R46082:46083 InductiveTypes <> f2 var
+R46079:46080 InductiveTypes <> f1 var
+R46064:46064 InductiveTypes <> formula_ind'.P var
+R46066:46067 InductiveTypes <> f2 var
+R46056:46056 InductiveTypes <> formula_ind'.P var
+R46058:46059 InductiveTypes <> f1 var
+var 46100:46110 formula_ind' Forall_case
+R46132:46138 InductiveTypes <> formula ind
+R46125:46127 InductiveTypes <> nat ind
+R46174:46174 InductiveTypes <> formula_ind'.P var
+R46177:46182 InductiveTypes <> Forall constr
+R46184:46184 InductiveTypes <> f var
+R46157:46159 InductiveTypes <> nat ind
+R46162:46162 InductiveTypes <> formula_ind'.P var
+R46165:46165 InductiveTypes <> f var
+R46167:46167 InductiveTypes <> n var
+def 46200:46211 <> formula_ind'
+R46218:46224 InductiveTypes <> formula ind
+R46229:46229 InductiveTypes <> formula_ind'.P var
+R46231:46231 InductiveTypes <> f var
+R46246:46246 InductiveTypes <> f var
+R46261:46262 InductiveTypes <> Eq constr
+R46273:46279 InductiveTypes <> formula_ind'.Eq_case var
+R46295:46297 InductiveTypes <> And constr
+R46308:46315 InductiveTypes <> formula_ind'.And_case var
+R46336:46347 InductiveTypes <> formula_ind' def
+R46318:46329 InductiveTypes <> formula_ind' def
+R46361:46366 InductiveTypes <> Forall constr
+R46374:46384 InductiveTypes <> formula_ind'.Forall_case var
+R46399:46410 InductiveTypes <> formula_ind' def
+R46416:46416 InductiveTypes <> n var
+R46433:46444 InductiveTypes formula_ind' <> sec
+ind 46766:46773 <> nat_tree
+constr 46786:46791 <> NNode'
+R46819:46826 InductiveTypes <> nat_tree ind
+R46802:46805 InductiveTypes <> list ind
+R46807:46814 InductiveTypes <> nat_tree ind
+R46795:46797 InductiveTypes <> nat ind
+R47611:47616 InductiveTypes <> Forall constr
+R47657:47668 InductiveTypes <> nat_tree_ind scheme
+sec 48595:48597 <> All
+var 48611:48611 All T
+var 48631:48631 All P
+R48635:48635 InductiveTypes <> All.T var
+def 48658:48660 <> All
+R48668:48671 InductiveTypes <> list ind
+R48673:48673 InductiveTypes <> All.T var
+R48696:48697 InductiveTypes <> ls var
+R48712:48714 InductiveTypes <> Nil constr
+R48719:48722 Coq.Init.Logic <> True ind
+R48732:48735 InductiveTypes <> Cons constr
+R48747:48750 Coq.Init.Logic <> :type_scope:x_'/\'_x not
+R48744:48744 InductiveTypes <> All.P var
+R48751:48753 InductiveTypes <> All def
+R48770:48772 InductiveTypes All <> sec
+sec 50301:50313 <> nat_tree_ind'
+var 50327:50327 nat_tree_ind' P
+R50331:50338 InductiveTypes <> nat_tree ind
+var 50363:50373 nat_tree_ind' NNode'_case
+R50389:50391 InductiveTypes <> nat ind
+R50400:50403 InductiveTypes <> list ind
+R50405:50412 InductiveTypes <> nat_tree ind
+R50432:50432 InductiveTypes <> nat_tree_ind'.P var
+R50435:50440 InductiveTypes <> NNode' constr
+R50444:50445 InductiveTypes <> ls var
+R50442:50442 InductiveTypes <> n var
+R50420:50422 InductiveTypes <> All def
+R50426:50427 InductiveTypes <> ls var
+R50424:50424 InductiveTypes <> nat_tree_ind'.P var
+def 50502:50518 <> list_nat_tree_ind
+R50523:50523 InductiveTypes <> O constr
+def 51633:51645 <> nat_tree_ind'
+R51653:51660 InductiveTypes <> nat_tree ind
+R51665:51665 InductiveTypes <> nat_tree_ind'.P var
+R51667:51668 InductiveTypes <> tr var
+R51683:51684 InductiveTypes <> tr var
+R51699:51704 InductiveTypes <> NNode' constr
+R51714:51724 InductiveTypes <> nat_tree_ind'.NNode'_case var
+R51769:51772 InductiveTypes <> list ind
+R51774:51781 InductiveTypes <> nat_tree ind
+R51786:51788 InductiveTypes <> All def
+R51792:51793 InductiveTypes <> ls var
+R51790:51790 InductiveTypes <> nat_tree_ind'.P var
+R51814:51815 InductiveTypes <> ls var
+R51836:51838 InductiveTypes <> Nil constr
+R51843:51843 Coq.Init.Logic <> I constr
+R51859:51862 InductiveTypes <> Cons constr
+R51876:51879 Coq.Init.Logic <> conj constr
+R51902:51918 InductiveTypes <> list_nat_tree_ind var
+R51882:51894 InductiveTypes <> nat_tree_ind' def
+R52184:52196 InductiveTypes nat_tree_ind' <> sec
+sec 52403:52405 <> map
+var 52420:52420 map T
+var 52422:52423 map T'
+var 52443:52443 map F
+R52452:52453 InductiveTypes <> map.T' var
+R52447:52447 InductiveTypes <> map.T var
+def 52468:52470 <> map
+R52478:52481 InductiveTypes <> list ind
+R52483:52483 InductiveTypes <> map.T var
+R52488:52491 InductiveTypes <> list ind
+R52493:52494 InductiveTypes <> map.T' var
+R52509:52510 InductiveTypes <> ls var
+R52525:52527 InductiveTypes <> Nil constr
+R52532:52534 InductiveTypes <> Nil constr
+R52544:52547 InductiveTypes <> Cons constr
+R52556:52559 InductiveTypes <> Cons constr
+R52568:52570 InductiveTypes <> map def
+R52562:52562 InductiveTypes <> map.F var
+R52588:52590 InductiveTypes map <> sec
+def 52603:52605 <> sum
+R52613:52616 InductiveTypes <> list ind
+R52618:52620 InductiveTypes <> nat ind
+R52625:52627 InductiveTypes <> nat ind
+R52640:52641 InductiveTypes <> ls var
+R52654:52656 InductiveTypes <> Nil constr
+R52661:52661 InductiveTypes <> O constr
+R52669:52672 InductiveTypes <> Cons constr
+R52681:52684 InductiveTypes <> plus def
+R52689:52691 InductiveTypes <> sum def
+def 52771:52776 <> ntsize
+R52784:52791 InductiveTypes <> nat_tree ind
+R52796:52798 InductiveTypes <> nat ind
+R52811:52812 InductiveTypes <> tr var
+R52825:52830 InductiveTypes <> NNode' constr
+R52841:52841 InductiveTypes <> S constr
+R52844:52846 InductiveTypes <> sum def
+R52849:52851 InductiveTypes <> map def
+R52853:52858 InductiveTypes <> ntsize def
+def 53058:53065 <> ntsplice
+R53078:53085 InductiveTypes <> nat_tree ind
+R53090:53097 InductiveTypes <> nat_tree ind
+R53110:53112 InductiveTypes <> tr1 var
+R53125:53130 InductiveTypes <> NNode' constr
+R53134:53136 InductiveTypes <> Nil constr
+R53141:53146 InductiveTypes <> NNode' constr
+R53151:53154 InductiveTypes <> Cons constr
+R53160:53162 InductiveTypes <> Nil constr
+R53156:53158 InductiveTypes <> tr2 var
+R53171:53176 InductiveTypes <> NNode' constr
+R53181:53184 InductiveTypes <> Cons constr
+R53197:53202 InductiveTypes <> NNode' constr
+R53207:53210 InductiveTypes <> Cons constr
+R53213:53220 InductiveTypes <> ntsplice def
+R53225:53227 InductiveTypes <> tr2 var
+prf 53476:53481 <> plus_S
+R53500:53502 InductiveTypes <> nat ind
+R53521:53523 Coq.Init.Logic <> :type_scope:x_'='_x not
+R53507:53510 InductiveTypes <> plus def
+R53516:53516 InductiveTypes <> S constr
+R53518:53519 InductiveTypes <> n2 var
+R53512:53513 InductiveTypes <> n1 var
+R53524:53524 InductiveTypes <> S constr
+R53527:53530 InductiveTypes <> plus def
+R53535:53536 InductiveTypes <> n2 var
+R53532:53533 InductiveTypes <> n1 var
+R0:-1 InductiveTypes <> y var
+R0:-1 InductiveTypes <> y var
+R0:-1 InductiveTypes <> y var
+R0:-1 InductiveTypes <> y var
+R53682:53687 InductiveTypes <> plus_S thm
+prf 53699:53713 <> ntsize_ntsplice
+R53734:53741 InductiveTypes <> nat_tree ind
+R53769:53773 Coq.Init.Logic <> :type_scope:x_'='_x not
+R53744:53749 InductiveTypes <> ntsize def
+R53752:53759 InductiveTypes <> ntsplice def
+R53765:53767 InductiveTypes <> tr2 var
+R53761:53763 InductiveTypes <> tr1 var
+R53774:53777 InductiveTypes <> plus def
+R53793:53798 InductiveTypes <> ntsize def
+R53800:53802 InductiveTypes <> tr1 var
+R53780:53785 InductiveTypes <> ntsize def
+R53787:53789 InductiveTypes <> tr2 var
+R54057:54069 InductiveTypes <> nat_tree_ind' def
+R54057:54069 InductiveTypes <> nat_tree_ind' def
+R0:-1 InductiveTypes <> y var
+R0:-1 InductiveTypes <> y var
+R0:-1 InductiveTypes <> y var
+R0:-1 InductiveTypes <> y var
+R0:-1 InductiveTypes <> y var
+R0:-1 InductiveTypes <> y var
+R0:-1 InductiveTypes <> y var
+R54917:54919 Coq.Init.Logic <> :type_scope:x_'='_x not
+R54865:54870 InductiveTypes <> ntsize def
+R54888:54890 InductiveTypes <> Nil constr
+R54899:54902 InductiveTypes <> Cons constr
+R54972:54984 InductiveTypes <> nat_tree_ind' def
+R54972:54984 InductiveTypes <> nat_tree_ind' def
+R0:-1 InductiveTypes <> y var
+R0:-1 InductiveTypes <> y var
+R0:-1 InductiveTypes <> y var
+R0:-1 InductiveTypes <> y var
+R0:-1 InductiveTypes <> y var
+R0:-1 InductiveTypes <> y var
+prf 56320:56333 <> true_neq_false
+R56341:56344 Coq.Init.Logic <> :type_scope:x_'<>'_x not
+R56337:56340 InductiveTypes <> true constr
+R56345:56349 InductiveTypes <> false constr
+def 57039:57044 <> toProp
+R57051:57054 InductiveTypes <> bool ind
+R57063:57063 InductiveTypes <> b var
+R57080:57084 Coq.Init.Logic <> False ind
+R57070:57073 Coq.Init.Logic <> True ind
+R57721:57726 InductiveTypes <> toProp def
+R57728:57732 InductiveTypes <> false constr
+R57721:57726 InductiveTypes <> toProp def
+R57728:57732 InductiveTypes <> false constr
+prf 58729:58734 <> S_inj'
+R58751:58753 InductiveTypes <> nat ind
+R58770:58772 Coq.Init.Logic <> :type_scope:x_'='_x not
+R58769:58769 InductiveTypes <> n var
+R58773:58773 InductiveTypes <> m var
+R58759:58761 Coq.Init.Logic <> :type_scope:x_'='_x not
+R58756:58756 InductiveTypes <> S constr
+R58758:58758 InductiveTypes <> n var
+R58762:58762 InductiveTypes <> S constr
+R58764:58764 InductiveTypes <> m var
+R58830:58832 Coq.Init.Logic <> :type_scope:x_'='_x not
+R58820:58823 InductiveTypes <> pred def
+R58826:58826 InductiveTypes <> S constr
+R58833:58836 InductiveTypes <> pred def
+R58839:58839 InductiveTypes <> S constr
+R58830:58832 Coq.Init.Logic <> :type_scope:x_'='_x not
+R58820:58823 InductiveTypes <> pred def
+R58826:58826 InductiveTypes <> S constr
+R58833:58836 InductiveTypes <> pred def
+R58839:58839 InductiveTypes <> S constr

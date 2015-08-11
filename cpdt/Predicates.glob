@@ -1,0 +1,591 @@
+DIGEST 2d9ccb461690826e198e65e3d16af1f9
+FPredicates
+R305:308 Coq.Lists.List <> <> lib
+R327:337 CpdtTactics <> <> lib
+ind 485:488 <> unit
+constr 493:494 <> tt
+R495:495 Predicates <> unit ind
+ind 507:515 <> Empty_set
+ind 532:535 <> bool
+constr 540:543 <> true
+constr 547:551 <> false
+R544:544 Predicates <> bool ind
+R552:552 Predicates <> bool ind
+ind 564:566 <> sum
+ind 583:586 <> prod
+ind 603:605 <> and
+constr 610:613 <> conj
+R614:614 Predicates <> and ind
+ind 626:627 <> or
+constr 632:640 <> or_introl
+constr 644:652 <> or_intror
+R641:641 Predicates <> or ind
+R653:653 Predicates <> or ind
+ind 665:666 <> ex
+constr 671:678 <> ex_intro
+R679:679 Predicates <> ex ind
+ind 691:692 <> eq
+constr 697:703 <> eq_refl
+R704:704 Predicates <> eq ind
+R712:715 Predicates <> unit ind
+sec 4652:4664 <> Propositional
+var 4679:4679 Propositional P
+var 4681:4681 Propositional Q
+var 4683:4683 Propositional R
+prf 5124:5130 <> obvious
+R5134:5137 Coq.Init.Logic <> True ind
+R5168:5168 Coq.Init.Logic <> I constr
+R5168:5168 Coq.Init.Logic <> I constr
+prf 5530:5537 <> obvious'
+R5541:5544 Coq.Init.Logic <> True ind
+prf 6056:6064 <> False_imp
+R6082:6084 Coq.Init.Logic <> :type_scope:x_'='_x not
+R6078:6080 Coq.Init.Peano <> :nat_scope:x_'+'_x not
+R6068:6072 Coq.Init.Logic <> False ind
+prf 6397:6405 <> arith_neq
+R6427:6429 Coq.Init.Logic <> :type_scope:x_'='_x not
+R6423:6425 Coq.Init.Peano <> :nat_scope:x_'+'_x not
+R6414:6416 Coq.Init.Logic <> :type_scope:x_'='_x not
+R6410:6412 Coq.Init.Peano <> :nat_scope:x_'+'_x not
+R6882:6886 Coq.Init.Logic <> False ind
+R6882:6886 Coq.Init.Logic <> False ind
+R0:-1 Predicates <> y var
+def 7176:7178 <> foo
+R7183:7185 Coq.Init.Logic <> not def
+prf 7512:7521 <> arith_neq'
+R7525:7527 Coq.Init.Logic <> :type_scope:'~'_x not
+R7537:7537 Coq.Init.Logic <> :type_scope:'~'_x not
+R7533:7535 Coq.Init.Logic <> :type_scope:x_'='_x not
+R7529:7531 Coq.Init.Peano <> :nat_scope:x_'+'_x not
+R7569:7571 Coq.Init.Logic <> not def
+R0:-1 Predicates <> y var
+prf 8263:8270 <> and_comm
+R8285:8288 Coq.Init.Logic <> :type_scope:x_'/\'_x not
+R8284:8284 Predicates <> Propositional.Q var
+R8289:8289 Predicates <> Propositional.P var
+R8275:8278 Coq.Init.Logic <> :type_scope:x_'/\'_x not
+R8274:8274 Predicates <> Propositional.P var
+R8279:8279 Predicates <> Propositional.Q var
+prf 9533:9539 <> or_comm
+R9554:9557 Coq.Init.Logic <> :type_scope:x_'\/'_x not
+R9553:9553 Predicates <> Propositional.Q var
+R9558:9558 Predicates <> Propositional.P var
+R9544:9547 Coq.Init.Logic <> :type_scope:x_'\/'_x not
+R9543:9543 Predicates <> Propositional.P var
+R9548:9548 Predicates <> Propositional.Q var
+prf 10280:10285 <> contra
+R10300:10300 Predicates <> Propositional.R var
+R10294:10294 Coq.Init.Logic <> :type_scope:'~'_x not
+R10295:10295 Predicates <> Propositional.P var
+R10289:10289 Predicates <> Propositional.P var
+R10332:10334 Coq.Init.Logic <> not def
+R10362:10366 Coq.Init.Logic <> False ind
+R10362:10366 Coq.Init.Logic <> False ind
+prf 10438:10446 <> and_assoc
+R10468:10472 Coq.Init.Logic <> :type_scope:x_'/\'_x not
+R10479:10479 Coq.Init.Logic <> :type_scope:x_'/\'_x not
+R10467:10467 Predicates <> Propositional.P var
+R10474:10477 Coq.Init.Logic <> :type_scope:x_'/\'_x not
+R10473:10473 Predicates <> Propositional.Q var
+R10478:10478 Predicates <> Propositional.R var
+R10450:10450 Coq.Init.Logic <> :type_scope:x_'/\'_x not
+R10457:10461 Coq.Init.Logic <> :type_scope:x_'/\'_x not
+R10452:10455 Coq.Init.Logic <> :type_scope:x_'/\'_x not
+R10451:10451 Predicates <> Propositional.P var
+R10456:10456 Predicates <> Propositional.Q var
+R10462:10462 Predicates <> Propositional.R var
+prf 10653:10660 <> or_assoc
+R10682:10686 Coq.Init.Logic <> :type_scope:x_'\/'_x not
+R10693:10693 Coq.Init.Logic <> :type_scope:x_'\/'_x not
+R10681:10681 Predicates <> Propositional.P var
+R10688:10691 Coq.Init.Logic <> :type_scope:x_'\/'_x not
+R10687:10687 Predicates <> Propositional.Q var
+R10692:10692 Predicates <> Propositional.R var
+R10664:10664 Coq.Init.Logic <> :type_scope:x_'\/'_x not
+R10671:10675 Coq.Init.Logic <> :type_scope:x_'\/'_x not
+R10666:10669 Coq.Init.Logic <> :type_scope:x_'\/'_x not
+R10665:10665 Predicates <> Propositional.P var
+R10670:10670 Predicates <> Propositional.Q var
+R10676:10676 Predicates <> Propositional.R var
+prf 11356:11363 <> or_comm'
+R11378:11381 Coq.Init.Logic <> :type_scope:x_'\/'_x not
+R11377:11377 Predicates <> Propositional.Q var
+R11382:11382 Predicates <> Propositional.P var
+R11368:11371 Coq.Init.Logic <> :type_scope:x_'\/'_x not
+R11367:11367 Predicates <> Propositional.P var
+R11372:11372 Predicates <> Propositional.Q var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+prf 12027:12036 <> arith_comm
+R12057:12060 Coq.Init.Datatypes <> list ind
+R12062:12064 Coq.Init.Datatypes <> nat ind
+R12156:12159 Coq.Init.Logic <> :type_scope:x_'\/'_x not
+R12152:12154 Coq.Init.Logic <> :type_scope:x_'='_x not
+R12133:12138 Coq.Init.Datatypes <> length def
+R12144:12147 Coq.Init.Datatypes <> :list_scope:x_'++'_x not
+R12141:12143 Predicates <> ls1 var
+R12148:12150 Predicates <> ls2 var
+R12170:12172 Coq.Init.Logic <> :type_scope:x_'='_x not
+R12160:12165 Coq.Init.Datatypes <> length def
+R12167:12169 Predicates <> ls1 var
+R12173:12178 Coq.Init.Datatypes <> length def
+R12180:12182 Predicates <> ls2 var
+R12094:12097 Coq.Init.Logic <> :type_scope:x_'\/'_x not
+R12081:12083 Coq.Init.Logic <> :type_scope:x_'='_x not
+R12071:12076 Coq.Init.Datatypes <> length def
+R12078:12080 Predicates <> ls1 var
+R12084:12089 Coq.Init.Datatypes <> length def
+R12091:12093 Predicates <> ls2 var
+R12121:12123 Coq.Init.Logic <> :type_scope:x_'='_x not
+R12108:12110 Coq.Init.Peano <> :nat_scope:x_'+'_x not
+R12098:12103 Coq.Init.Datatypes <> length def
+R12105:12107 Predicates <> ls1 var
+R12111:12116 Coq.Init.Datatypes <> length def
+R12118:12120 Predicates <> ls2 var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R12750:12759 Coq.Lists.List <> app_length thm
+R12750:12759 Coq.Lists.List <> app_length thm
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+prf 13398:13408 <> arith_comm'
+R13429:13432 Coq.Init.Datatypes <> list ind
+R13434:13436 Coq.Init.Datatypes <> nat ind
+R13528:13531 Coq.Init.Logic <> :type_scope:x_'\/'_x not
+R13524:13526 Coq.Init.Logic <> :type_scope:x_'='_x not
+R13505:13510 Coq.Init.Datatypes <> length def
+R13516:13519 Coq.Init.Datatypes <> :list_scope:x_'++'_x not
+R13513:13515 Predicates <> ls1 var
+R13520:13522 Predicates <> ls2 var
+R13542:13544 Coq.Init.Logic <> :type_scope:x_'='_x not
+R13532:13537 Coq.Init.Datatypes <> length def
+R13539:13541 Predicates <> ls1 var
+R13545:13550 Coq.Init.Datatypes <> length def
+R13552:13554 Predicates <> ls2 var
+R13466:13469 Coq.Init.Logic <> :type_scope:x_'\/'_x not
+R13453:13455 Coq.Init.Logic <> :type_scope:x_'='_x not
+R13443:13448 Coq.Init.Datatypes <> length def
+R13450:13452 Predicates <> ls1 var
+R13456:13461 Coq.Init.Datatypes <> length def
+R13463:13465 Predicates <> ls2 var
+R13493:13495 Coq.Init.Logic <> :type_scope:x_'='_x not
+R13480:13482 Coq.Init.Peano <> :nat_scope:x_'+'_x not
+R13470:13475 Coq.Init.Datatypes <> length def
+R13477:13479 Predicates <> ls1 var
+R13483:13488 Coq.Init.Datatypes <> length def
+R13490:13492 Predicates <> ls2 var
+R13574:13583 Coq.Lists.List <> app_length thm
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R13626:13638 Predicates Propositional <> sec
+prf 18859:18864 <> exist1
+R18868:18874 Coq.Init.Logic <> :type_scope:'exists'_x_'..'_x_','_x not
+R18882:18883 Coq.Init.Logic <> :type_scope:'exists'_x_'..'_x_','_x not
+R18879:18881 Coq.Init.Datatypes <> nat ind
+R18889:18891 Coq.Init.Logic <> :type_scope:x_'='_x not
+R18885:18887 Coq.Init.Peano <> :nat_scope:x_'+'_x not
+R18884:18884 Predicates <> x var
+prf 19567:19572 <> exist2
+R19589:19591 Coq.Init.Datatypes <> nat ind
+R19626:19629 Coq.Init.Peano <> :nat_scope:x_'<='_x not
+R19625:19625 Predicates <> n var
+R19630:19630 Predicates <> m var
+R19595:19601 Coq.Init.Logic <> :type_scope:'exists'_x_'..'_x_','_x not
+R19609:19610 Coq.Init.Logic <> :type_scope:'exists'_x_'..'_x_','_x not
+R19606:19608 Coq.Init.Datatypes <> nat ind
+R19616:19618 Coq.Init.Logic <> :type_scope:x_'='_x not
+R19612:19614 Coq.Init.Peano <> :nat_scope:x_'+'_x not
+R19611:19611 Predicates <> n var
+R19615:19615 Predicates <> x var
+R19619:19619 Predicates <> m var
+R0:-1 Predicates <> y var
+prf 20206:20226 <> forall_exists_commute
+R20260:20260 Predicates <> B var
+R20255:20255 Predicates <> A var
+R20325:20325 Predicates <> B var
+R20328:20334 Coq.Init.Logic <> :type_scope:'exists'_x_'..'_x_','_x not
+R20340:20341 Coq.Init.Logic <> :type_scope:'exists'_x_'..'_x_','_x not
+R20339:20339 Predicates <> A var
+R20342:20342 Predicates <> P var
+R20346:20346 Predicates <> y var
+R20344:20344 Predicates <> x var
+R20275:20281 Coq.Init.Logic <> :type_scope:'exists'_x_'..'_x_','_x not
+R20287:20288 Coq.Init.Logic <> :type_scope:'exists'_x_'..'_x_','_x not
+R20286:20286 Predicates <> A var
+R20300:20300 Predicates <> B var
+R20303:20303 Predicates <> P var
+R20307:20307 Predicates <> y var
+R20305:20305 Predicates <> x var
+ind 21112:21117 <> isZero
+constr 21138:21143 <> IsZero
+R21121:21123 Coq.Init.Datatypes <> nat ind
+R21147:21152 Predicates <> isZero ind
+prf 21166:21176 <> isZero_zero
+R21180:21185 Predicates <> isZero ind
+prf 24278:24288 <> isZero_plus
+R24305:24307 Coq.Init.Datatypes <> nat ind
+R24327:24329 Coq.Init.Logic <> :type_scope:x_'='_x not
+R24323:24325 Coq.Init.Peano <> :nat_scope:x_'+'_x not
+R24322:24322 Predicates <> n var
+R24326:24326 Predicates <> m var
+R24330:24330 Predicates <> n var
+R24310:24315 Predicates <> isZero ind
+R24317:24317 Predicates <> m var
+R0:-1 Predicates <> y var
+prf 24961:24973 <> isZero_contra
+R24989:24993 Coq.Init.Logic <> False ind
+R24977:24982 Predicates <> isZero ind
+prf 27010:27023 <> isZero_contra'
+R27044:27046 Coq.Init.Logic <> :type_scope:x_'='_x not
+R27040:27042 Coq.Init.Peano <> :nat_scope:x_'+'_x not
+R27027:27032 Predicates <> isZero ind
+R27614:27623 Predicates <> isZero_ind scheme
+sec 28478:28483 <> twoEls
+var 28497:28497 twoEls A
+ind 28520:28525 <> twoEls
+constr 28551:28556 <> TwoEls
+R28529:28532 Coq.Init.Datatypes <> list ind
+R28534:28534 Predicates <> twoEls.A var
+R28572:28577 Predicates <> twoEls ind
+R28581:28584 Coq.Init.Datatypes <> :list_scope:x_'::'_x not
+R28580:28580 Predicates <> x var
+R28586:28589 Coq.Init.Datatypes <> :list_scope:x_'::'_x not
+R28585:28585 Predicates <> y var
+R28590:28592 Coq.Init.Datatypes <> nil constr
+prf 28607:28616 <> twoEls_nil
+R28634:28638 Coq.Init.Logic <> False ind
+R28620:28625 Predicates <> twoEls ind
+R28627:28629 Coq.Init.Datatypes <> nil constr
+prf 28676:28685 <> twoEls_two
+R28722:28724 Coq.Init.Logic <> :type_scope:x_'='_x not
+R28713:28718 Coq.Init.Datatypes <> length def
+R28720:28721 Predicates <> ls var
+R28700:28705 Predicates <> twoEls ind
+R28707:28708 Predicates <> ls var
+R28773:28778 Predicates twoEls <> sec
+ind 29000:29003 <> even
+constr 29024:29028 <> EvenO
+constr 29041:29046 <> EvenSS
+R29007:29009 Coq.Init.Datatypes <> nat ind
+R29032:29035 Predicates <> even ind
+R29037:29037 Coq.Init.Datatypes <> O constr
+R29070:29073 Predicates <> even ind
+R29076:29076 Coq.Init.Datatypes <> S constr
+R29079:29079 Coq.Init.Datatypes <> S constr
+R29081:29081 Predicates <> n var
+R29060:29063 Predicates <> even ind
+R29065:29065 Predicates <> n var
+prf 29391:29396 <> even_0
+R29400:29403 Predicates <> even ind
+prf 29471:29476 <> even_4
+R29480:29483 Predicates <> even ind
+R30020:30023 Predicates <> even ind
+prf 30035:30041 <> even_4'
+R30045:30048 Predicates <> even ind
+prf 30141:30153 <> even_1_contra
+R30167:30171 Coq.Init.Logic <> False ind
+R30157:30160 Predicates <> even ind
+prf 30237:30249 <> even_3_contra
+R30263:30267 Coq.Init.Logic <> False ind
+R30253:30256 Predicates <> even ind
+prf 30947:30955 <> even_plus
+R30991:30994 Predicates <> even ind
+R30998:31000 Coq.Init.Peano <> :nat_scope:x_'+'_x not
+R30997:30997 Predicates <> n var
+R31001:31001 Predicates <> m var
+R30981:30984 Predicates <> even ind
+R30986:30986 Predicates <> m var
+R30971:30974 Predicates <> even ind
+R30976:30976 Predicates <> n var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+prf 34074:34084 <> even_contra
+R34118:34122 Coq.Init.Logic <> False ind
+R34098:34101 Predicates <> even ind
+R34104:34104 Coq.Init.Datatypes <> S constr
+R34108:34110 Coq.Init.Peano <> :nat_scope:x_'+'_x not
+R34107:34107 Predicates <> n var
+R34111:34111 Predicates <> n var
+prf 34691:34702 <> even_contra'
+R34756:34760 Coq.Init.Logic <> False ind
+R34740:34742 Coq.Init.Logic <> :type_scope:x_'='_x not
+R34738:34739 Predicates <> n' var
+R34743:34743 Coq.Init.Datatypes <> S constr
+R34747:34749 Coq.Init.Peano <> :nat_scope:x_'+'_x not
+R34746:34746 Predicates <> n var
+R34750:34750 Predicates <> n var
+R34717:34720 Predicates <> even ind
+R34722:34723 Predicates <> n' var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R35388:35390 Coq.Init.Peano <> :nat_scope:x_'+'_x not
+R35391:35391 Coq.Init.Datatypes <> S constr
+R35503:35511 Coq.Init.Peano <> plus_n_Sm thm
+R35503:35511 Coq.Init.Peano <> plus_n_Sm thm
+R36091:36099 Coq.Init.Peano <> plus_n_Sm thm
+R36163:36166 Coq.Init.Logic <> :type_scope:x_'='_x not
+R36159:36159 Coq.Init.Datatypes <> S constr
+R36169:36172 Coq.Init.Peano <> :nat_scope:x_'+'_x not
+R36163:36166 Coq.Init.Logic <> :type_scope:x_'='_x not
+R36159:36159 Coq.Init.Datatypes <> S constr
+R36169:36172 Coq.Init.Peano <> :nat_scope:x_'+'_x not
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+prf 36957:36967 <> even_contra
+R37001:37005 Coq.Init.Logic <> False ind
+R36981:36984 Predicates <> even ind
+R36987:36987 Coq.Init.Datatypes <> S constr
+R36991:36993 Coq.Init.Peano <> :nat_scope:x_'+'_x not
+R36990:36990 Predicates <> n var
+R36994:36994 Predicates <> n var
+R37025:37036 Predicates <> even_contra' thm
+R37025:37036 Predicates <> even_contra' thm
+prf 37846:37858 <> even_contra''
+R37904:37908 Coq.Init.Logic <> False ind
+R37888:37890 Coq.Init.Logic <> :type_scope:x_'='_x not
+R37886:37887 Predicates <> n' var
+R37891:37891 Coq.Init.Datatypes <> S constr
+R37895:37897 Coq.Init.Peano <> :nat_scope:x_'+'_x not
+R37894:37894 Predicates <> n var
+R37898:37898 Predicates <> n var
+R37875:37878 Predicates <> even ind
+R37880:37881 Predicates <> n' var
+R37971:37974 Coq.Init.Logic <> :type_scope:x_'='_x not
+R37967:37967 Coq.Init.Datatypes <> S constr
+R37977:37980 Coq.Init.Peano <> :nat_scope:x_'+'_x not
+R37971:37974 Coq.Init.Logic <> :type_scope:x_'='_x not
+R37967:37967 Coq.Init.Datatypes <> S constr
+R37977:37980 Coq.Init.Peano <> :nat_scope:x_'+'_x not
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+ind 39944:39947 <> prop
+constr 39960:39962 <> Tru
+constr 39973:39976 <> Fals
+constr 39987:39989 <> And
+constr 40016:40017 <> Or
+R39966:39969 Predicates <> prop ind
+R39980:39983 Predicates <> prop ind
+R40009:40012 Predicates <> prop ind
+R40001:40004 Predicates <> prop ind
+R39993:39996 Predicates <> prop ind
+R40037:40040 Predicates <> prop ind
+R40029:40032 Predicates <> prop ind
+R40021:40024 Predicates <> prop ind
+ind 40054:40058 <> holds
+constr 40080:40083 <> HTru
+constr 40099:40102 <> HAnd
+constr 40164:40167 <> HOr1
+constr 40216:40219 <> HOr2
+R40062:40065 Predicates <> prop ind
+R40087:40091 Predicates <> holds ind
+R40093:40095 Predicates <> Tru constr
+R40144:40148 Predicates <> holds ind
+R40151:40153 Predicates <> And constr
+R40158:40159 Predicates <> p2 var
+R40155:40156 Predicates <> p1 var
+R40132:40136 Predicates <> holds ind
+R40138:40139 Predicates <> p2 var
+R40120:40124 Predicates <> holds ind
+R40126:40127 Predicates <> p1 var
+R40197:40201 Predicates <> holds ind
+R40204:40205 Predicates <> Or constr
+R40210:40211 Predicates <> p2 var
+R40207:40208 Predicates <> p1 var
+R40185:40189 Predicates <> holds ind
+R40191:40192 Predicates <> p1 var
+R40249:40253 Predicates <> holds ind
+R40256:40257 Predicates <> Or constr
+R40262:40263 Predicates <> p2 var
+R40259:40260 Predicates <> p1 var
+R40237:40241 Predicates <> holds ind
+R40243:40244 Predicates <> p2 var
+ind 40278:40286 <> falseFree
+constr 40308:40312 <> FFTru
+constr 40332:40336 <> FFAnd
+constr 40410:40414 <> FFNot
+R40290:40293 Predicates <> prop ind
+R40316:40324 Predicates <> falseFree ind
+R40326:40328 Predicates <> Tru constr
+R40386:40394 Predicates <> falseFree ind
+R40397:40399 Predicates <> And constr
+R40404:40405 Predicates <> p2 var
+R40401:40402 Predicates <> p1 var
+R40370:40378 Predicates <> falseFree ind
+R40380:40381 Predicates <> p2 var
+R40354:40362 Predicates <> falseFree ind
+R40364:40365 Predicates <> p1 var
+R40464:40472 Predicates <> falseFree ind
+R40475:40476 Predicates <> Or constr
+R40481:40482 Predicates <> p2 var
+R40478:40479 Predicates <> p1 var
+R40448:40456 Predicates <> falseFree ind
+R40458:40459 Predicates <> p2 var
+R40432:40440 Predicates <> falseFree ind
+R40442:40443 Predicates <> p1 var
+R40505:40509 Predicates <> holds ind
+prf 40521:40535 <> falseFree_holds
+R40564:40568 Predicates <> holds ind
+R40570:40570 Predicates <> p var
+R40549:40557 Predicates <> falseFree ind
+R40559:40559 Predicates <> p var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+ind 40972:40976 <> prop'
+constr 40989:40992 <> Tru'
+constr 41004:41007 <> And'
+constr 41037:41039 <> Or'
+R40996:41000 Predicates <> prop' ind
+R41029:41033 Predicates <> prop' ind
+R41020:41024 Predicates <> prop' ind
+R41011:41015 Predicates <> prop' ind
+R41061:41065 Predicates <> prop' ind
+R41052:41056 Predicates <> prop' ind
+R41043:41047 Predicates <> prop' ind
+ind 41079:41084 <> holds'
+constr 41107:41111 <> HTru'
+constr 41129:41133 <> HAnd'
+constr 41199:41203 <> HOr1'
+constr 41255:41259 <> HOr2'
+R41088:41092 Predicates <> prop' ind
+R41115:41120 Predicates <> holds' ind
+R41122:41125 Predicates <> Tru' constr
+R41177:41182 Predicates <> holds' ind
+R41185:41188 Predicates <> And' constr
+R41193:41194 Predicates <> p2 var
+R41190:41191 Predicates <> p1 var
+R41164:41169 Predicates <> holds' ind
+R41171:41172 Predicates <> p2 var
+R41151:41156 Predicates <> holds' ind
+R41158:41159 Predicates <> p1 var
+R41234:41239 Predicates <> holds' ind
+R41242:41244 Predicates <> Or' constr
+R41249:41250 Predicates <> p2 var
+R41246:41247 Predicates <> p1 var
+R41221:41226 Predicates <> holds' ind
+R41228:41229 Predicates <> p1 var
+R41290:41295 Predicates <> holds' ind
+R41298:41300 Predicates <> Or' constr
+R41305:41306 Predicates <> p2 var
+R41302:41303 Predicates <> p1 var
+R41277:41282 Predicates <> holds' ind
+R41284:41285 Predicates <> p2 var
+def 41320:41326 <> propify
+R41333:41337 Predicates <> prop' ind
+R41342:41345 Predicates <> prop ind
+R41358:41358 Predicates <> p var
+R41371:41374 Predicates <> Tru' constr
+R41379:41381 Predicates <> Tru constr
+R41389:41392 Predicates <> And' constr
+R41403:41405 Predicates <> And constr
+R41421:41427 Predicates <> propify def
+R41408:41414 Predicates <> propify def
+R41439:41441 Predicates <> Or' constr
+R41452:41453 Predicates <> Or constr
+R41469:41475 Predicates <> propify def
+R41456:41462 Predicates <> propify def
+R41507:41512 Predicates <> holds' ind
+prf 41522:41535 <> propify_holds'
+R41590:41595 Predicates <> holds' ind
+R41597:41597 Predicates <> p var
+R41574:41576 Coq.Init.Logic <> :type_scope:x_'='_x not
+R41572:41573 Predicates <> p' var
+R41577:41583 Predicates <> propify def
+R41585:41585 Predicates <> p var
+R41550:41554 Predicates <> holds ind
+R41556:41557 Predicates <> p' var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+R0:-1 Predicates <> y var
+prf 41655:41667 <> propify_holds
+R41702:41707 Predicates <> holds' ind
+R41709:41709 Predicates <> p var
+R41681:41685 Predicates <> holds ind
+R41688:41694 Predicates <> propify def
+R41696:41696 Predicates <> p var
+R41729:41742 Predicates <> propify_holds' thm
+R41729:41742 Predicates <> propify_holds' thm
