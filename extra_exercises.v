@@ -29,7 +29,7 @@ Proof.
   simpl. rewrite -> IHr'. reflexivity.
 Qed.
 
-Lemma n_eq_m__Sn_eq_Sm : forall (n m : nat),
+Lemma f_equal : forall (n m : nat),
   n = m -> S n = S m.
 Proof.
   intros n.
