@@ -157,15 +157,19 @@ Proof.
     (fun n : nat => (fun mo => ble_nat 1 n = true))
     (fun n : nat => (fun me => ble_nat 0 n = true))
   ).
-  
+  reflexivity.
+  intros. reflexivity.
+  intros. reflexivity.
+Qed.
 
 Lemma myOdd2_lemma : forall n,
   myOdd2 n -> (exists m, n = 2*m + 1).
 Proof.
   apply (myOdd2_mut
-    (fun n => (exists m, n = 2*m + 1))
-    (fun n => (exists m, S n = 2*m + 1))
+    (fun n : nat => (fun mo => exists m, n = 2*m + 1))
+    (fun n : nat => (fun me => exists m, S n = 2*m + 1))
   ).
+  
 
 
 Theorem ex_falso_quodlibet : forall (P:Prop),
