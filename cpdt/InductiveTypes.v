@@ -548,8 +548,9 @@ with oapp (ol : odd_list) (el : even_list) : odd_list :=
 
 Theorem elength_eapp : forall el1 el2 : even_list,
   elength (eapp el1 el2) = plus (elength el1) (elength el2).
-(* begin thide *)
-  induction el1; crush.
+Proof.
+  induction el1;
+  crush.
 
   (** One goal remains: [[
 
@@ -575,7 +576,7 @@ Check even_list_ind.
 We see that no inductive hypotheses are included anywhere in the type.  To get them, we must ask for mutual principles as we need them, using the %\index{Vernacular commands!Scheme}%[Scheme] command. *)
 
 Scheme even_list_mut := Induction for even_list Sort Prop
-with odd_list_mut := Induction for odd_list Sort Prop.
+with odd_list_mut := Induction for odd_list Sort Prop. 
 
 (** This invocation of [Scheme] asks for the creation of induction principles [even_list_mut] for the type [even_list] and [odd_list_mut] for the type [odd_list].  The [Induction] keyword says we want standard induction schemes, since [Scheme] supports more exotic choices.  Finally, [Sort Prop] establishes that we really want induction schemes, not recursion schemes, which are the same according to Curry-Howard, save for the [Prop]/[Set] distinction. *)
 

@@ -127,32 +127,25 @@ Inductive myOdd2: nat -> Set :=
 with myEven2 : nat -> Set :=
   | e2_IH : forall n : nat, myOdd2 n -> myEven2 (S n).
 
-Check myOdd2_ind.
+Example myOdd2_test_1: myOdd2 1.
+Proof. apply o2_1. Qed.
 
-Example myOdd2_test_1:
-  myOdd2 1.
+Example myOdd2_test_2: myOdd2 5.
+Proof. apply o2_IH. apply e2_IH. apply o2_IH. apply e2_IH. apply o2_1. Qed.
+
+Example myEven2_test_3: myEven2 4.
+Proof. apply e2_IH. apply o2_IH. apply e2_IH. apply o2_1. Qed.
+
+Scheme myOdd2_mut := Induction for myOdd2 Sort Prop
+  with myEven2_mut := Induction for myEven2 Sort Prop.
+Check myOdd2_mut.
+
+Lemma myOdd2_lemma : forall n,
+  myOdd n -> (exists m, n = 2*m + 1).
 Proof.
-  apply o2_1.
-Qed.
+  intros n.
+  Abort.
 
-
-Example myOdd2_test_2:
-  myOdd2 5.
-Proof.
-  apply o2_IH.
-  apply e2_IH.
-  apply o2_IH.
-  apply e2_IH.
-  apply o2_1.
-
-Example myEven2_test_3:
-  myEven2 4.
-Proof.
-  apply e2_IH.
-  apply o2_IH.
-  apply e2_IH.
-  apply o2_1.
-Qed.
 
 Theorem ex_falso_quodlibet : forall (P:Prop),
   False -> P.
@@ -161,18 +154,41 @@ Proof.
   inversion contra.
 Qed.
 
-Scheme myOdd2_mut := Induction for myOdd2 Sort Prop
-  with myEven2_mut := Induction for myEven2 Sort Prop.
 
-Check myOdd2_mut.
+(* simpler example test *)
 
-Lemma myOdd2_lemma_p : forall n,
-  myOdd2 n -> (exists m, n = 2*m + 1).
+Inductive even: nat -> Prop :=
+| even_base: even 0
+| even_succ: forall n, odd n -> even (S n)
+with odd: nat -> Prop :=
+| odd_succ: forall n, even n -> odd (S n).
+
+Scheme even_ind_2 := Minimality for even Sort Prop
+with odd_ind_2 := Minimality for odd Sort Prop.
+
+Check even_ind_2.
+
+Fixpoint ble_nat (n m : nat) : bool :=
+  match n with
+  | O => true
+  | S n' =>
+      match m with
+      | O => false
+      | S m' => ble_nat n' m'
+      end
+  end.
+
+Lemma even_pos: forall n,
+  even n -> ble_nat 0 n = true.
 Proof.
-  apply (myOdd2_mut
-    (fun no : myOdd2 => (exists mo : nat, no = 2*mo + 1) )
-    (fun ne : myEven2 => (exists me : nat, S ne = 2*me + 1) )
+  apply (even_ind_2
+    (fun n =>  ble_nat 0 n = true)
+    (fun n =>  ble_nat 1 n = true)
   ).
+  reflexivity.
+  intros. reflexivity.
+  intros. reflexivity.
+Qed.
   
 
   

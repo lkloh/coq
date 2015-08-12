@@ -104,7 +104,7 @@ To return to our test evaluations, we run the [Eval] command using the [simpl] e
 Eval simpl in expDenote (Const 42).
 (** [= 42 : nat] *)
 
-Eval simpl in expDenote (Binop Plus (Const 2) (Const 2)).
+Eval simpl in expDenote (Binop Plus (Const 3) (Const 2)).
 (** [= 4 : nat] *)
 
 Eval simpl in expDenote (Binop Times (Binop Plus (Const 2) (Const 2)) (Const 7)).
@@ -193,7 +193,8 @@ Eval simpl in progDenote (compile (Binop Times (Binop Plus (Const 2) (Const 2))
 
 (** We are ready to prove that our compiler is implemented correctly.  We can use a new vernacular command [Theorem] to start a correctness proof, in terms of the semantics we defined earlier:%\index{Vernacular commands!Theorem}% *)
 
-Theorem compile_correct : forall e, progDenote (compile e) nil = Some (expDenote e :: nil).
+Theorem compile_correct : forall e,
+  progDenote (compile e) nil = Some (expDenote e :: nil).
 (* begin thide *)
 
 (** Though a pencil-and-paper proof might clock out at this point, writing "by a routine induction on [e]," it turns out not to make sense to attack this proof directly.  We need to use the standard trick of%\index{strengthening the induction hypothesis}% _strengthening the induction hypothesis_.  We do that by proving an auxiliary lemma, using the command [Lemma] that is a synonym for [Theorem], conventionally used for less important theorems that appear in the proofs of primary theorems.%\index{Vernacular commands!Lemma}% *)
@@ -473,8 +474,8 @@ Abort.
 
 (** %\index{tactics!induction}\index{tactics!crush}% *)
 
-Lemma compile_correct' : forall e s p, progDenote (compile e ++ p) s =
-  progDenote p (expDenote e :: s).
+Lemma compile_correct' : forall e s p,
+  progDenote (compile e ++ p) s = progDenote p (expDenote e :: s).
   induction e; crush.
 Qed.
 
@@ -504,7 +505,7 @@ app_nil_end
 ]]
 %\index{tactics!rewrite}% *)
 
-  rewrite (app_nil_end (compile e)).
+rewrite (app_nil_end (compile e)).
 
 (** This time, we explicitly specify the value of the variable [l] from the theorem statement, since multiple expressions of list type appear in the conclusion.  The [rewrite] tactic might choose the wrong place to rewrite if we did not specify which we want.
 
