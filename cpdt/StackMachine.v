@@ -14,7 +14,7 @@
 
 As always, you can step through the source file <<StackMachine.v>> for this chapter interactively in Proof General.  Alternatively, to get a feel for the whole lifecycle of creating a Coq development, you can enter the pieces of source code in this chapter in a new <<.v>> file in an Emacs buffer.  If you do the latter, include these three lines at the start of the file. *)
 
-Require Import Bool Arith List Cpdt.CpdtTactics.
+Require Import Bool Arith List CpdtTactics.
 Set Implicit Arguments.
 Set Asymmetric Patterns.
 
