@@ -162,6 +162,20 @@ Proof.
   intros. reflexivity.
 Qed.
 
+Lemma Smn__m_Sn : forall n m,
+  S (m + n) = m + S n.
+Proof.
+  intros n.
+  induction n as [| n'].
+  intros.
+    rewrite -> plus_0_r.
+    apply expand_S.
+  intros.
+    rewrite -> plus_n_Sm.
+    reflexivity.
+Qed.
+    
+
 Lemma myOdd2_lemma : forall n,
   myOdd2 n -> (exists m, n = 2*m + 1).
 Proof.
@@ -180,9 +194,15 @@ Proof.
     simpl.
     apply f_equal.
     rewrite -> plus_0_r.
-   
-      
-    
+    rewrite <- plus_assoc.
+    rewrite <- plus_n_Sm.
+    rewrite -> plus_0_r.
+    rewrite -> Smn__m_Sn.
+    rewrite -> expand_S.
+    rewrite -> plus_assoc.
+    reflexivity.
+Qed.
+
 
 
 Theorem ex_falso_quodlibet : forall (P:Prop),
