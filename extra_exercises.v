@@ -100,23 +100,23 @@ Proof.
         simpl.
         destruct x.
         simpl. reflexivity.
-        rewrite -> plus_0_r.
-        rewrite -> plus_swap.
-        rewrite <- plus_assoc.
-        assert (two : 2 = 1 + 1). reflexivity.
-        rewrite <- two.
-        rewrite <- plus_assoc.
-        reflexivity.
-        rewrite <- plus_assoc.
-        assert (two : 2 = 1 + 1). reflexivity.
-        rewrite <- two.
-        rewrite -> HH.
-        rewrite <- plus_assoc.
-        simpl.
-        assert (three : 3 = 2 + 1). reflexivity.
-        rewrite -> three.
-        rewrite -> plus_assoc.
-        reflexivity.
+      rewrite -> plus_0_r.
+      rewrite -> plus_swap.
+      rewrite <- plus_assoc.
+      assert (two : 2 = 1 + 1). reflexivity.
+      rewrite <- two.
+      rewrite <- plus_assoc.
+      reflexivity.
+      rewrite <- plus_assoc.
+      assert (two : 2 = 1 + 1). reflexivity.
+      rewrite <- two.
+      rewrite -> HH.
+      rewrite <- plus_assoc.
+      simpl.
+      assert (three : 3 = 2 + 1). reflexivity.
+      rewrite -> three.
+      rewrite -> plus_assoc.
+      reflexivity.
 Qed.
         
 
@@ -169,7 +169,20 @@ Proof.
     (fun n : nat => (fun mo => exists m, n = 2*m + 1))
     (fun n : nat => (fun me => exists m, S n = 2*m + 1))
   ).
-  
+  exists 0.
+    reflexivity.
+  intros.
+    apply H.
+  intros. 
+    inversion H.
+    exists (S x).
+    rewrite -> H0.
+    simpl.
+    apply f_equal.
+    rewrite -> plus_0_r.
+   
+      
+    
 
 
 Theorem ex_falso_quodlibet : forall (P:Prop),
