@@ -1,4 +1,14 @@
 
+Fixpoint ble_nat (n m : nat) : bool :=
+  match n with
+  | O => true
+  | S n' =>
+      match m with
+      | O => false
+      | S m' => ble_nat n' m'
+      end
+  end.
+
 (* 1. Define an inductive data type myOdd: nat -> Set,
  so that you can prove the following lemma: 
  forall n, myOdd n -> exists m, n = 2*m +1 *)
@@ -140,11 +150,22 @@ Scheme myOdd2_mut := Induction for myOdd2 Sort Prop
   with myEven2_mut := Induction for myEven2 Sort Prop.
 Check myOdd2_mut.
 
-Lemma myOdd2_lemma : forall n,
-  myOdd n -> (exists m, n = 2*m + 1).
+Lemma myOdd2_easier : forall n,
+  myOdd2 n -> ble_nat 1 n = true.
 Proof.
-  intros n.
-  Abort.
+  apply (myOdd2_mut
+    (fun n : nat => (fun mo => ble_nat 1 n = true))
+    (fun n : nat => (fun me => ble_nat 0 n = true))
+  ).
+  
+
+Lemma myOdd2_lemma : forall n,
+  myOdd2 n -> (exists m, n = 2*m + 1).
+Proof.
+  apply (myOdd2_mut
+    (fun n => (exists m, n = 2*m + 1))
+    (fun n => (exists m, S n = 2*m + 1))
+  ).
 
 
 Theorem ex_falso_quodlibet : forall (P:Prop),
