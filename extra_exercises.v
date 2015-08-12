@@ -41,7 +41,10 @@ Qed.
 Theorem plus_n_Sm : forall n m : nat, 
   n + (S m) = S (n + m).
 Proof.
-  admit.
+  induction n as [| n'].
+  intros m. simpl. reflexivity.
+  intros m. simpl. apply f_equal. apply IHn'.
+Qed.
 
 Theorem plus_comm : forall n m : nat,
   n + m = m + n.
@@ -162,18 +165,7 @@ Proof.
   intros. reflexivity.
 Qed.
 
-Lemma Smn__m_Sn : forall n m,
-  S (m + n) = m + S n.
-Proof.
-  intros n.
-  induction n as [| n'].
-  intros.
-    rewrite -> plus_0_r.
-    apply expand_S.
-  intros.
-    rewrite -> plus_n_Sm.
-    reflexivity.
-Qed.
+
     
 
 Lemma myOdd2_lemma : forall n,
@@ -197,7 +189,7 @@ Proof.
     rewrite <- plus_assoc.
     rewrite <- plus_n_Sm.
     rewrite -> plus_0_r.
-    rewrite -> Smn__m_Sn.
+    rewrite -> plus_n_Sm.
     rewrite -> expand_S.
     rewrite -> plus_assoc.
     reflexivity.
