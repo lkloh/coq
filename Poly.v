@@ -401,18 +401,15 @@ Theorem rev_snoc : forall X : Type,
   rev (snoc s v) = v :: (rev s).
 Proof.
   intros.
-  induction s as [| n s'].
-  Case "nil".
-    simpl. reflexivity.
-  Case "n::s'".
-    simpl.
-    rewrite -> IHs'.
-    simpl.
-    reflexivity.
+  induction s as [| s'].
+  Case "s=nil". simpl. reflexivity.
+  Case "s = h::t".
+  simpl. rewrite -> IHs. simpl. reflexivity.
 Qed.
 
-  
-  
+
+
+
   
 
 Theorem rev_involutive : forall X : Type, forall l : list X,

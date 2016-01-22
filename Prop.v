@@ -210,23 +210,24 @@ Proof.
   apply H.
 Qed.
 
+Lemma mult_0: forall m, m * 0 = 0.
+Proof.
+  intros.
+  induction m as [| m'].
+  simpl. reflexivity.
+  simpl. apply IHm'.
+Qed.
+
 (** **** Exercise: 3 stars (b_timesm)  *)
 Theorem b_timesm: forall n m, beautiful n -> beautiful (m*n).
 Proof.
- intros n m H.
- induction m as [| m'].
- Case "m=0".
-   simpl.
-   apply b_0.
- Case "m = S m'".
-   simpl.
-   apply b_sum.
-   apply H.
-   apply IHm'.
+  intros.
+  induction m as [| m'].
+  simpl. apply b_0.
+  simpl. apply b_sum. apply H. apply IHm'.
 Qed.
-    
-    
-   
+
+
 
 
 (* ####################################################### *)
@@ -289,15 +290,10 @@ gorgeous (5 + n)
 Theorem gorgeous_plus13: forall n, 
   gorgeous n -> gorgeous (13+n).
 Proof.
-  intros n H.
-  assert (H1 : gorgeous (3 + (5 + (5 + n))) = gorgeous (13 + n)).
-  simpl.
-  reflexivity.
-  rewrite <- H1.
-  apply g_plus3.
-  apply g_plus5.
-  apply g_plus5.
-  apply H.
+  intros.
+  assert (H2: gorgeous (13+n) = gorgeous (5 + (5 + (3 + n))) ).
+  simpl. reflexivity.
+  rewrite -> H2. apply g_plus5. apply g_plus5. apply g_plus3. apply H.
 Qed.
 
  
@@ -336,18 +332,11 @@ Abort.
 Theorem gorgeous__beautiful : forall n, 
   gorgeous n -> beautiful n.
 Proof.
-   intros n H.
-   induction H as [|n'|n'].
-   Case "g_0".
-       apply b_0.
-   Case "g_plus3". 
-       apply b_sum.
-       apply b_3.
-       apply IHgorgeous.
-   Case "g_plus5".
-       apply b_sum.
-       apply b_5.
-       apply IHgorgeous. 
+  intros.
+  induction H as [|n'|n'].
+  apply b_0.
+  apply b_sum. apply b_3. apply IHgorgeous.
+  apply b_sum. apply b_5. apply IHgorgeous.
 Qed.
 
 
@@ -357,20 +346,15 @@ Qed.
 Theorem gorgeous_sum : forall n m,
   gorgeous n -> gorgeous m -> gorgeous (n + m).
 Proof.
-  intros n m H1 H2.
-  induction H2 as [| h2' | h2' ].
-  Case "g_0".
-    rewrite -> plus_0_r.
-    apply H1.
-  Case "g_plus3".
-    rewrite -> plus_swap.
-    apply g_plus3.
-    apply IHgorgeous.
-  Case "g_plus5".
-    rewrite -> plus_swap.
-    apply g_plus5.
-    apply IHgorgeous.
+  intros.
+  induction H0 as [|m'|m'].
+  rewrite -> plus_0_r. apply H.
+  rewrite -> plus_swap. apply g_plus3. apply IHgorgeous.
+  rewrite -> plus_swap. apply g_plus5. apply IHgorgeous.
 Qed.
+
+
+
 
     
 (** **** Exercise: 3 stars, advanced (beautiful__gorgeous)  *)
@@ -393,25 +377,31 @@ Qed.
 Lemma helper_g_times2 : forall x y z,
   x + (z + y) = z + x + y.
 Proof.
-  intros x y z.
+  intros.
   rewrite -> plus_swap.
   rewrite -> plus_assoc.
   reflexivity.
 Qed.
 
-Theorem g_times2: forall n, gorgeous n -> gorgeous (2*n).
+
+
+
+
+Theorem g_times2: forall n,
+  gorgeous n -> gorgeous (2*n).
 Proof.
-   intros n H. simpl. 
-   induction H.
-   apply g_0.
-   apply gorgeous_sum. apply g_plus3. apply H.
-   apply gorgeous_sum. apply g_plus3. apply H.
-   apply g_0.
-   apply gorgeous_sum. apply g_plus5. apply H.
-   apply gorgeous_sum. apply g_plus5. apply H.
-   apply g_0.
+  intros.
+  induction H as [|n'|n'].
+  simpl. apply g_0.
+  apply gorgeous_sum. apply g_plus3. apply H.
+  rewrite -> plus_0_r. apply g_plus3. apply H.
+  apply gorgeous_sum.
+  apply g_plus5. apply H.
+  rewrite -> plus_0_r. apply g_plus5. apply H.
 Qed.
-   
+
+
+
 
 
 
@@ -421,15 +411,13 @@ the computational one. *)
 Theorem ev__even : forall n,
   ev n -> even n.
 Proof.
-  intros n E.
-  induction E as [| n' E'].
-  Case "E = ev_0". 
-    unfold even.
-    reflexivity.
-  Case "E = ev_SS n' E'".  
-    unfold even.
-    apply IHE'.  
+  intros.
+  induction H as [|n'].
+  reflexivity.
+  unfold even. simpl. apply IHev.
 Qed.
+  
+
 
 (** **** Exercise: 1 star (ev__even)  *) 
 (** Could this proof also be carried out by induction on [n] instead
