@@ -14,3 +14,7 @@
 
 1. ex_beautiful_Sn
 
+# Compilation
+
+Compile the files `coqc <Filename>.v`
+
