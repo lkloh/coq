@@ -187,11 +187,10 @@ Theorem and_example :
   (0 = 0) /\ (4 = mult 2 2).
 Proof.
   apply conj.
-  Case "left".
-    reflexivity.
-  Case "right".
+  reflexivity.
   reflexivity.
 Qed.
+
 
 (** Just for convenience, we can use the tactic [split] as a shorthand for
     [apply conj]. *)
@@ -200,9 +199,12 @@ Theorem and_example' :
   (0 = 0) /\ (4 = mult 2 2).
 Proof.
   split.
-    Case "left". reflexivity.
-    Case "right". reflexivity.
-  Qed.
+  reflexivity.
+  reflexivity.
+Qed.
+
+
+
 
 (** ** "Eliminating" conjunctions *)
 (** Conversely, the [destruct] tactic can be used to take a
@@ -213,29 +215,39 @@ Proof.
 Theorem proj1 : forall P Q : Prop, 
   P /\ Q -> P.
 Proof.
-  intros P Q H.
-  destruct H as [HP HQ]. 
+  intros.
+  destruct H as [HP HQ].
   apply HP.
 Qed.
+
+
 
 (** **** Exercise: 1 star, optional (proj2)  *)
 Theorem proj2 : forall P Q : Prop, 
   P /\ Q -> Q.
 Proof.
-  intros P Q H.
+  intros.
   destruct H as [HP HQ].
   apply HQ.
 Qed.
 
+
+
+
+
 Theorem and_commut : forall P Q : Prop, 
   P /\ Q -> Q /\ P.
 Proof.
-  intros P Q H.
-  destruct H as [HP HQ]. 
-  split.  
-    Case "left". apply HQ. 
-    Case "right". apply HP.
-  Qed.
+  intros.
+  destruct H as [HP HQ].
+  split.
+  apply HQ. apply HP.
+Qed.
+
+
+
+
+
   
 
 (** **** Exercise: 2 stars (and_assoc)  *)
@@ -271,21 +283,21 @@ Notation "P <-> Q" := (iff P Q)
 
 Theorem iff_implies : forall P Q : Prop, 
   (P <-> Q) -> P -> Q.
-Proof.  
-  intros P Q H. 
-  destruct H as [HAB HBA].
-  apply HAB.
+Proof.
+  intros.
+  destruct H as [HA HB].
+  apply HA.
+  apply H0.
 Qed.
 
 Theorem iff_sym : forall P Q : Prop, 
   (P <-> Q) -> (Q <-> P).
 Proof.
-  intros P Q H. 
-  destruct H as [HAB HBA].
-  split.
-    Case "->". apply HBA.
-    Case "<-". apply HAB.
-  Qed.
+  intros.
+  destruct H as [HA HB].
+  split. apply HB. apply HA.
+Qed.
+
 
 (** **** Exercise: 1 star, optional (iff_properties)  *)
 (** Using the above proof that [<->] is symmetric ([iff_sym]) as
@@ -293,31 +305,25 @@ Proof.
 
 Theorem iff_refl : forall P : Prop, 
   P <-> P.
-Proof. 
-  intros P.
+Proof.
+  intros.
   split.
-  intros H1.
-  apply H1.
-  intros H2.
-  apply H2.
+  intros. apply H.
+  intros. apply H.
 Qed.
 
 Theorem iff_trans : forall P Q R : Prop, 
   (P <-> Q) -> (Q <-> R) -> (P <-> R).
 Proof.
-  intros P Q R H1 H2.
-  inversion H1.
-  inversion H2.
+  intros.
+  inversion H. inversion H0.
   split.
-  intros H7.
-  apply H3.
-  apply H.
-  apply H7.
-  intros H8.
-  apply H0.
-  apply H4.
-  apply H8.
+  intros. apply H3. apply H1. apply H5.
+  intros. apply H2. apply H4. apply H5.
 Qed.
+
+
+  
 
 (** Hint: If you have an iff hypothesis in the context, you can use
     [inversion] to break it into two separate implications.  (Think
