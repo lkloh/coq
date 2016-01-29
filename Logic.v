@@ -382,15 +382,13 @@ Check or_intror.
 Theorem or_commut : forall P Q : Prop,
   P \/ Q  -> Q \/ P.
 Proof.
-  intros P Q H.
+  intros.
   destruct H as [HP | HQ].
-  Case "left".
-    apply or_intror.
-    apply HP.
-  Case "right".
-    apply or_introl.
-    apply HQ.
+  apply or_intror. apply HP.
+  apply or_introl. apply HQ.
 Qed.
+
+
 
 (** From here on, we'll use the shorthand tactics [left] and [right]
     in place of [apply or_introl] and [apply or_intror]. *)
