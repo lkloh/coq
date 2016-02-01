@@ -134,7 +134,15 @@ Qed.
 
 Theorem ev_not_ev_S : forall n,
   ev n -> ~ ev (S n).
-Proof. 
+Proof.
+  intros.
+  induction H as [| n' H'].
+  unfold not. intros. inversion H.
+  unfold not. intros. unfold not in IHH'. apply IHH'. inversion H. apply H1.
+Qed.
+  
+  
+  
 
 
 Theorem ble_nat_true : forall n m,
