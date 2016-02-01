@@ -424,21 +424,15 @@ Proof.
 Theorem or_distributes_over_and_2 : forall P Q R : Prop,
   (P \/ Q) /\ (P \/ R) -> P \/ (Q /\ R).
 Proof.
-  intros P Q R.
-  intros H.
-  destruct H as [HL HR].
-  destruct HL as [HL1 | HL2].
-  destruct HR as [HR1 | HR2].
-  left. apply HL1.
-  left. apply HL1.
-  destruct HR as [A | B].
-  left. apply A.
-  right.
-  apply conj.
-  apply HL2.
-  apply B.
-  Qed.
+  intros.
+  destruct H as [HL HR]. destruct HL as [HP|HQ]. destruct HR as [HP'|HR].
+  left. apply HP.
+  left. apply HP.
+  destruct HR as [HP|HR']. left. apply HP. right. apply conj. apply HQ. apply HR'.
+Qed.
 
+  
+ 
   
 
 (** **** Exercise: 1 star, optional (or_distributes_over_and)  *)
@@ -489,30 +483,31 @@ Qed.
 Theorem andb_prop : forall b c,
   andb b c = true -> b = true /\ c = true.
 Proof.
-  intros b c H.
+  intros.
   destruct b.
-  Case "b = true".
-   destruct c.
-   SCase "c = true". apply conj. reflexivity. reflexivity.
-   SCase "c = false". inversion H.
-  Case "b = false".
-  inversion H.
+  Case "b=true". destruct c. apply conj. reflexivity. reflexivity. inversion H.
+  Case "b=false". destruct c. inversion H. inversion H.
 Qed.
+  
 
 Theorem andb_true_intro : forall b c,
   b = true /\ c = true -> andb b c = true.
 Proof.
-  intros b c H.
-  destruct H.
-  rewrite H.
-  rewrite H0.
-  reflexivity.
+  intros.
+  destruct b.
+  inversion H. rewrite -> H1. simpl. reflexivity.
+  inversion H. inversion H0.
 Qed.
+
+
 
 (** **** Exercise: 2 stars, optional (andb_false)  *)
 Theorem andb_false : forall b c,
   andb b c = false -> b = false \/ c = false.
-Proof. 
+Proof.
+
+
+  
   intros b c H.
   destruct b.
   Case "b = true".
@@ -684,30 +679,36 @@ Theorem not_False':
   ~ False.
 Proof.
   unfold not.
-  intros H.
-  apply H.
+  intros.
+  inversion H.
 Qed.
+
+
+
 
 (** *** *)
 Theorem contradiction_implies_anything : forall P Q : Prop,
   (P /\ ~P) -> Q.
-Proof. 
-  intros P Q H.
-  destruct H as [HP HNA].
-  unfold not in HNA. 
-  apply HNA in HP.
+Proof.
+  intros.
+  destruct H as [HP NHP].
+  unfold not in NHP.
+  apply NHP in HP.
   inversion HP.
 Qed.
+
+
 
 Theorem double_neg : forall P : Prop,
   P -> ~~P.
 Proof.
-  intros P H.
+  intros.
   unfold not.
-  intros G.
-  apply G.
+  intros.
+  apply H0 in H.
   apply H.
 Qed.
+
 
 (** **** Exercise: 2 stars, advanced (double_neg_inf)  *)
 (** Write an informal proof of [double_neg]:
@@ -723,14 +724,16 @@ Qed.
 Theorem contrapositive : forall P Q : Prop,
   (P -> Q) -> (~Q -> ~P).
 Proof.
-  intros P Q H1 H2.
-  unfold not in H2.
+  intros.
+  unfold not in H0.
   unfold not.
-  intros H3.
-  apply H2.
+  intros.
+  apply H in H1.
+  apply H0 in H1.
   apply H1.
-  apply H3.
 Qed.
+
+
 
 (** **** Exercise: 1 star (not_both_true_and_false)  *)
 Theorem not_both_true_and_false : forall P : Prop,
