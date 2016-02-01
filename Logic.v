@@ -738,14 +738,18 @@ Qed.
 (** **** Exercise: 1 star (not_both_true_and_false)  *)
 Theorem not_both_true_and_false : forall P : Prop,
   ~ (P /\ ~P).
-Proof. 
-  intros P.
+Proof.
+  intros.
   unfold not.
-  intros H.
-  destruct H.
-  apply H0 in H.
-  apply H.
+  intros.
+  destruct H as [HP NHP].
+  apply NHP in HP.
+  apply HP.
 Qed.
+
+
+
+
 
 (** **** Exercise: 1 star, advanced (informal_not_PNP)  *)
 (** Write an informal proof (in English) of the proposition [forall P
@@ -797,9 +801,7 @@ Proof.
   split.
   Case "one side".
   intros H1.
-  right.
-  intros e1.
-  admit.
+  left. apply H1. intros. apply H. apply H1. intros. admit.
   Case "other side".
   intros H2.
   intros H3.
@@ -817,18 +819,18 @@ axiom (i.e. an instance of excluded middle) for any _particular_ Prop [P].
 Why? Because we cannot prove the negation of such an axiom; if we could,
 we would have both [~ (P \/ ~P)] and [~ ~ (P \/ ~P)], a contradiction. *)
 
-Theorem excluded_middle_irrefutable:  forall (P:Prop), ~ ~ (P \/ ~ P).  
+Theorem excluded_middle_irrefutable:  forall (P:Prop),
+  ~ ~ (P \/ ~ P).  
 Proof.
-  intros P.
+  intros.
   unfold not.
-  intros H.
+  intros.
   apply H.
-  right.
-  intros H1.
-  apply H.
-  left.
-  apply H1.
+  right. intros. apply H. left. apply H0.
 Qed.
+
+
+
   
 
 
@@ -851,32 +853,26 @@ Notation "x <> y" := (~ (x = y)) : type_scope.
 Theorem not_false_then_true : forall b : bool,
   b <> false -> b = true.
 Proof.
-  intros b H.
+  intros.
   unfold not in H.
   destruct b.
-  reflexivity.
-  apply ex_falso_quodlibet.
-  apply H.
-  reflexivity.
+  Case "b=true". reflexivity.
+  Case "b=false". apply ex_falso_quodlibet. apply H. reflexivity.
 Qed.
 
 
 
-(** *** *)
+
+
 
 (** *** *)
 
-(** *** *)
-
-(** *** *)
-
-(** *** *)
 
 (** **** Exercise: 2 stars (false_beq_nat)  *)
 Theorem false_beq_nat : forall n m : nat,
      n <> m ->
      beq_nat n m = false.
-Proof. 
+Proof.
   intros n.
   induction n as [| n'].
   Case "n=0".
@@ -921,23 +917,17 @@ Proof.
     inversion H.
     inversion F.
   Case "n = S n'".
-    intros m H.
+    intros.  
     unfold not.
-    intros F.
+    intros.
     destruct m.
-    inversion F.
-    unfold not in IHn'.
-    inversion H.
-    apply IHn' in H1.
-    apply H1.
-    inversion F.
-    reflexivity.
+    inversion H0.
+    unfold not in IHn'. inversion H.
+    apply IHn' in H2. apply H2.
+    inversion H0. reflexivity.
 Qed.
 
-    
-    
- 
- 
+
 
 
 (** $Date: 2014-12-31 11:17:56 -0500 (Wed, 31 Dec 2014) $ *)

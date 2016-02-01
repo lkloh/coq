@@ -59,23 +59,33 @@ Fixpoint ble_nat (n m : nat) : bool :=
 Theorem andb_true_elim1 : forall b c,
   andb b c = true -> b = true.
 Proof.
-  intros b c H.
+  intros.
   destruct b.
-  Case "b = true".
-    reflexivity.
-  Case "b = false".
-    rewrite <- H. reflexivity.  Qed.
+  Case "b=true". reflexivity.
+  Case "b=false". inversion H.
+Qed.
+
 
 Theorem andb_true_elim2 : forall b c,
   andb b c = true -> c = true.
 Proof.
-(* An exercise in Basics.v *)
-Admitted.
+  intros.
+  destruct c.
+  Case "c=true". reflexivity.
+  Case "c=false". destruct b. inversion H. inversion H.
+Qed.
 
 Theorem beq_nat_sym : forall (n m : nat),
   beq_nat n m = beq_nat m n.
-(* An exercise in Lists.v *)
-Admitted.
+Proof.
+  intros n.
+  induction n as [| n'].
+  Case "n=0". intros m. destruct m as [| m']. reflexivity. simpl. reflexivity.
+  Case "n=S n'".
+  induction m as [| m'].
+  simpl. reflexivity.
+  simpl in IHn'. simpl. apply IHn'.
+Qed.
 
 (** * From Props.v *)
 
