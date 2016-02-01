@@ -98,19 +98,12 @@ Inductive ev : nat -> Prop :=
 Theorem andb_true : forall b c,
   andb b c = true -> b = true /\ c = true.
 Proof.
-  intros b c H.
-  destruct b.
-    destruct c.
-      apply conj. reflexivity. reflexivity.
-      inversion H.
-    inversion H.  Qed.
+  intros.
+  split.
+  destruct b. reflexivity. inversion H.
+  destruct c. reflexivity. destruct b. inversion H. inversion H. 
+Qed.
 
-Theorem false_beq_nat: forall n n' : nat,
-     n <> n' ->
-     beq_nat n n' = false.
-Proof. 
-(* An exercise in Logic.v *)
-Admitted.
 
 Theorem ex_falso_quodlibet : forall (P:Prop),
   False -> P.
@@ -118,11 +111,31 @@ Proof.
   intros P contra.
   inversion contra.  Qed.
 
+
+Theorem false_beq_nat: forall n n' : nat,
+     n <> n' ->
+     beq_nat n n' = false.
+Proof. 
+  intros n.
+  induction n as [| k].
+  Case "n=0".
+  intros n'. induction n' as [| k'].
+  SCase "n'=0". intros. unfold not in H. simpl. apply ex_falso_quodlibet. apply H.
+  reflexivity.
+  SCase "n' = S k'".
+  intros. simpl. reflexivity.
+  Case "n = S k".
+  destruct n' as [| k'].
+  SCase "n'=0". intros. reflexivity.
+  SCase "n'=S k'". intros. apply IHk. unfold not. intros.
+  unfold not in H. apply H. rewrite -> H0. reflexivity.
+Qed.
+
+
 Theorem ev_not_ev_S : forall n,
   ev n -> ~ ev (S n).
 Proof. 
-(* An exercise in Logic.v *)
-Admitted.
+
 
 Theorem ble_nat_true : forall n m,
   ble_nat n m = true -> n <= m.
