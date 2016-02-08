@@ -128,7 +128,7 @@ Proof.
   destruct n' as [| k'].
   SCase "n'=0". intros. reflexivity.
   SCase "n'=S k'". intros. apply IHk. unfold not. intros.
-  unfold not in H. apply H. rewrite -> H0. reflexivity.
+  apply H. rewrite -> H0. reflexivity.
 Qed.
 
 
@@ -147,14 +147,25 @@ Qed.
 
 Theorem ble_nat_true : forall n m,
   ble_nat n m = true -> n <= m.
-(* An exercise in Logic.v *)
-Admitted.
+Proof.
+  intros n. induction n as [| n'].
+  Case "n=0". induction m as [| m'].
+  intros. reflexivity.
+  intros. apply le_S. apply IHm'. inversion H.
 
 Theorem ble_nat_false : forall n m,
   ble_nat n m = false -> ~(n <= m).
-(* An exercise in Logic.v *)
-Admitted.
+Proof.
+  intros n. induction n as [| n'].
+  Case "n=0". induction m as [| m'].
+  intros. unfold not. intros. inversion H.
+  intros. unfold not. intros. inversion H.
+  Case "n = S n'". 
+admit.
 
+
+(* STOPPED FEB 1*)
+  
 Inductive appears_in (n : nat) : list nat -> Prop :=
 | ai_here : forall l, appears_in n (n::l)
 | ai_later : forall m l, appears_in n l -> appears_in n (m::l).
@@ -192,7 +203,8 @@ Theorem multi_R : forall (X:Type) (R:relation X) (x y : X),
        R x y -> multi R x y.
 Proof.
   intros X R x y r.
-  apply multi_step with y. apply r. apply multi_refl.   Qed.
+  apply multi_step with y. apply r. apply multi_refl.
+Qed.
 
 Theorem multi_trans :
   forall (X:Type) (R: relation X) (x y z : X),
@@ -200,7 +212,8 @@ Theorem multi_trans :
       multi R y z ->
       multi R x z.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros X R x y z. intros.
+  apply multi_step.
 
 (**  Identifiers and polymorphic partial maps. *)
 
