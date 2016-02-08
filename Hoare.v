@@ -95,19 +95,27 @@ Module ExAssertions.
 (** Paraphrase the following assertions in English. *)
 
 Definition as1 : Assertion := fun st => st X = 3.
+(* x = 3 *)
+  
 Definition as2 : Assertion := fun st => st X <= st Y.
+(* x := y *)
+
 Definition as3 : Assertion :=
   fun st => st X = 3 \/ st X <= st Y.
+(* x := 3 or x := y *)
+
 Definition as4 : Assertion :=
   fun st => st Z * st Z <= st X /\
             ~ (((S (st Z)) * (S (st Z))) <= st X).
-Definition as5 : Assertion := fun st => True.
-Definition as6 : Assertion := fun st => False.
 
-(* FILL IN HERE *)
+Definition as5 : Assertion := fun st => True.
+(* always true *)
+
+Definition as6 : Assertion := fun st => False.
+(* always false *)
 
 End ExAssertions.
-(** [] *)
+
 
 (* ####################################################### *)
 (** ** Notation for Assertions *)
@@ -188,27 +196,31 @@ Notation "{{ P }}  c  {{ Q }}" :=
 (** **** Exercise: 1 star, optional (triples)  *)
 (** Paraphrase the following Hoare triples in English.
    1) {{True}} c {{X = 5}}
+      after executing command c, state X = 5
 
    2) {{X = m}} c {{X = m + 5)}}
+      If state X = m, after executing command c, then state X = m + 5
 
    3) {{X <= Y}} c {{Y <= X}}
+      If state X <= state Y initially, after executing command c,
+      state Y <= state X. 
 
    4) {{True}} c {{False}}
+      true state becomes false state after executing command c
 
    5) {{X = m}} 
       c
       {{Y = real_fact m}}.
+      if state X = m, and state Y can be anything,
+      after executing command c,
+      state Y is real_fact m
 
    6) {{True}} 
       c 
       {{(Z * Z) <= m /\ ~ (((S Z) * (S Z)) <= m)}}
-
+      If state is initially true, after executing command c,
+      z*z <=m and (z^2+2z+1) > m)
  *)
-
-
-(** [] *)
-
-
 
 
 
@@ -220,26 +232,39 @@ Notation "{{ P }}  c  {{ Q }}" :=
 (** Which of the following Hoare triples are _valid_ -- i.e., the
     claimed relation between [P], [c], and [Q] is true?
    1) {{True}} X ::= 5 {{X = 5}}
+      Valid
+ *)
+
+
+(*
 
    2) {{X = 2}} X ::= X + 1 {{X = 3}}
+      Valid
 
    3) {{True}} X ::= 5; Y ::= 0 {{X = 5}}
+      Valid
 
    4) {{X = 2 /\ X = 3}} X ::= 5 {{X = 0}}
+      invalid
 
    5) {{True}} SKIP {{False}}
+      invalid
 
    6) {{False}} SKIP {{True}}
+      valid
 
    7) {{True}} WHILE True DO SKIP END {{False}}
+      invalid
 
    8) {{X = 0}}
       WHILE X == 0 DO X ::= X + 1 END
       {{X = 1}}
+      valid
 
    9) {{X = 1}}
       WHILE X <> 0 DO X ::= X + 1 END
       {{X = 100}}
+      invalidm does not terminate
 
 *)
 (* FILL IN HERE *)
@@ -257,18 +282,17 @@ Theorem hoare_post_true : forall (P Q : Assertion) c,
   (forall st, Q st) ->
   {{P}} c {{Q}}.
 Proof.
-  intros P Q c H. unfold hoare_triple.
-  intros st st' Heval HP.
-  apply H.  Qed.
+  intros. unfold hoare_triple. intros. apply H.
+Qed.
+
 
 Theorem hoare_pre_false : forall (P Q : Assertion) c,
-  (forall st, ~(P st)) ->
-  {{P}} c {{Q}}.
+  (forall st, ~(P st)) -> {{P}} c {{Q}}.
 Proof.
-  intros P Q c H. unfold hoare_triple.
-  intros st st' Heval HP.
-  unfold not in H. apply H in HP.
-  inversion HP.  Qed.
+  intros. unfold hoare_triple. intros. unfold not in H. apply H in H1. inversion H1.
+Qed.
+
+
 
 (* ####################################################### *) 
 (** ** Proof Rules *)
