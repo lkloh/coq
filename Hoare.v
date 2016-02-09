@@ -211,9 +211,9 @@ Notation "{{ P }}  c  {{ Q }}" :=
    5) {{X = m}} 
       c
       {{Y = real_fact m}}.
-      if state X = m, and state Y can be anything,
-      after executing command c,
-      state Y is real_fact m
+      If we start out in a state where the value of X is m,
+      and we execute command c,
+      then we finish in a state where Y = real_fact m.
 
    6) {{True}} 
       c 
@@ -423,10 +423,15 @@ Notation "P [ X |-> a ]" := (assn_sub X a P) (at level 10).
 Theorem hoare_asgn : forall Q X a,
   {{Q [X |-> a]}} (X ::= a) {{Q}}.
 Proof.
+  intros. unfold hoare_triple. intros. inversion H. unfold assn_sub in H0.
+  rewrite <- H5. assumption.
+Qed.
+(*                
   unfold hoare_triple.
   intros Q X a st st' HE HQ.
   inversion HE. subst.
   unfold assn_sub in HQ. assumption.  Qed.
+*)
 
 (** Here's a first formal proof using this rule. *)
 
@@ -435,7 +440,8 @@ Example assn_sub_example :
   (X ::= (ANum 3))
   {{fun st => st X = 3}}.
 Proof.
-  apply hoare_asgn.  Qed.
+  apply hoare_asgn.
+Qed.
 
 (** **** Exercise: 2 stars (hoare_asgn_examples)  *)
 (** Translate these informal Hoare triples...
@@ -449,8 +455,24 @@ Proof.
    ...into formal statements [assn_sub_ex1, assn_sub_ex2] 
    and use [hoare_asgn] to prove them. *)
 
-(* FILL IN HERE *)
-(** [] *)
+Example assn_sub_ex1 :
+   {{(fun st => st X <= 5) [X |-> APlus (AId X)  (ANum 1)] }}
+   X ::= APlus (AId X) (ANum 1)
+   {{fun st => st X <= 5 }}.
+Proof.
+  apply hoare_asgn.
+Qed.
+
+Example assn_sub_ex2:
+  {{(fun st => 0 <= st X /\ st X <= 5) [X |-> (ANum 3)] }}
+  X ::= (ANum 3)
+  {{fun st => 0 <= st X /\ st X <= 5 }}.
+Proof.
+  apply hoare_asgn.
+Qed.
+  
+
+  
 
 (** **** Exercise: 2 stars (hoare_asgn_wrong)  *)
 (** The assignment rule looks backward to almost everyone the first
