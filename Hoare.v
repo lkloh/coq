@@ -854,6 +854,7 @@ Proof.
   inversion Hc. subst.
   apply (H1 st'0 st').  assumption.
   apply (H2 st st'0). assumption.
+  assumption.
 Qed.
 
 (** Note that, in the formal rule [hoare_seq], the premises are
@@ -879,12 +880,15 @@ Example hoare_asgn_example3 : forall a n,
   (X ::= a;; SKIP) 
   {{fun st => st X = n}}.
 Proof.
-  intros a n. eapply hoare_seq.
-  Case "right part of seq".
-    apply hoare_skip.
-  Case "left part of seq".
-    eapply hoare_consequence_pre. apply hoare_asgn. 
-    intros st H. subst. reflexivity. Qed.
+  intros.
+  eapply hoare_seq.
+  Case "right". eapply hoare_skip.
+  Case "left". eapply hoare_consequence_pre. apply hoare_asgn.
+  intros st H. subst. reflexivity.
+Qed.
+
+
+
 
 (** You will most often use [hoare_seq] and
     [hoare_consequence_pre] in conjunction with the [eapply] tactic,
@@ -899,14 +903,19 @@ Proof.
                    {{ X = 1 /\ 2 = 2 }}
     Y ::= 2
                    {{ X = 1 /\ Y = 2 }}
-*)
+ *)
 
 Example hoare_asgn_example4 :
   {{fun st => True}} (X ::= (ANum 1);; Y ::= (ANum 2)) 
   {{fun st => st X = 1 /\ st Y = 2}}.
 Proof.
-  (* FILL IN HERE *) Admitted.
-(** [] *)
+  eapply hoare_seq.
+  Case "first". apply hoare_asgn.
+  Case "second". eapply hoare_consequence_pre.
+  eapply hoare_asgn.
+  intros st H. subst.
+Abort.
+
 
 (** **** Exercise: 3 stars (swap_exercise)  *)
 (** Write an Imp program [c] that swaps the values of [X] and [Y]
@@ -916,15 +925,22 @@ Proof.
 *)
 
 Definition swap_program : com :=
-  (* FILL IN HERE *) admit.
+  Z ::= (AId X);; X ::= (AId Y) ;; Y ::= (AId Z).
 
 Theorem swap_exercise :
   {{fun st => st X <= st Y}} 
   swap_program
   {{fun st => st Y <= st X}}.
 Proof.
-  (* FILL IN HERE *) Admitted.
-(** [] *)
+  unfold swap_program.
+  eapply hoare_seq. eapply hoare_seq.
+  Case "first". apply hoare_asgn.
+  Case "second". apply hoare_asgn.
+  Case "third".
+  eapply hoare_consequence_pre.
+  eapply hoare_asgn.
+  intros st H.  apply H.
+Qed.
 
 (** **** Exercise: 3 stars (hoarestate1)  *)
 (** Explain why the following proposition can't be proven:
