@@ -486,8 +486,24 @@ Qed.
     arithmetic expression [a], and your counterexample needs to
     exhibit an [a] for which the rule doesn't work. *)
 
-(* FILL IN HERE *)
-(** [] *)
+Example hoare_asgn_wrong_0:
+  {{fun st => True}}
+  X ::= (ANum 1)
+  {{fun st => st X = 1}}.
+Proof.
+  admit.
+
+Example hoare_asgn_wrong:
+  {{fun st => True}}
+  X ::= APlus (AId X) (ANum 1)
+  {{fun st => st X = st X + 1}}.
+Proof.
+  unfold hoare_triple. intros. inversion H.
+  admit.
+Qed.
+
+  
+    
 
 (** **** Exercise: 3 stars, advanced (hoare_asgn_fwd)  *)
 (** However, using an auxiliary variable [m] to remember the original
@@ -514,8 +530,8 @@ Theorem hoare_asgn_fwd :
   {{fun st => P (update st X m) /\ st X = aeval (update st X m) a }}.
 Proof.
   intros functional_extensionality m a P.
-  (* FILL IN HERE *) Admitted.
-(** [] *)
+ admit. 
+   
 
 (** **** Exercise: 2 stars, advanced (hoare_asgn_fwd_exists)  *)
 (** Another way to define a forward rule for assignment is to
@@ -539,9 +555,14 @@ Theorem hoare_asgn_fwd_exists :
                 st X = aeval (update st X m) a }}.
 Proof.
   intros functional_extensionality a P.
-  (* FILL IN HERE *) Admitted.
-(** [] *)
-
+  unfold hoare_triple.
+  intros.
+  inversion H.
+  rewrite -> H4.
+  exists n.
+  split.
+admit.
+  
 (* ####################################################### *) 
 (** *** Consequence *)
 
@@ -588,20 +609,19 @@ Theorem hoare_consequence_pre : forall (P P' Q : Assertion) c,
   P ->> P' ->
   {{P}} c {{Q}}.
 Proof.
-  intros P P' Q c Hhoare Himp.
-  intros st st' Hc HP. apply (Hhoare st st'). 
-  assumption. apply Himp. assumption. Qed.
+  intros. intros st st' Hc HP. apply (H st st'). assumption. apply H0. assumption.
+Qed.
 
 Theorem hoare_consequence_post : forall (P Q Q' : Assertion) c,
   {{P}} c {{Q'}} ->
   Q' ->> Q ->
   {{P}} c {{Q}}.
 Proof.
-  intros P Q Q' c Hhoare Himp.
-  intros st st' Hc HP. 
-  apply Himp.
-  apply (Hhoare st st'). 
-  assumption. assumption. Qed.
+  intros. intros st st' Hc HP. apply H0. apply (H st st'). assumption. assumption.
+Qed.
+
+
+
 
 (** For example, we might use the first consequence rule like this:
                 {{ True }} ->>
@@ -615,10 +635,12 @@ Example hoare_asgn_example1 :
   {{fun st => True}} (X ::= (ANum 1)) {{fun st => st X = 1}}.
 Proof.
   apply hoare_consequence_pre
-    with (P' := (fun st => st X = 1) [X |-> ANum 1]).
-  apply hoare_asgn.
-  intros st H. unfold assn_sub, update. simpl. reflexivity.
+  with (P' := (fun st => st X = 1) [X |-> (ANum 1)]).
+  apply hoare_asgn. intros st H. unfold assn_sub. simpl. reflexivity.
 Qed.
+
+
+
 
 (** Finally, for convenience in some proofs, we can state a "combined"
     rule of consequence that allows us to vary both the precondition
@@ -636,10 +658,14 @@ Theorem hoare_consequence : forall (P P' Q Q' : Assertion) c,
   Q' ->> Q ->
   {{P}} c {{Q}}.
 Proof.
-  intros P P' Q Q' c Hht HPP' HQ'Q.
-  apply hoare_consequence_pre with (P' := P').
+  intros. apply hoare_consequence_pre with (P' := P').
   apply hoare_consequence_post with (Q' := Q').
-  assumption. assumption. assumption.  Qed.
+  apply H.
+  assumption. assumption.
+Qed.
+                                               
+  
+
 
 (* ####################################################### *)
 (** *** Digression: The [eapply] Tactic *)
@@ -668,7 +694,8 @@ Example hoare_asgn_example1' :
 Proof.
   eapply hoare_consequence_pre.
   apply hoare_asgn.
-  intros st H.  reflexivity.  Qed.
+  intros st H.  reflexivity.
+Qed.
 
 (** In general, [eapply H] tactic works just like [apply H] except
     that, instead of failing if unifying the goal with the conclusion
@@ -714,8 +741,7 @@ Abort.
     instantiated with terms containing (ordinary) variables that did
     not exist at the time the existential variable was created. *)
 
-Lemma silly2 :
-  forall (P : nat -> nat -> Prop) (Q : nat -> Prop),
+Lemma silly2 : forall (P : nat -> nat -> Prop) (Q : nat -> Prop),
   (exists y, P 42 y) ->
   (forall x y : nat, P x y -> Q x) ->
   Q 42.
@@ -729,8 +755,7 @@ Proof.
 
 Abort.
 
-Lemma silly2_fixed :
-  forall (P : nat -> nat -> Prop) (Q : nat -> Prop),
+Lemma silly2_fixed : forall (P : nat -> nat -> Prop) (Q : nat -> Prop),
   (exists y, P 42 y) ->
   (forall x y : nat, P x y -> Q x) ->
   Q 42.
@@ -764,8 +789,32 @@ Qed.
    ...into formal statements [assn_sub_ex1', assn_sub_ex2'] and 
    use [hoare_asgn] and [hoare_consequence_pre] to prove them. *)
 
-(* FILL IN HERE *)
-(** [] *)
+Example assn_sub_ex1' :
+  {{fun st => st X + 1 <= 5 }}
+  X ::= (APlus (AId X) (ANum 1))
+  {{fun st => st X <= 5 }}.
+Proof.
+  eapply hoare_consequence_pre. eapply hoare_asgn.
+  intros st H. unfold assn_sub, update. destruct (eq_id_dec X X).
+  apply H.
+  unfold not in n. apply ex_falso_quodlibet. apply n. reflexivity.
+Qed.
+
+
+Example assn_sub_ex2' :
+  {{fun st => 0 <= 3 /\ 3 <= 5 }}
+  X ::= (ANum 3)
+  {{fun st => 0 <= st X /\ st X <= 5 }}.
+Proof.
+  eapply hoare_consequence_pre. eapply hoare_asgn.
+  intros st H. unfold assn_sub, update.
+  destruct (eq_id_dec X X).
+  simpl. assumption.
+  unfold not in n. apply ex_falso_quodlibet. apply n. reflexivity.
+Qed.
+  
+
+
 
 (* ####################################################### *)
 (** *** Skip *)
@@ -801,10 +850,11 @@ Theorem hoare_seq : forall P Q R c1 c2,
      {{P}} c1 {{Q}} ->
      {{P}} c1;;c2 {{R}}.
 Proof.
-  intros P Q R c1 c2 H1 H2 st st' H12 Pre.
-  inversion H12; subst.
-  apply (H1 st'0 st'); try assumption.
-  apply (H2 st st'0); assumption. Qed.
+  intros P Q R c1 c2. intros H1 H2.  intros st st' Hc Pre.
+  inversion Hc. subst.
+  apply (H1 st'0 st').  assumption.
+  apply (H2 st st'0). assumption.
+Qed.
 
 (** Note that, in the formal rule [hoare_seq], the premises are
     given in "backwards" order ([c2] before [c1]).  This matches the
