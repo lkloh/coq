@@ -189,7 +189,9 @@ Example test_optimize_0plus:
                         (APlus (ANum 0)
                                (APlus (ANum 0) (ANum 1))))
   = APlus (ANum 2) (ANum 1).
-Proof. reflexivity. Qed.
+Proof.
+  simpl. reflexivity.
+Qed.
 
 (** But if we want to be sure the optimization is correct --
     i.e., that evaluating an optimized expression gives the same
@@ -199,24 +201,22 @@ Theorem optimize_0plus_sound: forall a,
   aeval (optimize_0plus a) = aeval a.
 Proof.
   intros a. induction a.
-  Case "ANum". reflexivity.
+  Case "ANum". simpl. reflexivity.
   Case "APlus". destruct a1.
-    SCase "a1 = ANum n". destruct n.
-      SSCase "n = 0".  simpl. apply IHa2.
-      SSCase "n <> 0". simpl. rewrite IHa2. reflexivity.
-    SCase "a1 = APlus a1_1 a1_2".
-      simpl. simpl in IHa1. rewrite IHa1.
-      rewrite IHa2. reflexivity.
-    SCase "a1 = AMinus a1_1 a1_2".
-      simpl. simpl in IHa1. rewrite IHa1.
-      rewrite IHa2. reflexivity.
-    SCase "a1 = AMult a1_1 a1_2".
-      simpl. simpl in IHa1. rewrite IHa1.
-      rewrite IHa2. reflexivity.
-  Case "AMinus".
-    simpl. rewrite IHa1. rewrite IHa2. reflexivity.
-  Case "AMult".
-    simpl. rewrite IHa1. rewrite IHa2. reflexivity.  Qed.
+  SCase "a1 = ANum". destruct n.
+  SSCase "n=0". simpl. assumption.
+  SSCase "n<>0". simpl. rewrite -> IHa2. reflexivity.
+  SCase "a1 = APlus a1_1 a1_2".
+  simpl. simpl in IHa1. rewrite -> IHa1. rewrite -> IHa2. reflexivity.
+  SCase "a1 = AMinus a1_1 a1_2".
+  simpl. simpl in IHa1. rewrite -> IHa1. rewrite -> IHa2. reflexivity.
+  SCase "a1 = AMult a1_1 a1_2".
+  simpl. simpl in IHa1. rewrite -> IHa1. rewrite -> IHa2. reflexivity.
+  SCase "AMinus". simpl. rewrite -> IHa1. rewrite -> IHa2. reflexivity.
+  SCase "AMult". simpl. rewrite -> IHa1. rewrite -> IHa2. reflexivity.
+Qed.
+
+
 
 (* ####################################################### *)
 (** * Coq Automation *)
@@ -251,11 +251,8 @@ Proof.
 
 Theorem ev100 : ev 100.
 Proof.
-  repeat (apply ev_SS). (* applies ev_SS 50 times,
-                           until [apply ev_SS] fails *)
-  apply ev_0.
+  repeat (apply ev_SS). apply ev_0.
 Qed.
-(* Print ev100. *)
 
 (** The [repeat T] tactic never fails; if the tactic [T] doesn't apply
     to the original goal, then repeat still succeeds without changing
@@ -263,10 +260,11 @@ Qed.
 
 Theorem ev100' : ev 100.
 Proof.
-  repeat (apply ev_0). (* doesn't fail, applies ev_0 zero times *)
-  repeat (apply ev_SS). apply ev_0. (* we can continue the proof *)
+  repeat (apply ev_0). repeat (apply ev_SS). repeat (apply ev_0).
 Qed.
 
+
+    
 (** The [repeat T] tactic does not have any bound on the number of
     times it applies [T]. If [T] is a tactic that always succeeds then
     repeat [T] will loop forever (e.g. [repeat simpl] loops forever
@@ -281,15 +279,19 @@ Qed.
     all (instead of failing). *)
 
 Theorem silly1 : forall ae, aeval ae = aeval ae.
-Proof. try reflexivity. (* this just does [reflexivity] *) Qed.
+Proof.
+  try reflexivity.
+Qed.
+
+
 
 Theorem silly2 : forall (P : Prop), P -> P.
 Proof.
-  intros P HP.
-  try reflexivity. (* just [reflexivity] would have failed *)
-  apply HP. (* we can still finish the proof in some other way *)
+  intros.
+  try reflexivity.
+  assumption.
 Qed.
-
+ 
 (** Using [try] in a completely manual proof is a bit silly, but
     we'll see below that [try] is very useful for doing automated
     proofs in conjunction with the [;] tactical. *)
@@ -305,17 +307,20 @@ Qed.
 
 Lemma foo : forall n, ble_nat 0 n = true.
 Proof.
-  intros.
-  destruct n.
-    (* Leaves two subgoals, which are discharged identically...  *)
-    Case "n=0". simpl. reflexivity.
-    Case "n=Sn'". simpl. reflexivity.
+  intros. destruct n.
+  Case "n=0". reflexivity.
+  Case "n<>0". reflexivity.
 Qed.
+  
+
+
+  
 
 (** We can simplify this proof using the [;] tactical: *)
 
 Lemma foo' : forall n, ble_nat 0 n = true.
 Proof.
+  (* intros. destruct n; simpl; reflexivity. *)
   intros.
   destruct n; (* [destruct] the current goal *)
   simpl; (* then [simpl] each resulting subgoal *)
@@ -344,7 +349,8 @@ Proof.
        [n] (to see whether the optimization applies) and rewrite
        with the induction hypothesis. *)
     SCase "a1 = ANum n". destruct n;
-      simpl; rewrite IHa2; reflexivity.   Qed.
+      simpl; rewrite IHa2; reflexivity.
+Qed.
 
 (** Coq experts often use this "[...; try... ]" idiom after a tactic
     like [induction] to take care of many similar cases all at once.
@@ -515,7 +521,8 @@ Proof.
       try (simpl; simpl in IHa1;
            rewrite IHa1; rewrite IHa2; reflexivity).
     SCase "ANum". destruct n;
-      simpl; rewrite IHa2; reflexivity.  Qed.
+      simpl; rewrite IHa2; reflexivity.
+Qed.
 
 (** **** Exercise: 3 stars (optimize_0plus_b)  *)
 (** Since the [optimize_0plus] tranformation doesn't change the value
@@ -526,24 +533,64 @@ Proof.
     as elegant as possible. *)
 
 Fixpoint optimize_0plus_b (b : bexp) : bexp :=
-  (* FILL IN HERE *) admit.
+  match b with
+  | BTrue => BTrue
+  | BFalse => BFalse
+  | BEq a1 a2 => BEq (optimize_0plus a1) (optimize_0plus a2)
+  | BLe a1 a2 => BLe (optimize_0plus a1) (optimize_0plus a2)
+  | BNot b1 => BNot (optimize_0plus_b b1)
+  | BAnd b1 b2 => BAnd (optimize_0plus_b b1) (optimize_0plus_b b2)
+  end.
+
+
+
+
+Theorem optimize_0plus_b_sound_test : forall b,
+  beval (optimize_0plus_b b) = beval b.
+Proof.
+  intros b. induction b.
+  Case "b=BTrue". reflexivity.
+  Case "b=BFalse". reflexivity.
+  Case "b=BEq a a0". simpl. rewrite -> optimize_0plus_sound. rewrite -> optimize_0plus_sound. reflexivity.
+  Case "b=Ble a a0". simpl. rewrite -> optimize_0plus_sound. rewrite -> optimize_0plus_sound. reflexivity.
+  Case "b=BNot b". simpl. rewrite -> IHb. reflexivity.
+  Case "BAnd b1 b2". simpl. rewrite -> IHb1. rewrite -> IHb2. reflexivity.
+Qed.
 
 
 Theorem optimize_0plus_b_sound : forall b,
   beval (optimize_0plus_b b) = beval b.
 Proof.
-  (* FILL IN HERE *) Admitted.
-(** [] *)
+  intros b.
+  induction b;
+  try reflexivity;
+  try (simpl; rewrite optimize_0plus_sound; rewrite optimize_0plus_sound; reflexivity).
+  simpl; rewrite -> IHb; reflexivity.
+  simpl; rewrite -> IHb1; rewrite -> IHb2; reflexivity.
+Qed.
+  
 
 (** **** Exercise: 4 stars, optional (optimizer)  *)
 (** _Design exercise_: The optimization implemented by our
     [optimize_0plus] function is only one of many imaginable
     optimizations on arithmetic and boolean expressions.  Write a more
     sophisticated optimizer and prove it correct.
-
-(* FILL IN HERE *)
 *)
-(** [] *)
+
+Fixpoint optimize_amore (a:aexp) : aexp :=
+  match a with
+  | ANum n => ANum n
+  | APlus (ANum 0) e2 => optimize_amore e2
+  | APlus e1 (ANum 0) => optimize_amore e1                                     
+  | APlus e1 e2 => APlus (optimize_amore e1) (optimize_amore e2)
+  | AMinus e1 e2 => AMinus (optimize_amore e1) (optimize_amore e2)
+  | AMult e1 e2 => AMult (optimize_amore e1) (optimize_amore e2)
+  end.
+
+
+
+  
+    
 
 (* ####################################################### *)
 (** ** The [omega] Tactic *)
@@ -750,22 +797,40 @@ Tactic Notation "aevalR_cases" tactic(first) ident(c) :=
 Theorem aeval_iff_aevalR : forall a n,
   (a || n) <-> aeval a = n.
 Proof.
+  split.
+  Case "=>". intros H.
+  aexp_cases (induction H) SCases; try simpl.
+  SCase "a = ANum n". reflexivity.
+  SCase "a = APlus e1 e2". rewrite IHaevalR1. rewrite IHaevalR2. reflexivity.
+  SCase "a = AMinus e1 e2". rewrite IHaevalR1. rewrite IHaevalR2. reflexivity.
+  SCase "a = AMult e1 e2". rewrite IHaevalR1. rewrite IHaevalR2. reflexivity.
+  Case "<=". intros H.
+  aexp_cases (induction a) SCases; try simpl.
+  SCase "a = ANum n0". simpl.
+
+
+
+  
+
+
+
+
+  
  split.
  Case "->".
    intros H.
    aevalR_cases (induction H) SCase; simpl.
    SCase "E_ANum".
      reflexivity.
-   SCase "E_APlus".
-     rewrite IHaevalR1.  rewrite IHaevalR2.  reflexivity.
+   SCase "E_APlus". 
+     rewrite IHaevalR1. rewrite IHaevalR2. reflexivity.
    SCase "E_AMinus".
      rewrite IHaevalR1.  rewrite IHaevalR2.  reflexivity.
    SCase "E_AMult".
      rewrite IHaevalR1.  rewrite IHaevalR2.  reflexivity.
  Case "<-".
    generalize dependent n.
-   aexp_cases (induction a) SCase;
-      simpl; intros; subst.
+   aexp_cases (induction a) SCase; simpl; intros; subst.
    SCase "ANum".
      apply E_ANum.
    SCase "APlus".
