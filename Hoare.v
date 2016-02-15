@@ -1211,8 +1211,9 @@ End If1.
 Lemma hoare_while : forall P b c,
   {{fun st => P st /\ bassn b st}} c {{P}} ->
   {{P}} WHILE b DO c END {{fun st => P st /\ ~ (bassn b st)}}.
-Proof.
-  intros P b c Hhoare st st' He HP.
+Proof. 
+  
+  intros P b c. intros Hhoare. intros st st' He HP.
   (* Like we've seen before, we need to reason by induction 
      on [He], because, in the "keep looping" case, its hypotheses 
      talk about the whole loop instead of just [c]. *)
