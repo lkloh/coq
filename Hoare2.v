@@ -1,6 +1,7 @@
 (** * Hoare2: Hoare Logic, Part II *)
 
 Require Export Hoare.
+(* Require Export HoareArr. *)
 
 
 
@@ -278,26 +279,26 @@ Theorem reduce_to_zero_correct' :
   {{fun st => st X = 0}}.
 Proof.
   unfold reduce_to_zero'.
-  (* First we need to transform the postcondition so
-     that hoare_while will apply. *)
   eapply hoare_consequence_post.
-  apply hoare_while.
-  Case "Loop body preserves invariant".
-    (* Need to massage precondition before [hoare_asgn] applies *)
-    eapply hoare_consequence_pre. apply hoare_asgn.
-    (* Proving trivial implication (2) ->> (3) *)
-    intros st [HT Hbp]. unfold assn_sub. apply I.
-  Case "Invariant and negated guard imply postcondition".
-    intros st [Inv GuardFalse].
-    unfold bassn in GuardFalse. simpl in GuardFalse.
-    (* SearchAbout helps to find the right lemmas *)
-    SearchAbout [not true].
-    rewrite not_true_iff_false in GuardFalse.
-    SearchAbout [negb false].
-    rewrite negb_false_iff in GuardFalse.
-    SearchAbout [beq_nat true].
-    apply beq_nat_true in GuardFalse.
-    apply GuardFalse. Qed.
+  eapply hoare_while.
+  Case "loop invariant preserved".
+  intros st st' HCom HPre.
+  destruct HPre as [HTrue HBassn]. assumption.
+  Case "invariant and negated guard imply postcondition".
+  intros st [Invariant GuardFalse].
+  unfold bassn in GuardFalse. simpl in GuardFalse.
+  SearchAbout [not true].
+  apply not_true_is_false in GuardFalse.
+  simpl in GuardFalse.
+  SearchAbout [negb false].
+  apply negb_false_iff in GuardFalse.
+  SearchAbout [beq_nat true].
+  apply beq_nat_true in GuardFalse.
+  assumption.
+Qed.
+
+
+
 
 (* ####################################################### *)
 (** ** Example: Division *)
@@ -352,7 +353,22 @@ Proof.
     the two uses of the consequence rule are correct -- i.e., that (1)
     implies (2) and that (5) implies (6).  This is indeed the case, so
     we have a valid decorated program.
-*)
+ *)
+
+Example division : forall m n,
+ {{ fun st => True }}
+ X ::= (ANum m);;
+ Y ::= (ANum 0);;  
+ WHILE (BLe (ANum n) (AId X)) DO
+   X ::= AMinus (AId X) (ANum n);;
+   Y ::= APlus (AId Y) (ANum 1)
+ END
+ {{ fun st => n * (st Y) + (st X) = m /\ (st X < n) }}.
+Proof.
+  intros m n.
+Abort.
+  
+  
 
 (* ####################################################### *)
 (** * Finding Loop Invariants *)
@@ -504,6 +520,65 @@ Proof.
     0], we have [Y - X = (Y - 1) - (X - 1)]; this holds for all
     natural numbers [X] and [Y].) *)
 
+Example slow_subtraction : forall m n : nat,
+  {{ fun st => st X = m /\ st Y = n /\ ge n m }} 
+  WHILE BNot (BEq (AId X) (ANum 0)) DO
+    Y ::= AMinus (AId Y) (ANum 1);;
+    X ::= AMinus (AId X) (ANum 1)
+  END
+  {{ fun st => st Y = n-m }}.
+Proof.
+  intros m n.
+  apply hoare_consequence with
+  (P':= fun st => st Y - st X = n - m )
+    (Q':= fun st => st Y - st X = n - m
+                    /\ ~ bassn (BNot (BEq (AId X) (ANum 0))) st).
+  apply hoare_while.
+  apply hoare_seq with (Q := fun st => st Y - (st X - 1) = n - m).
+  apply hoare_consequence_pre with
+    (P' := (fun st => (st Y - st X = n - m))
+             [X |-> AMinus (AId X) (ANum 1)]).
+  apply hoare_asgn.
+  (* consequence *)
+  unfold assert_implies. intros st H. unfold assn_sub.
+  simpl. rewrite <- H. reflexivity.
+  (* hoare_consequence_pre *)
+  apply hoare_consequence_pre with
+  (P' := (fun st : id -> nat => st Y - (st X - 1) = n - m)
+           [Y |-> AMinus (AId Y) (ANum 1)]).
+  apply hoare_asgn.
+  (*consequence*)
+  unfold bassn. unfold assn_sub.
+  intros st [HA HB]. simpl.
+  simpl in HB. unfold update.
+  SearchAbout [negb true]. apply negb_true_iff in HB.
+  SearchAbout [beq_nat false]. apply beq_nat_false in HB.
+  unfold not in HB.
+  destruct (eq_id_dec Y Y).
+  Case "Y=Y".
+  destruct (eq_id_dec Y X).
+  SCase "Y=X".
+  admit.
+  SCase "Y<>X".
+  unfold not in n0. admit. admit.
+  (* consequence *)
+  intros st [HA [HB HC]].
+  rewrite HA; rewrite HB. reflexivity.
+ (* consequnce *)
+  unfold assert_implies. 
+  intros st [H1 H2 ].
+  unfold bassn in H2.
+  unfold beval in H2.
+  SearchAbout [negb true]. apply eq_true_not_negb in H2.
+  SearchAbout [negb negb]. rewrite -> negb_involutive in H2.
+  SearchAbout [beq_nat true]. apply beq_nat_true in H2.
+  inversion H2.
+  rewrite <- H1. rewrite -> H0. omega.
+Qed.
+ 
+            
+             
+
 (* ####################################################### *)
 (** ** Exercise: Slow Assignment *)
 
@@ -621,8 +696,22 @@ Theorem parity_correct : forall m,
   END
     {{ fun st => st X = parity m }}.
 Proof.
-  (* FILL IN HERE *) Admitted.
-(** [] *)
+  intros m.
+  eapply hoare_consequence_post.
+  apply hoare_while.
+  Case "consistency within the loop".
+  eapply hoare_consequence_pre.
+  apply hoare_asgn.
+  unfold assn_sub.
+  intros st [Ha Hb].
+  unfold bassn in Hb. simpl.
+ Abort.
+  
+  
+  
+  
+  
+  
 
 (* ####################################################### *)
 (** ** Example: Finding Square Roots *)
@@ -1407,3 +1496,59 @@ Fixpoint real_fact (n:nat) : nat :=
 
 (** $Date: 2014-12-31 11:17:56 -0500 (Wed, 31 Dec 2014) $ *)
 
+
+(**********************************************
+
+  Homework 2.4: Analyze the following program.
+ This program mimics a protocol that acquires and releases locks of resources.
+ The locks to resources are represented as an array. 
+ The first loop initialized all locks to be unlocked (set to 0).
+ The second loop acquires all locks by setting all array elements to 1. 
+ The last loop releases all locks by decrementing all array elements by 1. 
+ 
+ ***********************************************)
+Definition prog4 : com := 
+  Z ::= ANum 10;;
+  (ALLOC A [[AId Z]]);;
+  Y ::= (ANum 1);;
+  WHILE (BLe (AId Y) (AId Z)) DO
+    (WRITE A [[AId Y]] (ANum 0));;
+   Y ::= APlus (AId Y) (ANum 1) 
+  END;; 
+  Y ::= (ANum 1);;
+  WHILE (BLe (AId Y) (AId Z)) DO
+    (WRITE A [[AId Y]] (ANum 1));;
+   Y ::= APlus (AId Y) (ANum 1) 
+  END;;
+  Y ::= (AId Z);;
+  WHILE (BLe (ANum 1) (AId Y) ) DO
+    (WRITE A [[AId Y]] (AMinus (AArr A (AId Y)) (ANum 1)));;
+   Y ::= AMinus (AId Y) (ANum 1) 
+  END.
+
+(* We need inductively defined properties for our analysis *)
+
+(* all_zero st A n means that all elements of A up to n are 0 *)
+Inductive all_zero: state -> id -> nat -> Prop :=
+| All_zero_base: forall st a, all_zero st a 0
+| All_zero_succ: forall st a n,
+    aeval st (AArr a (ANum (S n)))= Some 0 -> all_zero st a n ->
+    all_zero st a (S n).
+
+Inductive all_one: state -> id -> nat -> Prop :=
+| All_one_base: forall st a, all_one st a 0
+| All_one_succ: forall st a n,
+    aeval st (AArr a (ANum (S n)))= Some 1 -> all_one st a n ->
+    all_one st a (S n).
+
+Print empty_state.
+
+(* Prove the following Hoare triple. 
+   You may need to define your own inductive properties. *)
+Lemma hoare_prog4 :
+ {{fun st => st = empty_state}}
+ prog4
+ {{fun st =>exists n, aeval st (ALen A) = Some n /\ all_zero st A n}}.
+Proof. 
+  verify. 
+  
