@@ -557,8 +557,8 @@ Proof.
   destruct (eq_id_dec Y Y).
   Case "Y=Y".
   destruct (eq_id_dec Y X).
-  SCase "Y=X".
-  admit.
+  SCase "Y=X". 
+  apply ex_falso_quodlibet. apply HB. inversion e0. 
   SCase "Y<>X". rewrite <- HA. omega.
   Case "Y<>Y". unfold not in n0. apply ex_falso_quodlibet. apply n0. reflexivity.
   (* consequence *)
