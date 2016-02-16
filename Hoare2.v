@@ -550,17 +550,17 @@ Proof.
   (*consequence*)
   unfold bassn. unfold assn_sub.
   intros st [HA HB]. simpl.
-  simpl in HB. unfold update.
+  simpl in HB.
   SearchAbout [negb true]. apply negb_true_iff in HB.
   SearchAbout [beq_nat false]. apply beq_nat_false in HB.
-  unfold not in HB.
+  unfold not in HB. unfold update.
   destruct (eq_id_dec Y Y).
   Case "Y=Y".
   destruct (eq_id_dec Y X).
   SCase "Y=X".
   admit.
-  SCase "Y<>X".
-  unfold not in n0. admit. admit.
+  SCase "Y<>X". rewrite <- HA. omega.
+  Case "Y<>Y". unfold not in n0. apply ex_falso_quodlibet. apply n0. reflexivity.
   (* consequence *)
   intros st [HA [HB HC]].
   rewrite HA; rewrite HB. reflexivity.
@@ -574,7 +574,7 @@ Proof.
   SearchAbout [beq_nat true]. apply beq_nat_true in H2.
   inversion H2.
   rewrite <- H1. rewrite -> H0. omega.
-Qed.
+Qed. 
  
             
              
