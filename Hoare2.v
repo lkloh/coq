@@ -274,7 +274,7 @@ Definition reduce_to_zero' : com :=
   END.
 
 Definition reduce_to_zero_lk :
-  {{fun st => True}}
+  {{fun st => st X > 0}}
   reduce_to_zero'
   {{fun st => st X = 0}}.
 Proof.
@@ -282,8 +282,26 @@ Proof.
   apply hoare_consequence_pre with (P' := fun st => (st X) >= 0).
   apply hoare_consequence_post with                                       
     (Q' := fun st => ((st X) >= 0) /\ ~bassn (BNot (BEq (AId X) (ANum 0))) st ).
-  
-    
+  apply hoare_while.
+  apply hoare_consequence_pre with
+    (P' := (fun st => ((st X) >= 0)) [X |-> AMinus (AId X) (ANum 1)] ).
+  apply hoare_asgn.
+  unfold assert_implies.
+  intros st [A B].
+  unfold assn_sub. simpl.
+  unfold bassn in B. simpl in B.
+  SearchAbout [negb true]. apply negb_true_iff in B.
+  SearchAbout [beq_nat false]. apply beq_nat_false in B.
+  unfold not in B. admit.
+  unfold assert_implies.
+  intros st [A B].
+  unfold bassn in B. simpl in B. unfold not in B.
+  SearchAbout [negb true]. 
+  admit.
+  unfold assert_implies.
+  intros st H.
+  omega.
+Qed.
 
 
 
