@@ -273,6 +273,21 @@ Definition reduce_to_zero' : com :=
     X ::= AMinus (AId X) (ANum 1)
   END.
 
+Definition reduce_to_zero_lk :
+  {{fun st => True}}
+  reduce_to_zero'
+  {{fun st => st X = 0}}.
+Proof.
+  unfold reduce_to_zero'. 
+  apply hoare_consequence_pre with (P' := fun st => (st X) >= 0).
+  apply hoare_consequence_post with                                       
+    (Q' := fun st => ((st X) >= 0) /\ ~bassn (BNot (BEq (AId X) (ANum 0))) st ).
+  
+    
+
+
+
+
 Theorem reduce_to_zero_correct' :
   {{fun st => True}}
   reduce_to_zero'
@@ -296,6 +311,8 @@ Proof.
   apply beq_nat_true in GuardFalse.
   assumption.
 Qed.
+
+
 
 
 
@@ -528,7 +545,7 @@ Example slow_subtraction : forall m n : nat,
   END
   {{ fun st => st Y = n-m }}.
 Proof.
-  intros m n.
+  intros m n. 
   apply hoare_consequence with
   (P':= fun st => st Y - st X = n - m )
     (Q':= fun st => st Y - st X = n - m
@@ -576,7 +593,8 @@ Proof.
   rewrite <- H1. rewrite -> H0. omega.
 Qed. 
  
-            
+
+
              
 
 (* ####################################################### *)
